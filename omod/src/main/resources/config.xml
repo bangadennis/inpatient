@@ -32,6 +32,11 @@
 		Inpatient.hbm.xml
 				
 	</mappingFiles>
+	<mappingFiles>
+
+		Ward.hbm.xml
+
+	</mappingFiles>
 
 	<!-- Internationalization -->
 	<!-- All message codes should start with ${project.parent.artifactId}. -->
