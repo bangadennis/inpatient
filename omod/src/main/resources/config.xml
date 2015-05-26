@@ -29,7 +29,7 @@
 	<!-- Maps hibernate file's, if present -->
 	<mappingFiles>
 				
-		InpatientModel.hbm.xml
+		Inpatient.hbm.xml
 				
 	</mappingFiles>
 
