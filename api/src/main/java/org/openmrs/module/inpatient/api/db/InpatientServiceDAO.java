@@ -13,10 +13,10 @@
  */
 package org.openmrs.module.inpatient.api.db;
 
-import org.openmrs.module.inpatient.api.InpatientServiceService;
+import org.openmrs.module.inpatient.api.InpatientService;
 
 /**
- *  Database methods for {@link InpatientServiceService}.
+ *  Database methods for {@link InpatientService}.
  */
 public interface InpatientServiceDAO {
 	

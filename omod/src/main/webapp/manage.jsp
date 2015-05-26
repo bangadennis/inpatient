@@ -3,6 +3,6 @@
 
 <%@ include file="template/localHeader.jsp"%>
 
-<p>Hello ${user.systemId}!</p>
+<p>Inpatient Services ${user.systemId}!</p>
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>
