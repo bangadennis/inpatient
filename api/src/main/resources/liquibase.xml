@@ -8,5 +8,20 @@
         See http://www.liquibase.org/manual/home#available_database_refactorings
         for a list of supported elements and attributes
     -->
+
+    <changeSet author="banga" id="20150526-1">
+        <comment>Create the Ward table</comment>
+        <createTable tableName="ward">
+            <column autoIncrement="true" name="ward_id" type="int">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="ward_name" type="varchar(50)" />
+            <column name="speciality" type="varchar(50)" />
+            <column name="description" type="varchar(255)" />
+            <column name="capacity" type="int" />
+            <column name="uuid" type="char(38)" />
+        </createTable>
+    </changeSet>
+
     
 </databaseChangeLog>
