@@ -8,7 +8,7 @@
 		href="${pageContext.request.contextPath}/admin">
 		<%--<spring:message--%>
 				<%--code="admin.title.short" /></a>--%>
-			<i class="fa fa-lock fa-5x"></i>
+			<i class="fa fa-cog fa-spin fa-5x"></i>
 
 	</li>
 

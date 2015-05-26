@@ -21,7 +21,7 @@ import org.openmrs.test.BaseModuleContextSensitiveTest;
 /**
  * Tests {@link ${InpatientService}}.
  */
-public class  InpatientServiceServiceTest extends BaseModuleContextSensitiveTest {
+public class InpatientServiceTest extends BaseModuleContextSensitiveTest {
 	
 	@Test
 	public void shouldSetupContext() {
