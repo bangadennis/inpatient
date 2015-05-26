@@ -51,5 +51,58 @@
 			</list>
 		</property>
 	</bean>
-	
+
+
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list>
+				<value>${project.parent.groupId}.${project.parent.artifactId}.api.WardService</value>
+				<bean
+						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+					<property name="transactionManager">
+						<ref bean="transactionManager" />
+					</property>
+					<property name="target">
+						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.WardServiceImpl">
+							<property name="dao">
+								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateWardDAO">
+									<property name="sessionFactory">
+										<ref bean="sessionFactory" />
+									</property>
+								</bean>
+							</property>
+						</bean>
+					</property>
+					<property name="preInterceptors">
+						<ref bean="serviceInterceptors" />
+					</property>
+					<property name="transactionAttributeSource">
+						<ref bean="transactionAttributeSource" />
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!--<bean id="wardService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">-->
+		<!--<property name="transactionManager" ref="transactionManager" />-->
+		<!--<property name="target">-->
+			<!--<bean class="org.openmrs.module.inpatient.api.impl.WardServiceImpl">-->
+				<!--<property name="repository" ref="genericRepository" />-->
+			<!--</bean>-->
+		<!--</property>-->
+		<!--<property name="preInterceptors" ref="serviceInterceptors" />-->
+		<!--<property name="transactionAttributeSource" ref="transactionAttributeSource" />-->
+	<!--</bean>-->
+
+	<!--<bean parent="serviceContext">-->
+		<!--<property name="moduleService">-->
+			<!--<list merge="true">-->
+				<!--<value>org.openmrs.module.inpatient.api.WardService</value>-->
+				<!--<ref bean="wardService" />-->
+			<!--</list>-->
+		<!--</property>-->
+	<!--</bean>-->
+
+
 </beans>
