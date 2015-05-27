@@ -28,13 +28,9 @@
 	
 	<!-- Maps hibernate file's, if present -->
 	<mappingFiles>
-				
-		Inpatient.hbm.xml
-				
-	</mappingFiles>
-	<mappingFiles>
 
 		Ward.hbm.xml
+		Inpatient.hbm.xml
 
 	</mappingFiles>
 
