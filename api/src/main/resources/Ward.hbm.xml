@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.inpatient">
+
+        <class name="Ward"
+            table="${project.parent.artifactId}_Ward">
+            <id name="wardId" type="int" column="ward_id" unsaved-value="0">
+                <generator class="native" />
+            </id>
+            <discriminator column="id" insert="false" />
+
+            <property name="wardName" type="java.lang.String" column="ward_name" length="50" unique="true" />
+
+            <property name="speciality" type="java.lang.String" column="speciality" length="50" />
+
+            <property name="description" type="java.lang.String" column="description" length="255" />
+
+            <property name="capacity" type="int" column="capacity"  />
+
+            <property name="uuid" type="java.lang.String" column="uuid"
+                length="38" unique="true" />
+        </class>
+
+</hibernate-mapping>

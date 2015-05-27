@@ -28,9 +28,10 @@
 	
 	<!-- Maps hibernate file's, if present -->
 	<mappingFiles>
-				
-		InpatientModel.hbm.xml
-				
+
+		Ward.hbm.xml
+		Inpatient.hbm.xml
+
 	</mappingFiles>
 
 	<!-- Internationalization -->
