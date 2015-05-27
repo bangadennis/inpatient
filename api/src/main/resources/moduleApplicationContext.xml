@@ -17,6 +17,9 @@
   		    http://www.springframework.org/schema/util
   		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+	<context:component-scan base-package="@MODULE_PACKAGE@.web.controller" />
+
 	<!-- Add here beans related to the API context -->
 
 	
@@ -24,14 +27,14 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.InpatientServiceService</value>
+				<value>${project.parent.groupId}.${project.parent.artifactId}.api.InpatientService</value>
 				<bean
 					class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager" />
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.InpatientServiceServiceImpl">
+						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.InpatientServiceImpl">
 							<property name="dao">
 								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateInpatientServiceDAO">
 									<property name="sessionFactory">
@@ -51,5 +54,38 @@
 			</list>
 		</property>
 	</bean>
-	
+
+
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list>
+				<value>${project.parent.groupId}.${project.parent.artifactId}.api.WardService</value>
+				<bean
+						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+					<property name="transactionManager">
+						<ref bean="transactionManager" />
+					</property>
+					<property name="target">
+						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.WardServiceImpl">
+							<property name="dao">
+								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateWardDAO">
+									<property name="sessionFactory">
+										<ref bean="sessionFactory" />
+									</property>
+								</bean>
+							</property>
+						</bean>
+					</property>
+					<property name="preInterceptors">
+						<ref bean="serviceInterceptors" />
+					</property>
+					<property name="transactionAttributeSource">
+						<ref bean="transactionAttributeSource" />
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+
 </beans>
