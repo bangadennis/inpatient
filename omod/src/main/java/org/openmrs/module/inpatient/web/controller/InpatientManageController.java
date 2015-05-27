@@ -114,7 +114,7 @@ public class  InpatientManageController {
 				return "redirect:addward.form";
 
 			}
-			catch (Exception ex) {
+				catch (Exception ex) {
 
 				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Addition was unsuccessfully");
 			}

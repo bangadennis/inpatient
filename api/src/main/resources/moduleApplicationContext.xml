@@ -17,6 +17,9 @@
   		    http://www.springframework.org/schema/util
   		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+	<context:component-scan base-package="@MODULE_PACKAGE@.web.controller" />
+
 	<!-- Add here beans related to the API context -->
 
 	
@@ -83,26 +86,6 @@
 			</list>
 		</property>
 	</bean>
-
-	<!--<bean id="wardService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">-->
-		<!--<property name="transactionManager" ref="transactionManager" />-->
-		<!--<property name="target">-->
-			<!--<bean class="org.openmrs.module.inpatient.api.impl.WardServiceImpl">-->
-				<!--<property name="repository" ref="genericRepository" />-->
-			<!--</bean>-->
-		<!--</property>-->
-		<!--<property name="preInterceptors" ref="serviceInterceptors" />-->
-		<!--<property name="transactionAttributeSource" ref="transactionAttributeSource" />-->
-	<!--</bean>-->
-
-	<!--<bean parent="serviceContext">-->
-		<!--<property name="moduleService">-->
-			<!--<list merge="true">-->
-				<!--<value>org.openmrs.module.inpatient.api.WardService</value>-->
-				<!--<ref bean="wardService" />-->
-			<!--</list>-->
-		<!--</property>-->
-	<!--</bean>-->
 
 
 </beans>

@@ -41,6 +41,7 @@ public class HibernateWardDAO implements WardDAO {
 
     @Override
     public Ward getWard(Integer wardId) {
+
         return (Ward) sessionFactory.getCurrentSession().get(Ward.class, wardId);
     }
 
