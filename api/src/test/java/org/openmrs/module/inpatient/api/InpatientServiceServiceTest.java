@@ -19,12 +19,12 @@ import org.openmrs.api.context.Context;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 /**
- * Tests {@link ${InpatientServiceService}}.
+ * Tests {@link ${InpatientService}}.
  */
 public class  InpatientServiceServiceTest extends BaseModuleContextSensitiveTest {
 	
 	@Test
 	public void shouldSetupContext() {
-		assertNotNull(Context.getService(InpatientServiceService.class));
+		assertNotNull(Context.getService(InpatientService.class));
 	}
 }

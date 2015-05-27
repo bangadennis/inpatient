@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.openmrs.module.inpatient">
 
 <!--
-	<class name="InpatientModel"
+	<class name="Inpatient"
 		table="${project.parent.artifactId}_InpatientModel">
 		<id name="id" type="int" column="id" unsaved-value="0">
 			<generator class="native" />

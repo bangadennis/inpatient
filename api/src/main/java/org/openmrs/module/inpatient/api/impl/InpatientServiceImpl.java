@@ -16,13 +16,13 @@ package org.openmrs.module.inpatient.api.impl;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.module.inpatient.api.InpatientServiceService;
+import org.openmrs.module.inpatient.api.InpatientService;
 import org.openmrs.module.inpatient.api.db.InpatientServiceDAO;
 
 /**
- * It is a default implementation of {@link InpatientServiceService}.
+ * It is a default implementation of {@link InpatientService}.
  */
-public class InpatientServiceServiceImpl extends BaseOpenmrsService implements InpatientServiceService {
+public class InpatientServiceImpl extends BaseOpenmrsService implements InpatientService {
 	
 	protected final Log log = LogFactory.getLog(this.getClass());
 	
