@@ -25,7 +25,7 @@
                 <button class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign">Delete
             </span> </button>
             </a> </td>
-            <td><a href="<c:url value='/module/patientmodule/editWard.form?id=${thisWard.wardId}' />">
+            <td><a href="<c:url value='/module/inpatient/editWard.form?id=${thisWard.wardId}' />">
                 <button class="btn btn-success"><span class="glyphicon glyphicon-edit">Edit</span></button>
             </a> </td>
 
