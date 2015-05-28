@@ -40,6 +40,7 @@
             <column name="uuid" type="char(38)" />
         </createTable>
     </changeSet>
+<<<<<<< HEAD
 
     <changeSet author="banga" id="20150528-6">
         <comment>addForeignKeyConstraint-inpatient_inpatient</comment>
@@ -52,5 +53,24 @@
                                  referencedTableName="patient" />
 
             </changeSet>
+=======
+    <changeSet author="Olive" id="20150527-2">
+        <comment>Create the admission table</comment>
+        <createTable tableName="admission">
+            <column name="inpatient_id" type="int">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="inpatient_name" type="varchar(50)" />
+            <column name="date" type="date(50)" />
+            <column name="time" type="timestamp(255)" />
+            <column name="hiv_status" type="varchar(50)" />
+            <column name="nutrition_status" type="varchar(50)"/>
+            <column name="guardian" type="varchar(50)" defaultValue="unknown"/>
+            <column name="uuid" type="char(38)"/>
+            <column name="ward" type="varchar(50"/>
+            <column name="status" type="varchar(50"/>
+        </createTable>
+    </changeSet>
+>>>>>>> master
     
 </databaseChangeLog>
