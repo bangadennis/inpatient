@@ -16,7 +16,10 @@ package org.openmrs.module.inpatient.api.db.hibernate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
+import org.openmrs.module.inpatient.Inpatient;
 import org.openmrs.module.inpatient.api.db.InpatientDAO;
+
+import java.util.List;
 
 /**
  * It is a default implementation of  {@link InpatientDAO}.
@@ -39,4 +42,26 @@ public class HibernateInpatientDAO implements InpatientDAO {
     public SessionFactory getSessionFactory() {
 	    return sessionFactory;
     }
+
+	@Override
+	public List<Inpatient> getAllInpatient() {
+		return sessionFactory.getCurrentSession().createCriteria(Inpatient.class).list();
+	}
+
+	@Override
+	public Inpatient getInpatient(Integer inpatientId) {
+		return (Inpatient) sessionFactory.getCurrentSession().get(Inpatient.class, inpatientId);
+	}
+
+	@Override
+	public Inpatient saveInpatient(Inpatient inpatient) {
+		sessionFactory.getCurrentSession().save(inpatient);
+		return inpatient;
+	}
+
+	@Override
+	public void purgeInpatient(Inpatient inpatient) {
+		sessionFactory.getCurrentSession().delete(inpatient);
+
+	}
 }
