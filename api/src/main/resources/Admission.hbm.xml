@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.inpatient">
+
+    <class name="Admission"
+           table="${project.parent.artifactId}_admission">
+        <id name="admissionId" type="java.lang.Integer" column="admission_id">
+            <generator class="native">
+            </generator>
+        </id>
+        <discriminator column="admission_id" insert="false" />
+
+        <many-to-one name="inpatient" class="Inpatient" fetch="select">
+            <column name="inpatient_id" not-null="true" />
+        </many-to-one>
+
+        <property name="admissionDate" type="java.util.Date" column="admission_date"/>
+        <property name="hivStatus" type="java.lang.String" column="hiv_status" />
+        <property name="nutritionStatus" type="java.lang.String" column="nutrition_status" />
+        <property name="referralFrom" type="java.lang.String" column="referral_from" />
+        <property name="guardian" type="java.lang.String" column="guardian" />
+        <property name="wardId" type="java.lang.Integer" column="ward_id" />
+        <property name="status" type="java.lang.String" column="status" />
+
+        <property name="uuid" type="java.lang.String" column="uuid"
+                  length="38" unique="true" />
+
+
+        <one-to-one name="discharge" class="Discharge" cascade="save-update"></one-to-one>
+
+        <set name="wardSet" table="inpatient_Ward"
+             inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ward_id" not-null="true" />
+            </key>
+            <one-to-many class="Ward" />
+        </set>
+
+    </class>
+
+</hibernate-mapping>
