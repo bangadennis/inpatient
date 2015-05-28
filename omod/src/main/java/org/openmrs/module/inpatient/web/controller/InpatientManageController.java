@@ -33,6 +33,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  * The main controller.
+ * @author banga
  */
 @Controller
 public class  InpatientManageController {
@@ -46,6 +47,8 @@ public class  InpatientManageController {
 	}
 
 
+<<<<<<< HEAD
+=======
 	@RequestMapping(value = "/module/inpatient/listwards.form", method = RequestMethod.GET)
 	public void listWards(ModelMap model) {
 		WardService wardService = Context.getService(WardService.class);
@@ -155,4 +158,5 @@ public class  InpatientManageController {
 		return "redirect:admission.form";
 	}
 
+>>>>>>> master
 }

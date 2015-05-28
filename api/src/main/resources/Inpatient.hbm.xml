@@ -5,16 +5,26 @@
 
 <hibernate-mapping package="org.openmrs.module.inpatient">
 
-<!--
 	<class name="Inpatient"
-		table="${project.parent.artifactId}_InpatientModel">
-		<id name="id" type="int" column="id" unsaved-value="0">
-			<generator class="native" />
+		table="${project.parent.artifactId}_inpatient">
+		<id name="outPatientId" type="java.lang.Integer" column="outpatient_id">
+			<generator class="foreign">
+					<param name="property">patient</param>
+			</generator>
+
 		</id>
-		<discriminator column="id" insert="false" />
+
+		<property name="inpatientId" type="java.lang.String" column="inpatient_id"
+				  unique="true" />
+
+		<property name="phoneNumber" type="java.lang.Integer" column="phone_number"/>
+
 		<property name="uuid" type="java.lang.String" column="uuid"
 			length="38" unique="true" />
-	</class>
--->
+
+		<one-to-one name="outPatientId" class="org.openmrs.Patient" constrained="true" >
+
+		</one-to-one>
+   	</class>
 
 </hibernate-mapping>
