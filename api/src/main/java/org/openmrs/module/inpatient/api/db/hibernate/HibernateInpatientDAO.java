@@ -16,12 +16,12 @@ package org.openmrs.module.inpatient.api.db.hibernate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
-import org.openmrs.module.inpatient.api.db.InpatientServiceDAO;
+import org.openmrs.module.inpatient.api.db.InpatientDAO;
 
 /**
- * It is a default implementation of  {@link InpatientServiceDAO}.
+ * It is a default implementation of  {@link InpatientDAO}.
  */
-public class HibernateInpatientServiceDAO implements InpatientServiceDAO {
+public class HibernateInpatientDAO implements InpatientDAO {
 	protected final Log log = LogFactory.getLog(this.getClass());
 	
 	private SessionFactory sessionFactory;

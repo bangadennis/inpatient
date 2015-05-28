@@ -15,26 +15,60 @@ package org.openmrs.module.inpatient;
 
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.BaseOpenmrsObject;
+import org.openmrs.Patient;
 
 import java.io.Serializable;
 
 /**
  * It is a model class. It should extend either {@link BaseOpenmrsObject} or {@link BaseOpenmrsMetadata}.
  */
-public class Inpatient extends BaseOpenmrsObject implements Serializable {
+public class Inpatient extends BaseOpenmrsObject {
 
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
-	
+
+	private Integer outPatientId;
+
+	private String inpatientId;
+
+	private Integer phoneNumber;
+
+	//Setters and Getters
+
+	public String getInpatientId() {
+		return inpatientId;
+	}
+
+	public void setInpatientId(String inpatientId) {
+		this.inpatientId = inpatientId;
+	}
+
+	public Integer getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(Integer phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+
+	public Integer getOutPatientId() {
+		return outPatientId;
+	}
+
+	public void setOutPatientId(Integer outPatientId) {
+		this.outPatientId = outPatientId;
+	}
+
 	@Override
 	public Integer getId() {
-		return id;
+		return getOutPatientId();
 	}
 	
 	@Override
 	public void setId(Integer id) {
-		this.id = id;
+		setOutPatientId(id);
 	}
 	
 }

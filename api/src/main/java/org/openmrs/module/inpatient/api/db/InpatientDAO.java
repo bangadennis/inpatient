@@ -18,7 +18,7 @@ import org.openmrs.module.inpatient.api.InpatientService;
 /**
  *  Database methods for {@link InpatientService}.
  */
-public interface InpatientServiceDAO {
+public interface InpatientDAO {
 	
 	/*
 	 * Add DAO methods here
