@@ -18,6 +18,8 @@ import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.Patient;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * It is a model class. It should extend either {@link BaseOpenmrsObject} or {@link BaseOpenmrsMetadata}.
@@ -33,6 +35,12 @@ public class Inpatient extends BaseOpenmrsObject implements Serializable{
 	private String inpatientId;
 
 	private Integer phoneNumber;
+
+	private Patient patient;
+
+
+	Set<Admission> admissionSet = new HashSet<Admission>(0);
+
 
 	//Setters and Getters
 
@@ -60,6 +68,25 @@ public class Inpatient extends BaseOpenmrsObject implements Serializable{
 	public void setOutPatientId(Integer outPatientId) {
 		this.outPatientId = outPatientId;
 	}
+
+	//patient
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
+
+	public Set<Admission> getAdmissionSet() {
+		return admissionSet;
+	}
+
+	public void setAdmissionSet(Set<Admission> admissionSet) {
+		this.admissionSet = admissionSet;
+	}
+
 
 	@Override
 	public Integer getId() {
