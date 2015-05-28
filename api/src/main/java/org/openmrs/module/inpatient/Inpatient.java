@@ -22,7 +22,7 @@ import java.io.Serializable;
 /**
  * It is a model class. It should extend either {@link BaseOpenmrsObject} or {@link BaseOpenmrsMetadata}.
  */
-public class Inpatient extends BaseOpenmrsObject {
+public class Inpatient extends BaseOpenmrsObject implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
