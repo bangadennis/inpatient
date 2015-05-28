@@ -10,18 +10,67 @@
     -->
 
     <changeSet author="banga" id="20150527-3">
-        <comment>Create the inpatient_ward table</comment>
-        <createTable tableName="inpatient_Ward">
-            <column autoIncrement="true" name="ward_id" type="int">
+    <comment>Create the inpatient_ward table</comment>
+    <createTable tableName="inpatient_Ward">
+        <column autoIncrement="true" name="ward_id" type="int">
+            <constraints primaryKey="true" nullable="false" />
+        </column>
+        <column name="ward_name" type="varchar(50)" />
+        <column name="speciality" type="varchar(50)" />
+        <column name="description" type="varchar(255)" />
+        <column name="capacity" type="int" />
+        <column name="uuid" type="char(38)" />
+    </createTable>
+  </changeSet>
+
+
+    <changeSet author="banga" id="20150528-4">
+        <comment>Create the inpatient_inpatients table</comment>
+        <createTable tableName="inpatient_inpatient">
+            <column  name="outpatient_id" type="int">
+                <constraints nullable="false" />
+                             <!--foreignKeyName="fk_inpatient_patient"-->
+                             <!--references="patient(patient_id)" -->
+            </column>
+
+            <column name="inpatient_id" type="varchar(50)" >
                 <constraints primaryKey="true" nullable="false" />
             </column>
-            <column name="ward_name" type="varchar(50)" />
-            <column name="speciality" type="varchar(50)" />
-            <column name="description" type="varchar(255)" />
-            <column name="capacity" type="int" />
+            <column name="phone_number" type="varchar(50)" />
             <column name="uuid" type="char(38)" />
         </createTable>
     </changeSet>
+<<<<<<< HEAD
 
+    <changeSet author="banga" id="20150528-6">
+        <comment>addForeignKeyConstraint-inpatient_inpatient</comment>
+        <addForeignKeyConstraint baseColumnNames="outpatient_id"
+                                 baseTableName="inpatient_inpatient"
+                                 constraintName="fk_inpatient_patient"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="patient_id"
+                                 referencedTableName="patient" />
+
+            </changeSet>
+=======
+    <changeSet author="Olive" id="20150527-2">
+        <comment>Create the admission table</comment>
+        <createTable tableName="admission">
+            <column name="inpatient_id" type="int">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="inpatient_name" type="varchar(50)" />
+            <column name="date" type="date(50)" />
+            <column name="time" type="timestamp(255)" />
+            <column name="hiv_status" type="varchar(50)" />
+            <column name="nutrition_status" type="varchar(50)"/>
+            <column name="guardian" type="varchar(50)" defaultValue="unknown"/>
+            <column name="uuid" type="char(38)"/>
+            <column name="ward" type="varchar(50"/>
+            <column name="status" type="varchar(50"/>
+        </createTable>
+    </changeSet>
+>>>>>>> master
     
 </databaseChangeLog>

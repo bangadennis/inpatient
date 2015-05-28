@@ -16,8 +16,11 @@ package org.openmrs.module.inpatient.api.impl;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.module.inpatient.Inpatient;
 import org.openmrs.module.inpatient.api.InpatientService;
-import org.openmrs.module.inpatient.api.db.InpatientServiceDAO;
+import org.openmrs.module.inpatient.api.db.InpatientDAO;
+
+import java.util.List;
 
 /**
  * It is a default implementation of {@link InpatientService}.
@@ -26,19 +29,40 @@ public class InpatientServiceImpl extends BaseOpenmrsService implements Inpatien
 	
 	protected final Log log = LogFactory.getLog(this.getClass());
 	
-	private InpatientServiceDAO dao;
+	private InpatientDAO dao;
 	
 	/**
      * @param dao the dao to set
      */
-    public void setDao(InpatientServiceDAO dao) {
+    public void setDao(InpatientDAO dao) {
 	    this.dao = dao;
     }
     
     /**
      * @return the dao
      */
-    public InpatientServiceDAO getDao() {
+    public InpatientDAO getDao() {
 	    return dao;
+    }
+
+
+    @Override
+    public List<Inpatient> getAllInpatient() {
+        return dao.getAllInpatient();
+    }
+
+    @Override
+    public Inpatient getInpatient(Integer inpatientId) {
+        return dao.getInpatient(inpatientId);
+    }
+
+    @Override
+    public Inpatient saveInpatient(Inpatient inpatient) {
+        return dao.saveInpatient(inpatient);
+    }
+
+    @Override
+    public void purgeInpatient(Inpatient inpatient) {
+        dao.purgeInpatient(inpatient);
     }
 }

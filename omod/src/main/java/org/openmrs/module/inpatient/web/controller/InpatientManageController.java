@@ -33,6 +33,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  * The main controller.
+ * @author banga
  */
 @Controller
 public class  InpatientManageController {
@@ -46,6 +47,8 @@ public class  InpatientManageController {
 	}
 
 
+<<<<<<< HEAD
+=======
 	@RequestMapping(value = "/module/inpatient/listwards.form", method = RequestMethod.GET)
 	public void listWards(ModelMap model) {
 		WardService wardService = Context.getService(WardService.class);
@@ -124,4 +127,36 @@ public class  InpatientManageController {
 		return "redirect:addward.form";
 	}
 
+	@RequestMapping(value = "/module/inpatient/savePatient.form", method=RequestMethod.POST)
+	public String savePatientForm(WebRequest request, HttpSession httpSession, ModelMap model,
+							   @RequestParam(required = false, value = "action") String action,
+							   @ModelAttribute("inpatient") Inpatient inpatient, BindingResult errors)
+	{
+
+		InpatientService inpatientService = Context.getService(InpatientService.class);
+
+
+		if (!Context.isAuthenticated()) {
+			errors.reject("inpatient.auth.required");
+
+		} else
+		{
+
+			try {
+				inpatientService.savePatient(inpatient);
+				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Successfully");
+				return "redirect:admission.form";
+
+			}
+			catch (Exception ex) {
+
+				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Addition was unsuccessfully");
+			}
+
+		}
+
+		return "redirect:admission.form";
+	}
+
+>>>>>>> master
 }

@@ -14,7 +14,10 @@
 package org.openmrs.module.inpatient.api;
 
 import org.openmrs.api.OpenmrsService;
+import org.openmrs.module.inpatient.Inpatient;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * This service exposes module's core functionality. It is a Spring managed bean which is configured in moduleApplicationContext.xml.
@@ -28,9 +31,16 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface InpatientService extends OpenmrsService {
-     
-	/*
-	 * Add service methods here
-	 * 
-	 */
+
+	//list all inpatients
+	@Transactional(readOnly = true)
+	List<Inpatient> getAllInpatient();
+	//gets an inpatient
+	@Transactional(readOnly = true)
+	Inpatient getInpatient(Integer inpatientId);
+	//Saves a Inpatient Identifiers
+	Inpatient saveInpatient(Inpatient inpatient);
+	//deletes an inpatient record
+	void purgeInpatient(Inpatient inpatient);
+
 }
