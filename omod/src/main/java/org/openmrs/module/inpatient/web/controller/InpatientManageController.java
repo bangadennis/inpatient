@@ -30,6 +30,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
+import org.openmrs.api.PatientService;
+import org.openmrs.Patient;
+import org.openmrs.api.PersonService;
+import org.openmrs.api.context.Context;
+import java.util.List;
+
 
 /**
  * The main controller.
@@ -46,80 +52,12 @@ public class  InpatientManageController {
 		model.addAttribute("user", Context.getAuthenticatedUser());
 	}
 
+	@RequestMapping(value = "/module/inpatient/listPatient.form", method = RequestMethod.GET)
+	public void listPatient(ModelMap model) {
+		List<Patient> patientList=Context.getPatientService().getAllPatients();
+		model.addAttribute("patientList", patientList);
 
-//	@RequestMapping(value = "/module/inpatient/listwards.form", method = RequestMethod.GET)
-//	public void listWards(ModelMap model) {
-//		WardService wardService = Context.getService(WardService.class);
-//		model.addAttribute("ward", wardService.getAllWards());
-//
-//	}
-//
-//	@RequestMapping(value = "/module/inpatient/addward.form", method = RequestMethod.GET)
-//	public void wardForm(ModelMap model) {
-//		Ward ward=new Ward();
-//		model.addAttribute("ward",ward);
-//
-//	}
-//	@RequestMapping(value = "/module/inpatient/saveWard.form", method=RequestMethod.POST)
-//	public String saveWardForm(WebRequest request, HttpSession httpSession, ModelMap model,
-//							 @RequestParam(required = false, value = "action") String action,
-//							 @ModelAttribute("ward") Ward ward, BindingResult errors)
-//	{
-//
-//		WardService wardService = Context.getService(WardService.class);
-//
-//
-//		if (!Context.isAuthenticated()) {
-//			errors.reject("ward.auth.required");
-//
-//		} else
-//		{
-//
-//			try {
-//				wardService.saveWard(ward);
-//				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Successfully");
-//				return "redirect:addward.form";
-//
-//			}
-//				catch (Exception ex) {
-//
-//				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Addition was unsuccessfully");
-//			}
-//
-//		}
-//
-//		return "redirect:addward.form";
-//	}
-//
-//	@RequestMapping(value = "/module/inpatient/savePatient.form", method=RequestMethod.POST)
-//	public String savePatientForm(WebRequest request, HttpSession httpSession, ModelMap model,
-//							   @RequestParam(required = false, value = "action") String action,
-//							   @ModelAttribute("inpatient") Inpatient inpatient, BindingResult errors)
-//	{
-//
-//		InpatientService inpatientService = Context.getService(InpatientService.class);
-//
-//
-//		if (!Context.isAuthenticated()) {
-//			errors.reject("inpatient.auth.required");
-//
-//		} else
-//		{
-//
-//			try {
-//				inpatientService.savePatient(inpatient);
-//				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Successfully");
-//				return "redirect:admission.form";
-//
-//			}
-//			catch (Exception ex) {
-//
-//				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Addition was unsuccessfully");
-//			}
-//
-//		}
-//
-//		return "redirect:admission.form";
-//	}
+	}
+
 
 }
