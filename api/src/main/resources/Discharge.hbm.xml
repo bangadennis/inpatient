@@ -13,7 +13,7 @@
             </generator>
         </id>
 
-        <property name="dischargeDate" type="java.util.Date" column="discharge_date"
+        <property name="dischargeDate" type="java.lang.String" column="discharge_date"
                   unique="true" />
 
         <property name="diagnosis" type="java.lang.String" column="diagnosis"/>
