@@ -30,6 +30,14 @@
 			<%--<i class="fa fa-list fa-5x"></i>--%>
 		</a>
 	</li>
+
+	<li
+			<c:if test='<%= request.getRequestURI().contains("/listPatient") %>'>class="active"</c:if> >
+		<a href="${pageContext.request.contextPath}/module/inpatient/listPatient.form">
+			<spring:message code="Add patient" />
+			<%--<i class="fa fa-list fa-5x"></i>--%>
+		</a>
+	</li>
 	
 	<!-- Add further links here -->
 
