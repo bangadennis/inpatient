@@ -16,7 +16,7 @@ public class Discharge extends BaseOpenmrsObject implements Serializable {
 
     private Integer dischargeId;
 
-    private Date dischargeDate;
+    private String dischargeDate;
 
     private String diagnosis;
 
@@ -42,11 +42,11 @@ public class Discharge extends BaseOpenmrsObject implements Serializable {
         this.dischargeId = dischargeId;
     }
 
-    public Date getDischargeDate() {
+    public String getDischargeDate() {
         return dischargeDate;
     }
 
-    public void setDischargeDate(Date dischargeDate) {
+    public void setDischargeDate(String dischargeDate) {
         this.dischargeDate = dischargeDate;
     }
 

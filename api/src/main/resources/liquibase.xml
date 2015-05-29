@@ -11,7 +11,7 @@
 
     <changeSet author="banga" id="20150527-3">
     <comment>Create the inpatient_ward table</comment>
-    <createTable tableName="inpatient_Ward">
+    <createTable tableName="inpatient_ward">
         <column autoIncrement="true" name="ward_id" type="int">
             <constraints primaryKey="true" nullable="false" />
         </column>
@@ -29,8 +29,6 @@
         <createTable tableName="inpatient_inpatient">
             <column  name="outpatient_id" type="int">
                 <constraints nullable="false" />
-                             <!--foreignKeyName="fk_inpatient_patient"-->
-                             <!--references="patient(patient_id)" -->
             </column>
 
             <column name="inpatient_id" type="varchar(50)" >
@@ -41,7 +39,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="banga" id="20150528-6">
+    <changeSet author="banga" id="20150526-6">
         <comment>addForeignKeyConstraint-inpatient_inpatient</comment>
         <addForeignKeyConstraint baseColumnNames="outpatient_id"
                                  baseTableName="inpatient_inpatient"
@@ -53,24 +51,30 @@
 
     </changeSet>
 
-    <changeSet author="olive" id="20150527-2990">
+    <changeSet author="banga" id="20150522-8">
         <comment>Create the admission table</comment>
         <createTable tableName="inpatient_admission">
+
             <column name="admission_id" autoIncrement="true" type="int">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="inpatient_id" type="datetime" />
-            <column name="admission_date" type="datetime" />
+
+            <column name="inpatient_id" type="varchar(50)" >
+                <constraints nullable="false"  />
+            </column>
+
+            <column name="admission_date" type="varchar(50)" />
             <column name="hiv_status" type="varchar(50)" />
             <column name="nutrition_status" type="varchar(50)"/>
-            <column name="guardian" type="varchar(50)" defaultValue="unknown"/>
+            <column name="guardian" type="varchar(100)" />
             <column name="ward_id" type="int"/>
             <column name="referral_from" type="varchar(100)"/>
-            <column name="status" type="varchar(50"/>
+            <column name="status" type="int"/>
             <column name="uuid" type="char(38)"/>
         </createTable>
     </changeSet>
-    <changeSet author="banga" id="20150528-6934934">
+
+    <changeSet author="banga" id="20150599-10">
         <comment>addForeignKeyConstraint-inpatient_admission</comment>
         <addForeignKeyConstraint baseColumnNames="inpatient_id"
                                  baseTableName="inpatient_admission"
@@ -83,24 +87,24 @@
     </changeSet>
 
 
-    <changeSet author="banga" id="20150528-243">
+    <changeSet author="banga" id="20150529-9">
         <comment>Create the discharge table</comment>
         <createTable tableName="inpatient_discharge">
             <column name="discharge_id" autoIncrement="true" type="int">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="discharge_date" type="datetime" />
-            <column name="diagnosis" type="text" />
+            <column name="discharge_date" type="varchar(50)" />
+            <column name="diagnosis" type="varchar(50)" />
             <column name="outcome" type="varchar(50)"/>
-            <column name="treatment" type="text" />
-            <column name="causeofdeath" type="varchar(100)"/>
-            <column name="referral_to" type="varchar(100)"/>
-            <column name="remarks" type="text"/>
+            <column name="treatment" type="varchar(50)" />
+            <column name="causeofdeath" type="varchar(50)"/>
+            <column name="referral_to" type="varchar(50)"/>
+            <column name="remarks" type="varchar(50)"/>
             <column name="uuid" type="char(38)"/>
         </createTable>
     </changeSet>
-    <changeSet author="banga" id="20150528-6938894">
+    <changeSet author="banga" id="20150529-40">
         <comment>addForeignKeyConstraint_admission-discharge</comment>
         <addForeignKeyConstraint baseColumnNames="discharge_id"
                                  baseTableName="inpatient_discharge"

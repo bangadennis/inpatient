@@ -38,9 +38,7 @@ public class Inpatient extends BaseOpenmrsObject implements Serializable{
 
 	private Patient patient;
 
-
-	Set<Admission> admissionSet = new HashSet<Admission>(0);
-
+	private Set<Admission> admissionSet;
 
 	//Setters and Getters
 
