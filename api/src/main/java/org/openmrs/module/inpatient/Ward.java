@@ -22,6 +22,8 @@ public class Ward  extends BaseOpenmrsObject implements Serializable {
     private Integer capacity;
 
 
+
+
     @Override
     public Integer getId() {
         return getWardId();

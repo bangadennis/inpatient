@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.openmrs.module.inpatient">
 
         <class name="Ward"
-            table="${project.parent.artifactId}_Ward">
+            table="${project.parent.artifactId}_ward">
             <id name="wardId" type="int" column="ward_id" unsaved-value="0">
                 <generator class="native" />
             </id>
@@ -22,6 +22,7 @@
 
             <property name="uuid" type="java.lang.String" column="uuid"
                 length="38" unique="true" />
+
         </class>
 
 </hibernate-mapping>
