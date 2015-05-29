@@ -31,6 +31,8 @@
 
 		Ward.hbm.xml
 		Inpatient.hbm.xml
+		Discharge.hbm.xml
+		Admission.hbm.xml
 
 	</mappingFiles>
 
