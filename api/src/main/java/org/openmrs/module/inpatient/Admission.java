@@ -20,7 +20,8 @@ public class Admission extends BaseOpenmrsObject implements Serializable {
 
     private String inpatientId;
 
-    private Date admissionDate;
+
+    private String admissionDate;
 
     private String hivStatus;
 
@@ -30,28 +31,18 @@ public class Admission extends BaseOpenmrsObject implements Serializable {
 
     private String referralFrom;
 
-    private Integer wardId;
-
     private Integer status;
+
+    //Mapping
 
     private Inpatient inpatient;
 
     private Discharge discharge;
 
-
-    private Set<Ward> wardSet =
-            new HashSet<Ward>(0);
+    private Integer wardId;
 
 
 
-
-    public Integer getAdmissionId() {
-        return admissionId;
-    }
-
-    public void setAdmissionId(Integer admissionId) {
-        this.admissionId = admissionId;
-    }
 
     public String getInpatientId() {
         return inpatientId;
@@ -61,11 +52,19 @@ public class Admission extends BaseOpenmrsObject implements Serializable {
         this.inpatientId = inpatientId;
     }
 
-    public Date getAdmissionDate() {
+    public Integer getAdmissionId() {
+        return admissionId;
+    }
+
+    public void setAdmissionId(Integer admissionId) {
+        this.admissionId = admissionId;
+    }
+
+    public String getAdmissionDate() {
         return admissionDate;
     }
 
-    public void setAdmissionDate(Date admissionDate) {
+    public void setAdmissionDate(String admissionDate) {
         this.admissionDate = admissionDate;
     }
 
@@ -101,14 +100,6 @@ public class Admission extends BaseOpenmrsObject implements Serializable {
         this.status = status;
     }
 
-    public Integer getWardId() {
-        return wardId;
-    }
-
-    public void setWardId(Integer wardId) {
-        this.wardId = wardId;
-    }
-
     public String getReferralFrom() {
         return referralFrom;
     }
@@ -117,7 +108,7 @@ public class Admission extends BaseOpenmrsObject implements Serializable {
         this.referralFrom = referralFrom;
     }
 
-    //Inpatient Getters and Setters
+    //Mappings Getters and Setters
     public Inpatient getInpatient() {
         return inpatient;
     }
@@ -134,13 +125,12 @@ public class Admission extends BaseOpenmrsObject implements Serializable {
         this.discharge = discharge;
     }
 
-
-    public Set<Ward> getWardSet() {
-        return wardSet;
+    public Integer getWardId() {
+        return wardId;
     }
 
-    public void setWardSet(Set<Ward> wardSet) {
-        this.wardSet = wardSet;
+    public void setWardId(Integer wardId) {
+        this.wardId = wardId;
     }
 
     @Override
