@@ -28,7 +28,7 @@
         <comment>Create the inpatient_inpatients table</comment>
         <createTable tableName="inpatient_inpatient">
             <column  name="outpatient_id" type="int">
-                <constraints nullable="false" />
+                <constraints nullable="false" unique="true" />
             </column>
 
             <column name="inpatient_id" type="varchar(50)" >
@@ -59,9 +59,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="inpatient_id" type="varchar(50)" >
-                <constraints nullable="false"  />
-            </column>
+            <column name="inpatient_id" type="varchar(50)" ></column>
 
             <column name="admission_date" type="varchar(50)" />
             <column name="hiv_status" type="varchar(50)" />
@@ -80,7 +78,7 @@
                                  baseTableName="inpatient_admission"
                                  constraintName="fk_inpatient_admission"
                                  onDelete="CASCADE"
-                                 onUpdate="RESTRICT"
+                                 onUpdate="CASCADE"
                                  referencedColumnNames="inpatient_id"
                                  referencedTableName="inpatient_inpatient" />
 
@@ -104,13 +102,14 @@
             <column name="uuid" type="char(38)"/>
         </createTable>
     </changeSet>
+
     <changeSet author="banga" id="20150529-40">
         <comment>addForeignKeyConstraint_admission-discharge</comment>
         <addForeignKeyConstraint baseColumnNames="discharge_id"
                                  baseTableName="inpatient_discharge"
                                  constraintName="fk_admission_discharge"
                                  onDelete="CASCADE"
-                                 onUpdate="RESTRICT"
+                                 onUpdate="CASCADE"
                                  referencedColumnNames="admission_id"
                                  referencedTableName="inpatient_admission" />
 
