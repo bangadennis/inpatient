@@ -15,10 +15,14 @@ package org.openmrs.module.inpatient.web.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Patient;
+import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.messagesource.MessageSourceService;
+import org.openmrs.module.inpatient.Admission;
 import org.openmrs.module.inpatient.Inpatient;
 import org.openmrs.module.inpatient.Ward;
+import org.openmrs.module.inpatient.api.AdmissionService;
 import org.openmrs.module.inpatient.api.InpatientService;
 import org.openmrs.module.inpatient.api.WardService;
 import org.openmrs.web.WebConstants;
@@ -49,6 +53,26 @@ public class  InpatientManageController {
 		model.addAttribute("user", Context.getAuthenticatedUser());
 	}
 
+	//Listing outpatients
+	@RequestMapping(value = "/module/inpatient/findPatient.form", method = RequestMethod.GET)
+	public void findPatient(ModelMap model) {
+		PatientService patientService=Context.getPatientService();
+		List<Patient> patientList=patientService.getAllPatients();
+
+		model.addAttribute("patientList", patientList);
+
+	}
+
+	//listing Inpatients
+	@RequestMapping(value = "/module/inpatient/inpatient.form", method = RequestMethod.GET)
+	public void inpatientForm(ModelMap model, @RequestParam(value ="id", required = true)Integer patientId) {
+
+		model.addAttribute("patientId", patientId);
+
+	}
+
+
+
 
 	//Save Inpatient
 	@RequestMapping(value = "/module/inpatient/saveInpatient.form", method = RequestMethod.POST)
@@ -62,10 +86,13 @@ public class  InpatientManageController {
 		try{
 
 			Inpatient inpatient=new Inpatient();
+			PatientService patientService=Context.getPatientService();
+			Patient patient=patientService.getPatient(patientId);
 			//Saving the details
 			inpatient.setOutPatientId(patientId);
 			inpatient.setInpatientId(inpatientId);
 			inpatient.setPhoneNumber(phoneNumber);
+			inpatient.setPatient(patient);
 			//save inpatient
 			inpatientService.saveInpatient(inpatient);
 			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Inpatient details Successfully");
@@ -91,6 +118,61 @@ public class  InpatientManageController {
 		model.addAttribute("inpatientList", inpatientList);
 
 	}
+
+
+	//Display Admission Form
+	@RequestMapping(value = "/module/inpatient/admission.form", method = RequestMethod.GET)
+	public void admissionForm(ModelMap model,
+							  @RequestParam(value = "id", required = true)String inpatientId) {
+
+		model.addAttribute("inpatientId", inpatientId);
+
+
+	}
+
+	//Save Admission Form
+	@RequestMapping(value = "/module/inpatient/saveAdmission.form", method = RequestMethod.POST)
+	public String saveAdmission(ModelMap model,HttpSession httpSession,WebRequest webRequest,
+							  @RequestParam(value = "inpatient_id", required = true)String inpatientId,
+							  @RequestParam(value = "admission_date", required = true)String admissionDate,
+							  @RequestParam(value = "hiv_status", required = true)String hivStatus,
+							  @RequestParam(value = "nutrition_status", required = true)String nutritionStatus,
+							  @RequestParam(value = "guardian", required = true)String guardian,
+							  @RequestParam(value = "referral_from", required = true)String referralFrom,
+							  @RequestParam(value = "status", required = true)Integer status){
+
+		AdmissionService admissionService=Context.getService(AdmissionService.class);
+		InpatientService inpatientService=Context.getService(InpatientService.class);
+
+		try{
+
+			Admission admission=new Admission();
+			Inpatient inpatient=inpatientService.getInpatient(16);
+			admission.setAdmissionDate(admissionDate);
+			admission.setHivStatus(hivStatus);
+			admission.setNutritionStatus(nutritionStatus);
+			admission.setGuardian(guardian);
+			admission.setReferralFrom(referralFrom);
+			admission.setStatus(status);
+			admission.setInpatient(inpatient);
+
+			admissionService.saveAdmission(admission);
+			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Admission details Successfully");
+
+		}
+		catch (Exception ex)
+		{
+			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Failed to save Admission details");
+			return "redirect:listInpatient.form";
+
+		}
+
+		return "redirect:listInpatient.form";
+
+	}
+
+
+
 
 
 
