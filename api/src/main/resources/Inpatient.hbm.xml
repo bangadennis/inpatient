@@ -7,7 +7,7 @@
 
 	<class name="Inpatient" table="${project.parent.artifactId}_inpatient" >
 
-		<id name="outPatientId" type="java.lang.Integer" column="outpatient_id">
+		<id name="outPatientId" type="java.lang.Integer"  column="outpatient_id">
 			<generator class="foreign">
 					<param name="property">patient</param>
 			</generator>
@@ -20,8 +20,6 @@
 
 		<property name="uuid" type="java.lang.String" column="uuid"
 			length="38" unique="true" />
-
-
 
 
 		<one-to-one name="patient" class="org.openmrs.Patient" constrained="true" ></one-to-one>
