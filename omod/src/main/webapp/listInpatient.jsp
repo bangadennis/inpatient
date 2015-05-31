@@ -7,7 +7,7 @@
     <tr>
         <th>Inpatient ID</th>
         <th>Phone Number</th>
-        <th>Outpatient ID</th>
+        <th>Given Name</th>
         <th>Delete</th>
         <th>Edit</th>
     </tr>
@@ -17,15 +17,14 @@
         <tr>
             <td>${inpatient.inpatientId}</td>
             <td>${inpatient.phoneNumber}</td>
-            <td>${inpatient.outpatientId}</td>
+            <td>${inpatient.patient.givenName}</td>
             <td><a href="<c:url value='/module/inpatient/deleteWard.form?id=${inpatient.inpatientId}' />">
                 <button class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign">Delete
             </span> </button>
             </a> </td>
-            <td><a href="<c:url value='/module/inpatient/editWard.form?id=${inpatient.inpatientId}' />">
-                <button class="btn btn-success"><span class="glyphicon glyphicon-edit">Edit</span></button>
+            <td><a href="<c:url value='/module/inpatient/admission.form?id=${inpatient.inpatientId}' />">
+                <button class="btn btn-success"><span class="glyphicon glyphicon-edit">Admit</span></button>
             </a> </td>
-
         </tr>
     </c:forEach>
     </tbody>
