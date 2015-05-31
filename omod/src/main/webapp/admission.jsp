@@ -1,57 +1,52 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
-
 <%@ include file="template/localHeader.jsp"%>
-
 <div class="row">
-    <div class="jumbotron col-md-6 col-md-offset-3">
-        <h5 class="text-center">Add Ward</h5>
+    <div class="jumbotron col-md-8 col-md-offset-2">
+        <h2 class="text-center">Admission Form</h2>
         <div class="form-group col-md-offset-2 col-md-8">
-            <br class="" method="post"  action="<c:url value='/module/inpatient/savePatient.form' />">
+            <form class="form-horizontal" method="post"  action="<c:url value='/module/inpatient/saveAdmission.form' />">
 
-                <label><openmrs:message code="Admission"/></label>
-                <br>
-                <spring:bind path="admission.name">
-                    <input type="text" class="form-control" name="name" value="${status.value}" size="35" required />
-                    <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
-                </spring:bind>
-                <br/>
+                <div class="form-group">
+                    <input type="hidden" class="form-control" name="inpatient_id" value="${inpatientId}" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Admission Date</label>
+                    <input type="date" class="form-control" name="admission_date"   required />
+                </div>
+
+                <div class="form-group">
+                    <label>Hiv Status</label>
+                    <input type="text" class="form-control" name="hiv_status"   required />
+                </div>
+
+                <div class="form-group">
+                    <label>Nutrition Status</label>
+                    <input type="number" class="form-control" name="nutrition_status"   required />
+                </div>
+
+                <div class="form-group">
+                    <label>Guardian</label>
+                    <input type="text" class="form-control" name="guardian"   required />
+                </div>
+
+                <div class="form-group">
+                    <label>Referral From</label>
+                    <input type="Text" class="form-control" name="referral_from"   />
+                </div>
+
+                <div class="form-group">
+                    <input type="hidden" class="form-control" name="status" value="1" />
+                </div>
 
 
-                <label valign="top"><openmrs:message code="Date of Admission"/></label>
-                <br>
-                <spring:bind path="admission.date">
-                    <input type="text" name="dateofadmission" class="form-control" value="${status.value}" size="35" required/>
-                    <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
-                </spring:bind>
-                <br/>
-                <label valign="top"><openmrs:message code="Time of Admission"/></label>
-                <br>
-                <spring:bind path="admission.time">
-                    <input type="text" name="timeofadmission" class="form-control" value="${status.value}" size="35" required/>
-                    <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
-                </spring:bind>
-                <br/>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
 
-                <label valign="top"><openmrs:message code="HIV Status"/></label>
-                <br>
-                <spring:bind path="admission.hivstatus">
-                    <input type="number" name="hivstatus" class="form-control" value="${status.value}" size="35" required/>
-                    <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
-                </spring:bind>
-                </br>
-
-                <label valign="top"><openmrs:message code="Guardian's name"/></label>
-                <br>
-                <spring:bind path="admission.guardian">
-                    <input type="number" name="guardian" class="form-control" value="${status.value}" size="35" required/>
-                    <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
-                </spring:bind>
-                </br>
-                <input type="submit" class="btn btn-md btn-success" value="<openmrs:message code="Save"/>" name="save">
             </form>
         </div>
-    </div>
 
-</div>
+    </div>
 <%@ include file="/WEB-INF/template/footer.jsp"%>
