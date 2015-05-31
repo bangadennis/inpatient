@@ -18,9 +18,6 @@ public class Admission extends BaseOpenmrsObject implements Serializable {
 
     private Integer admissionId;
 
-    private String inpatientId;
-
-
     private String admissionDate;
 
     private String hivStatus;
@@ -44,13 +41,6 @@ public class Admission extends BaseOpenmrsObject implements Serializable {
 
 
 
-    public String getInpatientId() {
-        return inpatientId;
-    }
-
-    public void setInpatientId(String inpatientId) {
-        this.inpatientId = inpatientId;
-    }
 
     public Integer getAdmissionId() {
         return admissionId;
