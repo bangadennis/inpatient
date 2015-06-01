@@ -32,6 +32,11 @@
                 </div>
 
                 <div class="form-group">
+                    <label>Ward ID</label>
+                    <input type="integer" class="form-control" name="ward_id"   required />
+                </div>
+
+                <div class="form-group">
                     <label>Referral From</label>
                     <input type="Text" class="form-control" name="referral_from"   />
                 </div>
