@@ -45,7 +45,7 @@
                                  baseTableName="inpatient_inpatient"
                                  constraintName="fk_inpatient_patient"
                                  onDelete="CASCADE"
-                                 onUpdate="RESTRICT"
+                                 onUpdate="CASCADE"
                                  referencedColumnNames="patient_id"
                                  referencedTableName="patient" />
 
@@ -60,7 +60,6 @@
             </column>
 
             <column name="inpatient_id" type="varchar(50)" ></column>
-
             <column name="admission_date" type="varchar(50)" />
             <column name="hiv_status" type="varchar(50)" />
             <column name="nutrition_status" type="varchar(50)"/>
