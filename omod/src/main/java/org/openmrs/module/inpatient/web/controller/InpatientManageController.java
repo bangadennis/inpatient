@@ -20,11 +20,14 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.module.inpatient.Admission;
+import org.openmrs.module.inpatient.Discharge;
 import org.openmrs.module.inpatient.Inpatient;
 import org.openmrs.module.inpatient.Ward;
 import org.openmrs.module.inpatient.api.AdmissionService;
 import org.openmrs.module.inpatient.api.InpatientService;
 import org.openmrs.module.inpatient.api.WardService;
+import org.openmrs.validator.PatientIdentifierValidator;q
+
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -36,7 +39,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The main controller.
@@ -89,6 +94,7 @@ public class  InpatientManageController {
 			PatientService patientService=Context.getPatientService();
 			Patient patient=patientService.getPatient(patientId);
 			//Saving the details
+
 			inpatient.setOutPatientId(patientId);
 			inpatient.setInpatientId(inpatientId);
 			inpatient.setPhoneNumber(phoneNumber);
@@ -139,7 +145,8 @@ public class  InpatientManageController {
 							  @RequestParam(value = "nutrition_status", required = true)String nutritionStatus,
 							  @RequestParam(value = "guardian", required = true)String guardian,
 							  @RequestParam(value = "referral_from", required = true)String referralFrom,
-							  @RequestParam(value = "status", required = true)Integer status){
+							  @RequestParam(value = "status", required = true)Integer status,
+								@RequestParam(value = "ward_id", required = true)Integer wardId){
 
 		AdmissionService admissionService=Context.getService(AdmissionService.class);
 		InpatientService inpatientService=Context.getService(InpatientService.class);
@@ -147,17 +154,40 @@ public class  InpatientManageController {
 		try{
 
 			Admission admission=new Admission();
-			Inpatient inpatient=inpatientService.getInpatient(16);
+			Inpatient inpatient=inpatientService.getInpatientbyIdentifier(inpatientId);
 			admission.setAdmissionDate(admissionDate);
 			admission.setHivStatus(hivStatus);
 			admission.setNutritionStatus(nutritionStatus);
 			admission.setGuardian(guardian);
 			admission.setReferralFrom(referralFrom);
 			admission.setStatus(status);
+			admission.setWardId(wardId);
 			admission.setInpatient(inpatient);
 
-			admissionService.saveAdmission(admission);
-			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Admission details Successfully");
+			Boolean addAdmission=true;
+			Set<Admission> admissionSet=inpatient.getAdmissions();
+			if(admissionSet!=null) {
+				for(Admission adm: admissionSet)
+				{
+					Discharge discharge=adm.getDischarge();
+
+					if(discharge==null){
+						addAdmission=false;
+						break;
+					}
+
+				}
+			}
+
+
+			if(addAdmission) {
+				admissionService.saveAdmission(admission);
+				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Admission details Successfully");
+			}
+			else
+			{
+				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Patient not discharged from an admission");
+			}
 
 		}
 		catch (Exception ex)
