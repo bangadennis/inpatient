@@ -60,6 +60,14 @@ public class HibernateInpatientDAO implements InpatientDAO {
 	}
 
 	@Override
+	public Inpatient getInpatientbyIdentifier(String inpatientId) {
+		Inpatient inpatient=null;
+		inpatient = (Inpatient) sessionFactory.getCurrentSession().createQuery("from Inpatient p where p.inpatientId = :inpatientId").setString(
+				"inpatientId", inpatientId).uniqueResult();
+		return inpatient;
+	}
+
+	@Override
 	public void purgeInpatient(Inpatient inpatient) {
 		sessionFactory.getCurrentSession().delete(inpatient);
 
