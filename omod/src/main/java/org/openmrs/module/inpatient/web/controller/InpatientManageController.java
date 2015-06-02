@@ -35,7 +35,7 @@ import org.openmrs.Patient;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import java.util.List;
-
+import org.openmrs.module.inpatient.*;
 
 /**
  * The main controller.
@@ -58,6 +58,10 @@ public class  InpatientManageController {
 		model.addAttribute("patientList", patientList);
 
 	}
-
+	@RequestMapping(value = "/module/inpatient/addInpatient.form", method = RequestMethod.GET)
+	public void addInpatient(ModelMap model){
+		Inpatient inpatient=new Inpatient();
+		model.addAttribute("inpatient",inpatient);
+	}
 
 }
