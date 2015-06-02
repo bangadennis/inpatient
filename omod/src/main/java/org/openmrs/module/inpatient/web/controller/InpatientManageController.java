@@ -24,10 +24,10 @@ import org.openmrs.module.inpatient.Discharge;
 import org.openmrs.module.inpatient.Inpatient;
 import org.openmrs.module.inpatient.Ward;
 import org.openmrs.module.inpatient.api.AdmissionService;
+import org.openmrs.module.inpatient.api.DischargeService;
 import org.openmrs.module.inpatient.api.InpatientService;
 import org.openmrs.module.inpatient.api.WardService;
-import org.openmrs.validator.PatientIdentifierValidator;q
-
+import org.openmrs.validator.PatientIdentifierValidator;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -197,10 +198,90 @@ public class  InpatientManageController {
 
 		}
 
-		return "redirect:listInpatient.form";
+		return "redirect:listadmission.form";
 
 	}
 
+
+	//list admissions
+	@RequestMapping(value = "/module/inpatient/listadmission.form", method = RequestMethod.GET)
+	public void listAdmission(ModelMap model) {
+		AdmissionService admissionService=Context.getService(AdmissionService.class);
+		List<Admission> admissionList=admissionService.getAllAdmission();
+		List<Admission> admissions=new ArrayList<Admission>();
+
+		for(Admission adm:admissionList)
+		{
+			Discharge discharge=adm.getDischarge();
+			if(discharge==null){
+				admissions.add(adm);
+			}
+
+		}
+
+		model.addAttribute("admissionList", admissions);
+
+	}
+
+
+
+
+
+	//Display Discharge Form
+	@RequestMapping(value = "/module/inpatient/discharge.form", method = RequestMethod.GET)
+	public void dischargeForm(ModelMap model,
+							  @RequestParam(value = "id", required = true)Integer admissionId) {
+
+		model.addAttribute("admissionId", admissionId);
+
+
+	}
+
+	//Save Discharge Form
+	@RequestMapping(value = "/module/inpatient/saveDischarge.form", method = RequestMethod.POST)
+	public String saveDischarge(ModelMap model,HttpSession httpSession,WebRequest webRequest,
+								@RequestParam(value = "discharge_id", required = true)Integer dischargeId,
+								@RequestParam(value = "discharge_date", required = true)String dischargeDate,
+								@RequestParam(value = "treatment", required = true)String treatment,
+								@RequestParam(value = "diagnosis", required = true)String diagnosis,
+								@RequestParam(value = "outcome", required = true)String outcome,
+								@RequestParam(value = "referral_to", required = false)String referralTo,
+								@RequestParam(value = "remarks", required = true)String remarks,
+								@RequestParam(value = "causeofdeath", required = false)String causeofdeath){
+
+		DischargeService dischargeService=Context.getService(DischargeService.class);
+		AdmissionService admissionService=Context.getService(AdmissionService.class);
+
+		try{
+
+			Discharge discharge=new Discharge();
+			Admission admission=admissionService.getAdmission(dischargeId);
+
+			discharge.setDischargeId(dischargeId);
+			discharge.setDischargeDate(dischargeDate);
+			discharge.setTreatment(treatment);
+			discharge.setDiagnosis(diagnosis);
+			discharge.setOutcome(outcome);
+			discharge.setReferralTo(referralTo);
+			discharge.setRemarks(remarks);
+			discharge.setCauseOfDeath(causeofdeath);
+			discharge.setAdmission(admission);
+
+			dischargeService.saveDischarge(discharge);
+
+			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Discharge was Successfully");
+
+		}
+		catch (Exception ex)
+		{
+			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Failed to Discharge");
+			return "redirect:listadmission.form";
+
+		}
+
+		return "redirect:listadmission.form";
+
+	}
 
 
 
