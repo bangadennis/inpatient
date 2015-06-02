@@ -10,7 +10,7 @@
 
 <br />
 
-<openmrs:portlet id="findPatient" url="findPatient" parameters="size=full|postURL=patientDashboard.form|showIncludeVoided=false|viewType=shortEdit" />
+<openmrs:portlet id="findPatient" url="findPatient" parameters="size=full|postURL=addInpatient.form|showIncludeVoided=false|viewType=shortEdit" />
 
 <openmrs:extensionPoint pointId="org.openmrs.findPatient" type="html" />
 
