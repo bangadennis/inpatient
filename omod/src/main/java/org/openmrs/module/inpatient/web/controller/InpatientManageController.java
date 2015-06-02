@@ -64,4 +64,37 @@ public class  InpatientManageController {
 		model.addAttribute("inpatient",inpatient);
 	}
 
+	//Save Inpatient
+	@RequestMapping(value = "/module/inpatient/saveInpatient.form", method = RequestMethod.POST)
+	public String saveInpatient(ModelMap model,WebRequest request, HttpSession httpSession,
+								@RequestParam(required = true, value = "outpatient_id") Integer patientId,
+								@RequestParam(required = true, value = "inpatient_id") String inpatientId,
+								@RequestParam(required = true, value = "phone_number") Integer phoneNumber)
+	{
+		InpatientService inpatientService=Context.getService(InpatientService.class);
+
+		try{
+
+			Inpatient inpatient=new Inpatient();
+			PatientService patientService=Context.getPatientService();
+			Patient patient=patientService.getPatient(patientId);
+			//Saving the details
+			inpatient.setOutPatientId(patientId);
+			inpatient.setInpatientId(inpatientId);
+			inpatient.setPhoneNumber(phoneNumber);
+			inpatient.setPatient(patient);
+			//save inpatient
+			inpatientService.saveInpatient(inpatient);
+			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Inpatient details Successfully");
+
+		}
+		catch (Exception ex)
+		{
+			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Error adding Inpatient");
+			return "redirect:listPatient.form";
+		}
+
+		return "redirect:listPatient.form";
+
+	}
 }
