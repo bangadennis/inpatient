@@ -12,7 +12,9 @@
         </id>
         <discriminator column="admission_id" insert="false"/>
 
-        <property name="inpatientId" type="java.lang.String" column="inpatient_id" insert="false" update="false"/>
+        <many-to-one name="inpatient" class="Inpatient" fetch="select">
+            <column name="inpatient_id" not-null="true" />
+        </many-to-one>
 
         <property name="admissionDate" type="java.lang.String" column="admission_date"/>
         <property name="hivStatus" type="java.lang.String" column="hiv_status" />
@@ -24,11 +26,7 @@
 
         <property name="uuid" type="java.lang.String" column="uuid"
                   length="38" unique="true" />
-        <!-- Many to one mapping to Inpatient-->
-        <many-to-one name="inpatient" class="Inpatient" fetch="select">
-            <column name="inpatient_id" not-null="true" />
-        </many-to-one>
-
+        <!-- Associations-->
 
         <one-to-one name="discharge" class="Discharge" cascade="save-update"></one-to-one>
 

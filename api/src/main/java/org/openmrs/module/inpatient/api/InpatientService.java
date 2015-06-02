@@ -38,6 +38,9 @@ public interface InpatientService extends OpenmrsService {
 	//gets an inpatient
 	@Transactional(readOnly = true)
 	Inpatient getInpatient(Integer inpatientId);
+
+	@Transactional(readOnly = true)
+	Inpatient getInpatientbyIdentifier(String inpatientId);
 	//Saves a Inpatient Identifiers
 	Inpatient saveInpatient(Inpatient inpatient);
 	//deletes an inpatient record

@@ -14,6 +14,8 @@ public interface InpatientDAO {
     Inpatient getInpatient(Integer inpatientId);
     //Saves a Inpatient Identifiers
     Inpatient saveInpatient(Inpatient inpatient);
+
+    public Inpatient getInpatientbyIdentifier(String inpatientId);
     //deletes an inpatient record
     void purgeInpatient(Inpatient inpatient);
 

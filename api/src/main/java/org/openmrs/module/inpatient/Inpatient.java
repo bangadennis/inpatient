@@ -16,6 +16,7 @@ package org.openmrs.module.inpatient;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.Patient;
+import org.openmrs.PatientIdentifier;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -38,7 +39,7 @@ public class Inpatient extends BaseOpenmrsObject implements Serializable{
 
 	private Patient patient;
 
-	private Set<Admission> admissionSet;
+	private Set<Admission> admissions;
 
 	//Setters and Getters
 
@@ -76,15 +77,13 @@ public class Inpatient extends BaseOpenmrsObject implements Serializable{
 		this.patient = patient;
 	}
 
-
-	public Set<Admission> getAdmissionSet() {
-		return admissionSet;
+	public Set<Admission> getAdmissions() {
+		return admissions;
 	}
 
-	public void setAdmissionSet(Set<Admission> admissionSet) {
-		this.admissionSet = admissionSet;
+	public void setAdmissions(Set<Admission> admissions) {
+		this.admissions = admissions;
 	}
-
 
 	@Override
 	public Integer getId() {

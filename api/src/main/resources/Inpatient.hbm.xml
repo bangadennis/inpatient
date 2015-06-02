@@ -7,7 +7,7 @@
 
 	<class name="Inpatient" table="${project.parent.artifactId}_inpatient" >
 
-		<id name="outPatientId" type="java.lang.Integer" column="outpatient_id">
+		<id name="outPatientId" type="java.lang.Integer"  column="outpatient_id">
 			<generator class="foreign">
 					<param name="property">patient</param>
 			</generator>
@@ -21,13 +21,12 @@
 		<property name="uuid" type="java.lang.String" column="uuid"
 			length="38" unique="true" />
 
-
-
-
 		<one-to-one name="patient" class="org.openmrs.Patient" constrained="true" ></one-to-one>
 
-		<set name="admissionSet" table="inpatient_admission"
-			 inverse="true" lazy="true" fetch="select">
+		<!-- Associations -->
+
+		<set name="admissions" table="inpatient_admission"
+			 inverse="true" lazy="true" fetch="select" cascade="all-delete-orphan">
 			<key>
 				<column name="inpatient_id" not-null="true" />
 			</key>

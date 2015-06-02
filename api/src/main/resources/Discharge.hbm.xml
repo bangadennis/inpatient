@@ -34,8 +34,6 @@
 
         <one-to-one name="admission" class="Admission" constrained="true" ></one-to-one>
 
-
-
     </class>
 
 </hibernate-mapping>

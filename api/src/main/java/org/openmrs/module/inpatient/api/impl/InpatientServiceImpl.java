@@ -57,6 +57,11 @@ public class InpatientServiceImpl extends BaseOpenmrsService implements Inpatien
     }
 
     @Override
+    public Inpatient getInpatientbyIdentifier(String inpatientId) {
+        return dao.getInpatientbyIdentifier(inpatientId);
+    }
+
+    @Override
     public Inpatient saveInpatient(Inpatient inpatient) {
         return dao.saveInpatient(inpatient);
     }
