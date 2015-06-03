@@ -36,7 +36,7 @@ public class Admission extends BaseOpenmrsObject implements Serializable {
 
     private Discharge discharge;
 
-    private Integer wardId;
+    private Ward ward;
 
 
 
@@ -115,12 +115,12 @@ public class Admission extends BaseOpenmrsObject implements Serializable {
         this.discharge = discharge;
     }
 
-    public Integer getWardId() {
-        return wardId;
+    public Ward getWard() {
+        return ward;
     }
 
-    public void setWardId(Integer wardId) {
-        this.wardId = wardId;
+    public void setWard(Ward ward) {
+        this.ward = ward;
     }
 
     @Override
