@@ -23,12 +23,11 @@
     </createTable>
   </changeSet>
 
-
     <changeSet author="banga" id="20150528-4">
         <comment>Create the inpatient_inpatients table</comment>
         <createTable tableName="inpatient_inpatient">
             <column  name="outpatient_id" type="int">
-                <constraints nullable="false" unique="true" />
+                <constraints nullable="false" unique="true"  />
             </column>
 
             <column name="inpatient_id" type="varchar(50)" >
@@ -39,17 +38,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="banga" id="20150526-6">
-        <comment>addForeignKeyConstraint-inpatient_inpatient</comment>
-        <addForeignKeyConstraint baseColumnNames="outpatient_id"
-                                 baseTableName="inpatient_inpatient"
-                                 constraintName="fk_inpatient_patient"
-                                 onDelete="CASCADE"
-                                 onUpdate="CASCADE"
-                                 referencedColumnNames="patient_id"
-                                 referencedTableName="patient" />
 
-    </changeSet>
 
     <changeSet author="banga" id="20150522-8">
         <comment>Create the admission table</comment>
@@ -59,7 +48,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="inpatient_id" type="varchar(50)" ></column>
+            <column name="inpatient_id" type="int"  ></column>
             <column name="admission_date" type="varchar(50)" />
             <column name="hiv_status" type="varchar(50)" />
             <column name="nutrition_status" type="varchar(50)"/>
@@ -71,17 +60,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="banga" id="20150599-10">
-        <comment>addForeignKeyConstraint-inpatient_admission</comment>
-        <addForeignKeyConstraint baseColumnNames="inpatient_id"
-                                 baseTableName="inpatient_admission"
-                                 constraintName="fk_inpatient_admission"
-                                 onDelete="CASCADE"
-                                 onUpdate="CASCADE"
-                                 referencedColumnNames="inpatient_id"
-                                 referencedTableName="inpatient_inpatient" />
-
-    </changeSet>
 
 
     <changeSet author="banga" id="20150529-9">
@@ -102,6 +80,35 @@
         </createTable>
     </changeSet>
 
+
+
+    <changeSet author="banga" id="20150526-6">
+        <comment>addForeignKeyConstraint-inpatient_inpatient</comment>
+        <addForeignKeyConstraint baseColumnNames="outpatient_id"
+                                 baseTableName="inpatient_inpatient"
+                                 constraintName="fk_inpatient_patient"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
+                                 referencedColumnNames="patient_id"
+                                 referencedTableName="patient" />
+
+    </changeSet>
+
+
+
+    <changeSet author="banga" id="20150599-10">
+        <comment>addForeignKeyConstraint-inpatient_admission</comment>
+        <addForeignKeyConstraint baseColumnNames="inpatient_id"
+                                 baseTableName="inpatient_admission"
+                                 constraintName="fk_inpatient_admission"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
+                                 referencedColumnNames="outpatient_id"
+                                 referencedTableName="inpatient_inpatient" />
+
+    </changeSet>
+
+
     <changeSet author="banga" id="20150529-40">
         <comment>addForeignKeyConstraint_admission-discharge</comment>
         <addForeignKeyConstraint baseColumnNames="discharge_id"
@@ -111,6 +118,18 @@
                                  onUpdate="CASCADE"
                                  referencedColumnNames="admission_id"
                                  referencedTableName="inpatient_admission" />
+
+    </changeSet>
+
+    <changeSet author="banga" id="20150699-10">
+        <comment>addForeignKeyConstraint-ward-admission</comment>
+        <addForeignKeyConstraint baseColumnNames="ward_id"
+                                 baseTableName="inpatient_admission"
+                                 constraintName="fk_ward_admission"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
+                                 referencedColumnNames="ward_id"
+                                 referencedTableName="inpatient_ward" />
 
     </changeSet>
 
