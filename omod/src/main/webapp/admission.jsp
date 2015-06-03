@@ -33,7 +33,12 @@
 
                 <div class="form-group">
                     <label>Ward ID</label>
-                    <input type="integer" class="form-control" name="ward_id"   required />
+                    <select class="form-control" name="ward_id">
+                        <option></option>
+                        <c:forEach var="ward" items="${wards}">
+                            <option value="${ward.wardId}">${ward.wardName}</option>
+                        </c:forEach>
+                    </select>
                 </div>
 
                 <div class="form-group">

@@ -21,7 +21,7 @@
             <td>${patient.gender}</td>
 
             <td><a href="<c:url value='/module/inpatient/inpatient.form?id=${patient.patientId}' />">
-                <button class="btn btn-success"><span class="glyphicon glyphicon-edit">Edit</span></button>
+                <button class="btn btn-success"><span class="glyphicon glyphicon-plus">Inpatient</span></button>
             </a> </td>
 
         </tr>
