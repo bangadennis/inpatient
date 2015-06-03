@@ -39,10 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The main controller.
@@ -63,9 +60,34 @@ public class  InpatientManageController {
 	@RequestMapping(value = "/module/inpatient/findPatient.form", method = RequestMethod.GET)
 	public void findPatient(ModelMap model) {
 		PatientService patientService=Context.getPatientService();
-		List<Patient> patientList=patientService.getAllPatients();
+		InpatientService inpatientService=Context.getService(InpatientService.class);
 
-		model.addAttribute("patientList", patientList);
+		List<Patient> patientList=patientService.getAllPatients();
+		List<Inpatient>inpatientList=inpatientService.getAllInpatient();
+		List<Patient>patients=new ArrayList<Patient>();
+
+		Boolean check=true;
+
+		for(Patient patient:patientList)
+		{	check=true;
+
+			for(Inpatient inpatient:inpatientList)
+			{
+				if(patient==inpatient.getPatient())
+				{
+					check=false;
+					break;
+				}
+			}
+
+			if(check)
+			{
+				patients.add(patient);
+			}
+
+		}
+
+		model.addAttribute("patientList", patients);
 
 	}
 
@@ -121,8 +143,39 @@ public class  InpatientManageController {
 	public void listInpatient(ModelMap model) {
 		InpatientService inpatientService=Context.getService(InpatientService.class);
 		List<Inpatient>inpatientList=inpatientService.getAllInpatient();
+		List<Inpatient> inpatients=new ArrayList<Inpatient>();
 
-		model.addAttribute("inpatientList", inpatientList);
+		for(Inpatient inpatient:inpatientList)
+		{
+			Set<Admission>admissions=inpatient.getAdmissions();
+			if(admissions==null)
+			{
+				inpatients.add(inpatient);
+			}
+			else
+			{
+				Boolean addAdmission=true;
+				for(Admission adm: admissions)
+				{
+					Discharge discharge=adm.getDischarge();
+
+					if(discharge==null){
+						addAdmission=false;
+						break;
+					}
+
+				}
+
+				if(addAdmission)
+				{
+					inpatients.add(inpatient);
+				}
+
+			}
+
+		}
+
+		model.addAttribute("inpatientList", inpatients);
 
 	}
 
@@ -132,6 +185,9 @@ public class  InpatientManageController {
 	public void admissionForm(ModelMap model,
 							  @RequestParam(value = "id", required = true)String inpatientId) {
 
+		WardService wardService=Context.getService(WardService.class);
+
+		model.addAttribute("wards", wardService.getAllWards());
 		model.addAttribute("inpatientId", inpatientId);
 
 
@@ -151,43 +207,54 @@ public class  InpatientManageController {
 
 		AdmissionService admissionService=Context.getService(AdmissionService.class);
 		InpatientService inpatientService=Context.getService(InpatientService.class);
+		WardService wardService=Context.getService(WardService.class);
 
 		try{
 
-			Admission admission=new Admission();
+			Ward ward=wardService.getWard(wardId);
 			Inpatient inpatient=inpatientService.getInpatientbyIdentifier(inpatientId);
+
+			Admission admission=new Admission();
 			admission.setAdmissionDate(admissionDate);
 			admission.setHivStatus(hivStatus);
 			admission.setNutritionStatus(nutritionStatus);
 			admission.setGuardian(guardian);
 			admission.setReferralFrom(referralFrom);
 			admission.setStatus(status);
-			admission.setWardId(wardId);
-			admission.setInpatient(inpatient);
 
-			Boolean addAdmission=true;
-			Set<Admission> admissionSet=inpatient.getAdmissions();
-			if(admissionSet!=null) {
-				for(Admission adm: admissionSet)
-				{
-					Discharge discharge=adm.getDischarge();
+			if(ward.getAvailableWardCapacity()>0) {
+				admission.setWard(ward);
+				admission.setInpatient(inpatient);
 
-					if(discharge==null){
-						addAdmission=false;
-						break;
+				Boolean addAdmission = true;
+				Set<Admission> admissionSet = inpatient.getAdmissions();
+				if (admissionSet != null) {
+					for (Admission adm : admissionSet) {
+						Discharge discharge = adm.getDischarge();
+
+						if (discharge == null) {
+							addAdmission = false;
+							break;
+						}
+
 					}
-
 				}
-			}
 
 
-			if(addAdmission) {
-				admissionService.saveAdmission(admission);
-				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Admission details Successfully");
+				if (addAdmission) {
+
+					admissionService.saveAdmission(admission);
+
+					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Admission details Successfully");
+				} else {
+					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Patient not discharged from an admission");
+				}
 			}
 			else
 			{
-				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Patient not discharged from an admission");
+				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Selected Ward is full");
+				return "redirect:listInpatient.form";
+
 			}
 
 		}
@@ -222,6 +289,40 @@ public class  InpatientManageController {
 		model.addAttribute("admissionList", admissions);
 
 	}
+
+	//View admission
+	@RequestMapping(value = "/module/inpatient/viewAdmission.form", method = RequestMethod.GET)
+	public void viewAdmission(ModelMap model,
+							  @RequestParam(value ="id", required = true)Integer admissionId) {
+
+
+		AdmissionService admissionService=Context.getService(AdmissionService.class);
+		Admission admission=admissionService.getAdmission(admissionId);
+		model.addAttribute("admission", admission);
+
+	}
+
+	//method for deleting  inpatient
+	@RequestMapping(value = "/module/inpatient/deleteInpatient.form", method=RequestMethod.GET)
+	public String  deleteInpatient(ModelMap model, WebRequest webRequest, HttpSession httpSession,
+							  @RequestParam(value = "id", required = true) Integer outpatientId) {
+		try {
+			InpatientService inpatientService=Context.getService(InpatientService.class);
+			Inpatient inpatient=inpatientService.getInpatient(outpatientId);
+			inpatientService.purgeInpatient(inpatient);
+			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Deleted Successfully");
+			return "redirect:listInpatient.form";
+		}
+		catch (Exception ex)
+		{
+			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Deletion failed");
+			return "redirect:listInpatient.form";
+
+		}
+
+		//return "redirect:manage.form";
+	}
+
 
 
 

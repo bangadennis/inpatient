@@ -5,27 +5,28 @@
 <table class="table table-striped table-responsive table-hover">
     <thead>
     <tr>
-        <th>Adm ID</th>
+        <th>#</th>
         <th>Given Name</th>
         <th>Family Name</th>
-        <th>Ward ID</th>
-        <th>Delete</th>
-        <th>Edit</th>
+        <th>Ward Name</th>
+        <th>View</th>
+        <th>Discharge</th>
     </tr>
     </thead>
     <tbody>
+    <c:set var="count" value="0" scope="page" />
     <c:forEach var="admission" items="${admissionList}" varStatus="status">
         <tr>
-            <td>${admission.admissionId}</td>
+            <c:set var="count" value="${count + 1}" scope="page"/>
+            <td>${count}</td>
             <td>${admission.inpatient.patient.givenName}</td>
             <td>${admission.inpatient.patient.familyName}</td>
-            <td>${admission.wardId}</td>
-            <td><a href="<c:url value='/module/inpatient/deleteWard.form?id=${admission.admissionId}' />">
-                <button class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign">Delete
-            </span> </button>
+            <td>${admission.ward.wardName}</td>
+            <td><a href="<c:url value='/module/inpatient/viewAdmission.form?id=${admission.admissionId}' />">
+                <button class="btn btn-info"><i class="fa fa-eye"></i>View</button>
             </a> </td>
             <td><a href="<c:url value='/module/inpatient/discharge.form?id=${admission.admissionId}' />">
-                <button class="btn btn-success"><span class="glyphicon glyphicon-edit">Discharge</span></button>
+                <button class="btn btn-success"> <i class="fa fa-check-square-o"></i> Discharge</button>
             </a> </td>
         </tr>
     </c:forEach>

@@ -23,6 +23,14 @@
             <property name="uuid" type="java.lang.String" column="uuid"
                 length="38" unique="true" />
 
+            <set name="admissions" table="inpatient_admission"
+                 inverse="true" lazy="true" fetch="select" cascade="all-delete-orphan">
+                <key>
+                    <column name="ward_id" not-null="true" />
+                </key>
+                <one-to-many class="Admission" />
+            </set>
+
         </class>
 
 </hibernate-mapping>
