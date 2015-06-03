@@ -3,6 +3,7 @@ package org.openmrs.module.inpatient;
 import org.openmrs.BaseOpenmrsObject;
 
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * Created by banga on 5/26/15.
@@ -21,6 +22,7 @@ public class Ward  extends BaseOpenmrsObject implements Serializable {
 
     private Integer capacity;
 
+    private Set<Admission>admissions;
 
 
 
@@ -72,6 +74,27 @@ public class Ward  extends BaseOpenmrsObject implements Serializable {
 
     public void setWardName(String wardName) {
         this.wardName = wardName;
+    }
+
+    public Set<Admission> getAdmissions() {
+        return admissions;
+    }
+
+    public void setAdmissions(Set<Admission> admissions) {
+        this.admissions = admissions;
+    }
+
+    public int getAvailableWardCapacity(){
+
+        Integer countAdmission=0;
+        for(Admission adm:this.admissions){
+            if(adm.getDischarge()==null)
+            {
+                countAdmission=countAdmission+1;
+            }
+        }
+        int availableCapacity=this.capacity-countAdmission;
+        return availableCapacity;
     }
 
 }
