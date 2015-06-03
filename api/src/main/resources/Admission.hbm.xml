@@ -16,12 +16,16 @@
             <column name="inpatient_id" not-null="true" />
         </many-to-one>
 
+        <many-to-one name="ward" class="Ward" fetch="select">
+            <column name="ward_id" not-null="true" />
+        </many-to-one>
+
         <property name="admissionDate" type="java.lang.String" column="admission_date"/>
         <property name="hivStatus" type="java.lang.String" column="hiv_status" />
         <property name="nutritionStatus" type="java.lang.String" column="nutrition_status" />
         <property name="referralFrom" type="java.lang.String" column="referral_from" />
         <property name="guardian" type="java.lang.String" column="guardian" />
-        <property name="wardId" type="java.lang.Integer" column="ward_id" />
+        <!--<property name="wardId" type="java.lang.Integer" column="ward_id" />-->
         <property name="status" type="java.lang.Integer" column="status" />
 
         <property name="uuid" type="java.lang.String" column="uuid"
