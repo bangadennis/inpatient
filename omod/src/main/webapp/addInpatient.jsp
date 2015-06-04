@@ -9,13 +9,12 @@
         <div class="form-group col-md-offset-2 col-md-8">
             <form class="" method="post"  action="<c:url value='/module/inpatient/addInpatient.form' />">
 
-                <%--<label><openmrs:message code="Patient ID"/></label>--%>
-                <%--<br>--%>
-                <%--<spring:bind path="inpatient.outpatient_id">--%>
-                    <%--<input type="text" class="form-control" name="patientId" value="${status.value}" size="35" required />--%>
-                    <%--<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>--%>
-                <%--</spring:bind>--%>
-                <%--<br/>--%>
+                <br>
+                <spring:bind path="inpatient.outPatientId">
+                    <input type="hidden" class="form-control" name="patientId" value="${patientId}" size="35" required />
+                    <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
+                </spring:bind>
+                <br/>
 
 
                 <label valign="top"><openmrs:message code="Inpatient Number"/></label>

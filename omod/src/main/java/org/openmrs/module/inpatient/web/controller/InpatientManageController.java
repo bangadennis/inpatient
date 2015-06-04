@@ -35,8 +35,8 @@ import org.openmrs.Patient;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import java.util.List;
-import org.openmrs.module.inpatient.*;
-
+import org.openmrs.module.inpatient.api.InpatientService;
+import org.openmrs.module.inpatient.Inpatient;
 /**
  * The main controller.
  * @author banga
@@ -59,19 +59,20 @@ public class  InpatientManageController {
 
 	}
 	@RequestMapping(value = "/module/inpatient/addInpatient.form", method = RequestMethod.GET)
-	public void addInpatient(ModelMap model){
+	public void addInpatient(ModelMap model, @RequestParam(required = true, value = "patientId") Integer patientId){
 		Inpatient inpatient=new Inpatient();
 		model.addAttribute("inpatient",inpatient);
+		model.addAttribute("patientId", patientId);
 	}
 
 	//Save Inpatient
-	@RequestMapping(value = "/module/inpatient/saveInpatient.form", method = RequestMethod.POST)
+	@RequestMapping(value = "/module/inpatient/addInpatient.form", method = RequestMethod.POST)
 	public String saveInpatient(ModelMap model,WebRequest request, HttpSession httpSession,
-								@RequestParam(required = true, value = "outpatient_id") Integer patientId,
-								@RequestParam(required = true, value = "inpatient_id") String inpatientId,
-								@RequestParam(required = true, value = "phone_number") Integer phoneNumber)
+								@RequestParam(required = true, value = "patientId") Integer patientId,
+								@RequestParam(required = true, value = "inpatientId") String inpatientId,
+								@RequestParam(required = true, value = "phoneNumber") Integer phoneNumber)
 	{
-		InpatientService inpatientService=Context.getService(InpatientService.class);
+		InpatientService inpatientService = Context.getService(InpatientService.class);
 
 		try{
 
@@ -87,6 +88,7 @@ public class  InpatientManageController {
 			inpatientService.saveInpatient(inpatient);
 			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Inpatient details Successfully");
 
+
 		}
 		catch (Exception ex)
 		{
@@ -94,7 +96,7 @@ public class  InpatientManageController {
 			return "redirect:listPatient.form";
 		}
 
-		return "redirect:listPatient.form";
+		return "redirect:admission.form";
 
 	}
 }

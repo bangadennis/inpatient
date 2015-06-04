@@ -1,10 +1,11 @@
 <%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/template/header.jsp" %>
 <%@ include file="template/localHeader.jsp"%>
 
 <openmrs:require privilege="View Patients" otherwise="/login.htm" redirect="/findPatient.htm" />
 
 <openmrs:message var="pageTitle" code="findPatient.title" scope="page"/>
-<%@ include file="/WEB-INF/template/header.jsp" %>
+
 
 <h2><openmrs:message code="Patient.search"/></h2>
 
