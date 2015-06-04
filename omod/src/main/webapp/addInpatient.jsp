@@ -31,8 +31,51 @@
                     <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
                 </spring:bind>
                 <br/>
+
+                <%--the admission details start here--%>
+                 <div class="form-group">
+                    <label>Admission Date</label>
+                    <input type="date" class="form-control" name="admission_date"   required />
+                </div>
+
+                <div class="form-group">
+                    <label>Hiv Status</label>
+                    <input type="text" class="form-control" name="hiv_status"   required />
+                </div>
+
+                <div class="form-group">
+                    <label>Nutrition Status</label>
+                    <input type="number" class="form-control" name="nutrition_status"   required />
+                </div>
+
+                <div class="form-group">
+                    <label>Guardian</label>
+                    <input type="text" class="form-control" name="guardian"   required />
+                </div>
+
+                <div class="form-group">
+                    <label>Ward ID</label>
+                    <select class="form-control" name="ward_id">
+                        <option></option>
+                        <c:forEach var="ward" items="${wards}">
+                            <option value="${ward.wardId}">${ward.wardName}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Referral From</label>
+                    <input type="Text" class="form-control" name="referral_from"   />
+                </div>
+
+                <div class="form-group">
+                    <input type="hidden" class="form-control" name="status" value="1" />
+                </div>
+
                 <input type="submit" class="btn btn-md btn-success" value="<openmrs:message code="Save"/>" name="save">
+
             </form>
+
         </div>
     </div>
 
