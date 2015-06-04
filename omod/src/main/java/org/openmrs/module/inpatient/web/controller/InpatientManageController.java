@@ -16,6 +16,7 @@ package org.openmrs.module.inpatient.web.controller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
+import org.openmrs.PatientIdentifier;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.messagesource.MessageSourceService;
@@ -110,6 +111,7 @@ public class  InpatientManageController {
 							  @RequestParam(required = true, value = "phone_number") Integer phoneNumber)
 	{
 		InpatientService inpatientService=Context.getService(InpatientService.class);
+
 
 		try{
 
