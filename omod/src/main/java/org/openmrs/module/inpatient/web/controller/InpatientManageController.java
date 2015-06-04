@@ -16,6 +16,7 @@ package org.openmrs.module.inpatient.web.controller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
+import org.openmrs.PatientIdentifier;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.messagesource.MessageSourceService;
@@ -111,6 +112,7 @@ public class  InpatientManageController {
 	{
 		InpatientService inpatientService=Context.getService(InpatientService.class);
 
+
 		try{
 
 			Inpatient inpatient=new Inpatient();
@@ -174,6 +176,10 @@ public class  InpatientManageController {
 			}
 
 		}
+
+		WardService wardService=Context.getService(WardService.class);
+
+		model.addAttribute("wards", wardService.getAllWards());
 
 		model.addAttribute("inpatientList", inpatients);
 

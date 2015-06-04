@@ -44,7 +44,7 @@ public class InpatientWardController {
         }
 
         model.addAttribute("availableCapacity",map);
-        model.addAttribute("ward",wardList);
+        model.addAttribute("wards",wardList);
 
     }
 
@@ -169,6 +169,44 @@ public class InpatientWardController {
 
         return "redirect:listwards.form";
     }
+
+
+
+    //Method to save an Ward edit
+    @RequestMapping(value = "/module/inpatient/saveWardEditModal.form", method=RequestMethod.POST)
+    public String saveWardEditModal(WebRequest request, HttpSession httpSession, ModelMap model,
+                               @RequestParam(required = true, value = "id") Integer wardId,
+                                    @RequestParam(required = true, value = "wardName") String wardName,
+                                    @RequestParam(required = true, value = "speciality") String speciality,
+                                    @RequestParam(required = true, value = "description") String description,
+                                    @RequestParam(required = true, value = "capacity") Integer capacity)
+    {
+
+        WardService wardService = Context.getService(WardService.class);
+
+        try {
+
+                Ward wardEdit=wardService.getWard(wardId);
+
+                wardEdit.setWardName(wardName);
+                wardEdit.setSpeciality(speciality);
+                wardEdit.setDescription(description);
+                wardEdit.setCapacity(capacity);
+                wardService.saveWard(wardEdit);
+
+                httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Edited Ward Successfully");
+                return "redirect:listwards.form";
+
+            }
+            catch (Exception ex) {
+
+                httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Ward Edit failed");
+            }
+
+
+        return "redirect:listwards.form";
+    }
+
 
 
 }

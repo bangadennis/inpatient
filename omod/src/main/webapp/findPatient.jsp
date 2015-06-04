@@ -1,8 +1,26 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp" %>
 <%@ include file="template/localHeader.jsp"%>
+<script type="text/javascript">
 
-<table class="table table-striped table-responsive table-hover">
+    (function ($) {
+
+        $(document).ready(function() {
+            $('#findpatient_table').dataTable({
+                "sDom": 'T<"clear">frtip',
+                "bSort":true,
+                "bPaginate":true,
+                "oTableTools": {
+//                    "aButtons":  ['pdf']
+                }
+            });
+
+        });
+
+    }(jQuery));
+
+</script>
+<table class="table table-striped table-responsive table-hover" id="findpatient_table">
     <thead>
     <tr>
         <th>First Name</th>
