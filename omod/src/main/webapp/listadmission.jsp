@@ -32,6 +32,7 @@
         <th>Given Name</th>
         <th>Family Name</th>
         <th>Ward Name</th>
+        <th>Launch</th>
         <th>View</th>
         <th>Discharge</th>
     </tr>
@@ -47,6 +48,11 @@
             <td>${admission.inpatient.patient.familyName}</td>
             <td>${admission.ward.wardName}</td>
 
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                Launch
+            </button>
+
             <td><a href="<c:url value='/module/inpatient/viewAdmission.form?id=${admission.admissionId}' />">
                 <button class="btn btn-info"><i class="fa fa-eye"></i>View</button>
             </a> </td>
@@ -58,10 +64,7 @@
     </tbody>
 </table>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-    Launch demo modal
-</button>
+
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
