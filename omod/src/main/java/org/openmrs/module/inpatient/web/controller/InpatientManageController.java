@@ -177,6 +177,10 @@ public class  InpatientManageController {
 
 		}
 
+		WardService wardService=Context.getService(WardService.class);
+
+		model.addAttribute("wards", wardService.getAllWards());
+
 		model.addAttribute("inpatientList", inpatients);
 
 	}
