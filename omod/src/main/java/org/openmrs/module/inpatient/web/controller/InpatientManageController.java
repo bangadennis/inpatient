@@ -296,6 +296,28 @@ public class  InpatientManageController {
 
 	}
 
+
+	//list discharge
+	@RequestMapping(value = "/module/inpatient/listdischarge.form", method = RequestMethod.GET)
+	public void listDischarge(ModelMap model) {
+		AdmissionService admissionService=Context.getService(AdmissionService.class);
+		List<Admission> admissionList=admissionService.getAllAdmission();
+		List<Admission> admissions=new ArrayList<Admission>();
+
+		for(Admission adm:admissionList)
+		{
+			Discharge discharge=adm.getDischarge();
+			if(discharge!=null){
+				admissions.add(adm);
+			}
+
+		}
+
+		model.addAttribute("admissionList", admissions);
+
+	}
+
+
 	//View admission
 	@RequestMapping(value = "/module/inpatient/viewAdmission.form", method = RequestMethod.GET)
 	public void viewAdmission(ModelMap model,
