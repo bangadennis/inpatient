@@ -6,14 +6,8 @@
     (function ($) {
 
         $(document).ready(function() {
-            $('#ward_table').dataTable({
-                "sDom": 'T<"clear">frtip',
-                "bSort":true,
-                "bPaginate":true,
-                "oTableTools": {
-//                    "aButtons":  ['pdf']
-                }
-            });
+
+            $('#ward_table').dataTable();
 
         });
 
@@ -92,7 +86,7 @@
                                     <input type="text" name="speciality" class="form-control" value="${ward.speciality}"  required/>
                                 </div>
                                 <div class="form-group">
-                                    <label>"Description</label>
+                                    <label>Description</label>
                                     <input type="text" name="description" class="form-control" value="${ward.description}" required/>
                                 </div>
 
