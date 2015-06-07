@@ -6,7 +6,6 @@
 <script type="text/javascript">
 
     (function ($) {
-
         $(document).ready(function() {
 
             $('#admission_table').dataTable();
@@ -27,7 +26,14 @@
             });
 
 
-            $('#datetimepicker1').datetimepicker();
+            $('#dischargeModal').on('show.bs.modal', function(event) {
+                var btn = $(event.relatedTarget);
+                var id = btn.data('id');
+                $("#dischargeId").val(id);
+            });
+
+
+            $('#dischargetime').datetimepicker();
 
 
         });
@@ -68,7 +74,7 @@
             </button></td>
 
             <td>
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#dischargeModal_${count}">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-id="${admission.admissionId}" data-target="#dischargeModal">
                     <i class="fa fa-check-square-o"></i> Discharge</button>
 
                 <%--<a href="<c:url value='/module/inpatient/discharge.form?id=${admission.admissionId}' />">--%>
@@ -122,33 +128,27 @@
 </c:forEach>
 
 
+
 <!-- Modal for Discharge -->
-<c:set var="count" value="0" scope="page" />
-<c:forEach var="admission" items="${admissionList}" varStatus="status">
-    <c:set var="count" value="${count + 1}" scope="page"/>
-    <div class="modal fade" id="dischargeModal_${count}" tabindex="-1" role="dialog" aria-labelledby="dischargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+
+<div class="modal fade" id="dischargeModal" tabindex="-1" role="dialog" aria-labelledby="dischargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="dischargeModalLabel">Discharge Patient -Inpatient ID:${admission.inpatient.inpatientId}</h4>
+                    <h4 class="modal-title" id="dischargeModalLabel">Discharge Patient </h4>
                 </div>
 
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-md-offset-2 col-md-8">
                             <form class="form-horizontal" method="post"  action="<c:url value='/module/inpatient/saveDischarge.form' />">
-                                <div class="form-group">
-                                    <input type="hidden" class="form-control" name="discharge_id" value="${admission.admissionId}" required />
-                                </div>
 
-                                <%--<div class="form-group">--%>
-                                    <%--<label>Discharge Date</label>--%>
-                                    <%--<input type="date" class="form-control" name="discharge_date"   required />--%>
-                                <%--</div>--%>
+                                <input id="dischargeId" type="hidden" class="form-control" name="discharge_id"  required />
+
                                 <div class="form-group">
                                     <label>Discharge Date</label>
-                                    <div class='input-group date' id='datetimepicker1'>
+                                    <div class='input-group date' id='dischargetime'>
                                         <input type='text' class="form-control" name="discharge_date"/>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
@@ -208,10 +208,8 @@
                     <%--&lt;%&ndash;<button type="submit" class="btn btn-primary">Save</button>&ndash;%&gt;--%>
                 <%--</div>--%>
             </div>
-        </div>
     </div>
-</c:forEach>
-
+</div>
 
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>
