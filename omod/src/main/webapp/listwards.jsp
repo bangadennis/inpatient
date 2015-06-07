@@ -9,6 +9,13 @@
 
             $('#ward_table').dataTable();
 
+            $('#editModal').on('show.bs.modal', function(event) {
+                var btn = $(event.relatedTarget);
+                var id = btn.data('id');
+                $("#wardTag").val(id);
+            });
+
+            $("#wardtime").datetimepicker();
         });
 
     }(jQuery));
@@ -24,7 +31,7 @@
         <th>Description</th>
         <th>Ward Capacity</th>
         <th>Available Capacity</th>
-        <th>Delete</th>
+        <%--<th>Delete</th>--%>
         <th>Edit</th>
     </tr>
     </thead>
@@ -39,10 +46,15 @@
             <td>${thisWard.description}</td>
             <td>${thisWard.capacity}</td>
             <td>${availableCapacity.get(thisWard.wardId)}</td>
-            <td><a href="<c:url value='/module/inpatient/deleteWard.form?id=${thisWard.wardId}' />">
-                <button class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign">Delete
-            </span> </button>
-            </a> </td>
+            <%--<td>--%>
+                <%--&lt;%&ndash;<button class="btn btn-success" data-toggle="modal"  data-id="${thisWard.wardId}" data-target="#editModal">&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<span class="glyphicon glyphicon-edit">try Edit</span></button>&ndash;%&gt;--%>
+                <%--&lt;%&ndash;<a href="<c:url value='/module/inpatient/deleteWard.form?id=${thisWard.wardId}' />">&ndash;%&gt;--%>
+                <%--&lt;%&ndash;<button class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign">Delete&ndash;%&gt;--%>
+            <%--&lt;%&ndash;</span> </button>&ndash;%&gt;--%>
+            <%--&lt;%&ndash;</a> &ndash;%&gt;--%>
+
+            <%--</td>--%>
             <td>
                 <button class="btn btn-success" data-toggle="modal" data-target="#editWardModal_${count}">
                     <span class="glyphicon glyphicon-edit">Edit</span></button>
@@ -113,6 +125,68 @@
     </div>
 </c:forEach>
 
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="editModalLabel">Edit Ward</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-offset-2 col-md-8">
+                        <form class="" method="post" id="myWardForm" action="<c:url value='/module/inpatient/saveWardEditModal.form' />">
+
+                            <input type="text" name="wardId" id="wardTag" value="10203" />
+                            <div class="myWardId">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Discharge Date</label>
+                                <div class='input-group date' id='wardtime'>
+                                    <input type='text' class="form-control" name="discharge_date"/>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Ward Name</label>
+                                <input type="text" class="form-control" name="wardName" value="${ward.wardName}"  required />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Speciality</label>
+                                <input type="text" name="speciality" class="form-control" value="${ward.speciality}"  required/>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <input type="text" name="description" class="form-control" value="${ward.description}" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Capacity</label>
+                                <input type="number" name="capacity" class="form-control" value="${ward.capacity}" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-success" value="Save" />
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 
 
 
