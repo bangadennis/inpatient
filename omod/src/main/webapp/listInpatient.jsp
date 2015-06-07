@@ -9,7 +9,16 @@
 
             $('#inpatient_table').dataTable();
 
-            $('#datetimepicker2').datetimepicker();
+            $('#admissionDate').datetimepicker();
+
+
+            $('#admissionModal').on('show.bs.modal', function(event) {
+                var btn = $(event.relatedTarget);
+                var id = btn.data('id');
+                $("#inpatientId").val(id);
+            });
+
+
         });
 
     }(jQuery));
@@ -43,7 +52,7 @@
             </span> </button>
             </a> </td>
             <td>
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#admissionModal_${count}">
+                <button type="button" class="btn btn-success" data-toggle="modal"  data-id="${inpatient.inpatientId}" data-target="#admissionModal">
                     <i class="fa fa-plus-square"></i> Admit</button>
                 <%--<a href="<c:url value='/module/inpatient/admission.form?id=${inpatient.inpatientId}' />">--%>
                 <%--<button class="btn btn-success"><span class="glyphicon glyphicon-edit">Admit</span></button>--%>
@@ -58,15 +67,12 @@
 
 
 <!-- Modal for Discharge -->
-<c:set var="count" value="0" scope="page" />
-<c:forEach var="inpatient" items="${inpatientList}" varStatus="status">
-    <c:set var="count" value="${count + 1}" scope="page"/>
-    <div class="modal fade" id="admissionModal_${count}" tabindex="-1" role="dialog" aria-labelledby="admissionModalLabel" aria-hidden="true">
+ <div class="modal fade" id="admissionModal" tabindex="-1" role="dialog" aria-labelledby="admissionModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="admissionModalLabel">Admit Patient -Inpatient ID:${inpatient.inpatientId}</h4>
+                    <h4 class="modal-title" id="admissionModalLabel">Admit Patient</h4>
                 </div>
 
                 <div class="modal-body">
@@ -74,9 +80,8 @@
                         <div class="form-group col-md-offset-2 col-md-8">
                             <form class="form-horizontal" method="post"  action="<c:url value='/module/inpatient/saveAdmission.form' />">
 
-                                <div class="form-group">
-                                    <input type="hidden" class="form-control" name="inpatient_id" value="${inpatient.inpatientId}" required />
-                                </div>
+
+                                <input id="inpatientId" type="hidden" name="inpatient_id"  required />
 
                                 <%--<div class="form-group">--%>
                                     <%--<label>Admission Date</label>--%>
@@ -84,7 +89,7 @@
                                 <%--</div>--%>
                                 <div class="form-group">
                                     <label>Admission Date</label>
-                                    <div class='input-group date' id='datetimepicker2'>
+                                    <div class='input-group date' id='admissionDate'>
                                         <input type='text' class="form-control" name="admission_date" />
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
@@ -163,8 +168,7 @@
                     <%--</div>--%>
             </div>
         </div>
-    </div>
-</c:forEach>
+ </div>
 
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>
