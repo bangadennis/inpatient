@@ -1,3 +1,4 @@
+
 /**
  * The contents of this file are subject to the OpenMRS Public License
  * Version 1.0 (the "License"); you may not use this file except in
@@ -15,9 +16,10 @@ package org.openmrs.module.inpatient.web.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Patient;
-import org.openmrs.PatientIdentifier;
+import org.openmrs.*;
+import org.openmrs.api.EncounterService;
 import org.openmrs.api.PatientService;
+import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
 import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.module.inpatient.Admission;
@@ -41,7 +43,6 @@ import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
-
 /**
  * The main controller.
  * @author banga
@@ -119,6 +120,18 @@ public class  InpatientManageController {
 			PatientService patientService=Context.getPatientService();
 			Patient patient=patientService.getPatient(patientId);
 			//Saving the details
+			EncounterService encounterService=Context.getEncounterService();
+			//adding encounter details
+			Encounter encounter=new Encounter();
+			encounter.setLocation(Context.getLocationService().getDefaultLocation());
+			encounter.setPatient(patient);
+			encounter.setEncounterDatetime(new Date());
+			//Getting Inpatient Registration encounter type
+			encounter.setEncounterType(encounterService.getEncounterTypeByUuid("384a59c5-f744-4e1e-8bf2-08de6237b036"));
+
+			//save encounter
+			encounterService.saveEncounter(encounter);
+
 
 			inpatient.setOutPatientId(patientId);
 			inpatient.setInpatientId(inpatientId);
@@ -208,7 +221,7 @@ public class  InpatientManageController {
 							  @RequestParam(value = "nutrition_status", required = true)String nutritionStatus,
 							  @RequestParam(value = "guardian", required = true)String guardian,
 							  @RequestParam(value = "referral_from", required = true)String referralFrom,
-							  @RequestParam(value = "status", required = true)Integer status,
+							  @RequestParam(value = "status", required = true)Integer hivIntervention,
 								@RequestParam(value = "ward_id", required = true)Integer wardId){
 
 		AdmissionService admissionService=Context.getService(AdmissionService.class);
@@ -219,6 +232,7 @@ public class  InpatientManageController {
 
 			Ward ward=wardService.getWard(wardId);
 			Inpatient inpatient=inpatientService.getInpatientbyIdentifier(inpatientId);
+			Patient patient=inpatient.getPatient();
 
 			Admission admission=new Admission();
 			admission.setAdmissionDate(admissionDate);
@@ -226,7 +240,7 @@ public class  InpatientManageController {
 			admission.setNutritionStatus(nutritionStatus);
 			admission.setGuardian(guardian);
 			admission.setReferralFrom(referralFrom);
-			admission.setStatus(status);
+			admission.setStatus(hivIntervention);
 
 			if(ward.getAvailableWardCapacity()>0) {
 				admission.setWard(ward);
@@ -246,10 +260,34 @@ public class  InpatientManageController {
 					}
 				}
 
-
 				if (addAdmission) {
 
+					VisitService
 					admissionService.saveAdmission(admission);
+					//VisitService
+
+//					VisitService visitService=Context.get
+//					Visit visit=new Visit();
+//					visit.setPatient(patient);
+//					visit.setLocation(Context.getLocationService().getDefaultLocation());
+//					visit.setStartDatetime(new Date());
+//					visit.setVisitType(visitService.getVisitTypeByUuid("73bbb069-9781-4afc-a9d1-54b6b2270e02"));
+//					//concept for inpatient care
+//					Concept concept=Context.getConceptService().getConceptByUuid("a93e71c2-ffa4-11e4-bdde-a4badbd9b830");
+//					visit.setIndication(concept);
+//
+//
+//					EncounterService encounterService=Context.getEncounterService();
+//					Encounter encounter=new Encounter();
+//					encounter.setLocation(Context.getLocationService().getDefaultLocation());
+//					encounter.setPatient(patient);
+//					encounter.setEncounterDatetime(new Date());
+//					//Getting Inpatient Registration encounter type
+//					encounter.setEncounterType(encounterService.getEncounterTypeByUuid("384a59c5-f744-4e1e-8bf2-08de6237b036"));
+//					//saving visit
+//					visit.addEncounter(encounter);
+//					visitService.saveVisit(visit);
+
 
 					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Admission details Successfully");
 				} else {

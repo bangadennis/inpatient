@@ -2,6 +2,7 @@ package org.openmrs.module.inpatient.web.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.inpatient.Admission;
 import org.openmrs.module.inpatient.Inpatient;
