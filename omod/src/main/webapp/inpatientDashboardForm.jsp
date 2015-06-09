@@ -73,9 +73,11 @@
                      </c:if>
                  ${inpatient.patient.givenName}&nbsp;${inpatient.patient.middleName}
                     &nbsp;${inpatient.patient.familyName}
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Outpatient ID-${inpatient.patient.patientId}&nbsp;
-                Inpatient ID-${inpatient.inpatientId}
             </h3>
+            <h4 class="pull-right">Outpatient ID-${inpatient.patient.patientId}&nbsp;
+                Inpatient ID-${inpatient.inpatientId}
+            </h4>
+
             <h4 class="panel-title">Age-${inpatient.patient.age}(${inpatient.patient.birthdate})</h4>
             <c:if test="${admission !=null }">
             <h4 class="panel-title">
@@ -112,11 +114,11 @@
                             <div role="tabpanel">
 
                                 <!-- Nav tabs -->
-                                <ul class="nav nav-pills nav-justified">
+                                <ul class="nav nav-pills">
                                     <li r class="active"><a href="#home"  data-toggle="pill">Add Encounters</a></li>
                                     <li><a href="#profile"  data-toggle="pill">List Encounters</a></li>
                                     <li><button type="button" class="btn btn-info" data-toggle="modal"  data-id="${admission.admissionId}" data-target="#dischargeModal">
-                                            <i class="fa fa-plus-square"></i> Discharge</button></li>
+                                        <i class="fa fa-check-square-o"></i>Discharge</button></li>
                                 </ul>
 
                                 <!-- Tab panes -->
@@ -134,7 +136,7 @@
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="discharge">
-                        <div class="row">
+                        <div class="col-md-10 col-offset-md-1">
                             <h3>Admissions and Discharges</h3>
                             <table class="table table-striped table-responsive table-hover" id="admission_table">
                             <thead>
