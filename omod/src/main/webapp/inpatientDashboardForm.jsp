@@ -103,7 +103,7 @@
                     <div role="tabpanel" class="tab-pane" id="admission">
 
                         <c:if test="${admission ==null }">
-                            <button type="button" class="btn btn-success" data-toggle="modal"  data-id="${inpatient.inpatientId}" data-target="#admissionModal">
+                            <button type="button" class="btn btn-success" data-toggle="modal"  data-id="${inpatient.outPatientId}" data-target="#admissionModal">
                                 <i class="fa fa-plus-square"></i> Admit</button>
                         </c:if>
 
