@@ -17,7 +17,10 @@
 <openmrs:htmlInclude file="/moduleResources/inpatient/tablejs/dataTables.bootstrap.js" />
 <openmrs:htmlInclude file="/moduleResources/inpatient/tablejs/tableTools.js" />
 <%--<openmrs:htmlInclude file="/moduleResources/inpatient/tablejs/tablebootstrap.js" />--%>
-
+<%--DWR search--%>
+<script src="<openmrs:contextPath/>/dwr/interface/DWRPatientService.js"></script>
+<openmrs:htmlInclude file="/dwr/engine.js" ></openmrs:htmlInclude>
+<openmrs:htmlInclude file="/dwr/util.js" ></openmrs:htmlInclude>
 
 <spring:htmlEscape defaultHtmlEscape="true" />
 
