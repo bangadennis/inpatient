@@ -42,11 +42,14 @@
     <c:forEach var="inpatient" items="${inpatientList}" varStatus="status">
         <c:set var="count" value="${count+1}" scope="page" />
         <tr>
-            <td>${count}</td>
+
+            <td><a href="<c:url value='/module/inpatient/inpatientDashboardForm.form?id=${inpatient.outPatientId}' />">
+            ${count}</a></td>
             <td>${inpatient.inpatientId}</td>
             <td>${inpatient.phoneNumber}</td>
             <td>${inpatient.patient.givenName}</td>
             <td>${inpatient.patient.familyName}</td>
+
             <td><a href="<c:url value='/module/inpatient/deleteInpatient.form?id=${inpatient.outPatientId}' />">
                 <button class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign">Delete
             </span> </button>
@@ -66,7 +69,7 @@
 
 
 
-<!-- Modal for Discharge -->
+<!-- Modal for ADMISSION -->
  <div class="modal fade" id="admissionModal" tabindex="-1" role="dialog" aria-labelledby="admissionModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
