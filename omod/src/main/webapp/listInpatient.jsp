@@ -55,7 +55,7 @@
             </span> </button>
             </a> </td>
             <td>
-                <button type="button" class="btn btn-success" data-toggle="modal"  data-id="${inpatient.inpatientId}" data-target="#admissionModal">
+                <button type="button" class="btn btn-success" data-toggle="modal"  data-id="${inpatient.outPatientId}" data-target="#admissionModal">
                     <i class="fa fa-plus-square"></i> Admit</button>
                 <%--<a href="<c:url value='/module/inpatient/admission.form?id=${inpatient.inpatientId}' />">--%>
                 <%--<button class="btn btn-success"><span class="glyphicon glyphicon-edit">Admit</span></button>--%>
