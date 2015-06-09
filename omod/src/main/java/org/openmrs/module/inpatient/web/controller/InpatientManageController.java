@@ -216,7 +216,7 @@ public class  InpatientManageController {
 	//Save Admission Form
 	@RequestMapping(value = "/module/inpatient/saveAdmission.form", method = RequestMethod.POST)
 	public String saveAdmission(ModelMap model,HttpSession httpSession,WebRequest webRequest,
-							  @RequestParam(value = "inpatient_id", required = true)String inpatientId,
+							  @RequestParam(value = "inpatient_id", required = true)Integer patientId,
 							  @RequestParam(value = "admission_date", required = true)String admissionDate,
 							  @RequestParam(value = "hiv_status", required = true)String hivStatus,
 							  @RequestParam(value = "nutrition_status", required = true)String nutritionStatus,
@@ -232,7 +232,7 @@ public class  InpatientManageController {
 		try{
 
 			Ward ward=wardService.getWard(wardId);
-			Inpatient inpatient=inpatientService.getInpatientbyIdentifier(inpatientId);
+			Inpatient inpatient=inpatientService.getInpatient(patientId);
 			Patient patient=inpatient.getPatient();
 			//check if patient is alive
 			if(patient.getDead())
@@ -288,7 +288,7 @@ public class  InpatientManageController {
 			else
 			{
 				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Selected Ward is full");
-				return "redirect:listInpatients.form";
+				return "redirect:processRequest.form?id="+patientId;
 
 			}
 
@@ -296,12 +296,12 @@ public class  InpatientManageController {
 		catch (Exception ex)
 		{
 			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Failed to save Admission details");
-			return "redirect:listInpatient.form";
+			return "redirect:processRequest.form?id="+patientId;
 
 		}
 
 
-		return "redirect:listInpatient.form";
+		return "redirect:processRequest.form?id="+patientId;
 
 	}
 
@@ -411,10 +411,12 @@ public class  InpatientManageController {
 		DischargeService dischargeService=Context.getService(DischargeService.class);
 		AdmissionService admissionService=Context.getService(AdmissionService.class);
 
+		Admission admission=admissionService.getAdmission(dischargeId);
+		int patientId=admission.getInpatient().getOutPatientId();
+
 		try{
 
 			Discharge discharge=new Discharge();
-			Admission admission=admissionService.getAdmission(dischargeId);
 			PatientService patientService=Context.getPatientService();
 
 			discharge.setDischargeId(dischargeId);
@@ -445,11 +447,11 @@ public class  InpatientManageController {
 		catch (Exception ex)
 		{
 			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Failed to Discharge");
-			return "redirect:listadmission.form";
+			return "redirect:processRequest.form?id="+patientId;
 
 		}
 
-		return "redirect:listadmission.form";
+		return "redirect:processRequest.form?id="+patientId;
 
 	}
 
