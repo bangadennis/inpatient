@@ -212,11 +212,12 @@ public class InpatientWardController {
         Set<Admission> admissionSet=ward.getAdmissions();
         Discharge discharge=null;
         List<Inpatient>inpatientList=new ArrayList<Inpatient>();
+
         for(Admission adm:admissionSet)
         {
             discharge=adm.getDischarge();
 
-            if (discharge!=null)
+            if (discharge==null)
             {
                 inpatientList.add(adm.getInpatient());
             }
