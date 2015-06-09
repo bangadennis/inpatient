@@ -53,8 +53,16 @@
 
 </script>
 <div class="row">
-    <div class="panel panel-info">
+    <c:if test="${inpatient.patient.dead==true}">
+        <div class="panel panel-danger">
+            </c:if>
+        <c:if test="${inpatient.patient.dead==false}">
+            <div class="panel panel-info">
+                </c:if>
         <div class="panel-heading">
+            <c:if test="${inpatient.patient.dead}">
+                   This Patient is Dead,Death Date-&nbsp;${inpatient.patient.deathDate}
+            </c:if>
             <h3 class="panel-title">
                     <c:set var="gender" scope="session" value="${inpatient.patient.gender}"/>
                     <c:if test="${gender=='M'}">
@@ -69,8 +77,11 @@
                 Inpatient ID-${inpatient.inpatientId}
             </h3>
             <h4 class="panel-title">Age-${inpatient.patient.age}(${inpatient.patient.birthdate})</h4>
+            <c:if test="${admission !=null }">
             <h4 class="panel-title">
-                Active Admission from-${admission.admissionDate}</h4>
+                Active Admission from-${admission.admissionDate}
+            </h4>
+            </c:if>
         </div>
         <div class="panel-body">
             <div role="tabpanel">
@@ -98,7 +109,6 @@
 
                         <c:if test="${admission !=null }">
 
-
                             <div role="tabpanel">
 
                                 <!-- Nav tabs -->
@@ -124,7 +134,9 @@
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="discharge">
-                        <table class="table table-striped table-responsive table-hover" id="admission_table">
+                        <div class="row">
+                            <h3>Admissions and Discharges</h3>
+                            <table class="table table-striped table-responsive table-hover" id="admission_table">
                             <thead>
                             <tr>
                                 <th>#</th>
@@ -151,6 +163,7 @@
                             </c:forEach>
                             </tbody>
                         </table>
+                        </div>
 
                     </div>
                     <div role="tabpanel" class="tab-pane" id="orders">
