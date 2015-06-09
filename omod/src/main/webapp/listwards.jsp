@@ -45,7 +45,7 @@
             <td>${thisWard.speciality}</td>
             <td>${thisWard.description}</td>
             <td>${thisWard.capacity}</td>
-            <td>${availableCapacity.get(thisWard.wardId)}</td>
+            <td> ${availableCapacity.get(thisWard.wardId)} </td>
             <%--<td>--%>
                 <%--&lt;%&ndash;<button class="btn btn-success" data-toggle="modal"  data-id="${thisWard.wardId}" data-target="#editModal">&ndash;%&gt;--%>
                     <%--&lt;%&ndash;<span class="glyphicon glyphicon-edit">try Edit</span></button>&ndash;%&gt;--%>
