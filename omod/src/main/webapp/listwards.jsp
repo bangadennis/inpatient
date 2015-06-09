@@ -30,7 +30,7 @@
         <th>Speciality</th>
         <th>Description</th>
         <th>Ward Capacity</th>
-        <%--<th>Available Capacity</th>--%>
+        <th>Available Capacity</th>
         <%--<th>Delete</th>--%>
         <th>Edit</th>
     </tr>
@@ -46,7 +46,8 @@
             <td>${thisWard.speciality}</td>
             <td>${thisWard.description}</td>
             <td>${thisWard.capacity}</td>
-            <%--<td> ${availableCapacity.get(thisWard.wardId)} </td>--%>
+            <c:set var="key" value="${thisWard.wardId}" scope="page"/>
+            <td> <c:out value="${availableCapacity[key]}"/> </td>
             <%--<td>--%>
                 <%--<a href="<c:url value='/module/inpatient/deleteWard.form?id=${thisWard.wardId}' />">--%>
                 <%--<button class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign">Delete</span> --%>
