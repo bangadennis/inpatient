@@ -2,7 +2,11 @@ package org.openmrs.module.inpatient.web.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.inpatient.Admission;
+import org.openmrs.module.inpatient.Discharge;
+import org.openmrs.module.inpatient.Inpatient;
 import org.openmrs.module.inpatient.Ward;
 import org.openmrs.module.inpatient.api.WardService;
 import org.openmrs.web.WebConstants;
@@ -16,9 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by  banga on 5/27/15.
@@ -201,6 +203,27 @@ public class InpatientWardController {
 
 
         return "redirect:listwards.form";
+    }
+
+    @RequestMapping(value = "/module/inpatient/wardPatient.form", method = RequestMethod.GET)
+    public void wardPatient(ModelMap model,@RequestParam(value ="id", required = true)Integer wardId ) {
+        WardService wardService = Context.getService(WardService.class);
+        Ward ward=wardService.getWard(wardId);
+        Set<Admission> admissionSet=ward.getAdmissions();
+        Discharge discharge=null;
+        List<Inpatient>inpatientList=new ArrayList<Inpatient>();
+        for(Admission adm:admissionSet)
+        {
+            discharge=adm.getDischarge();
+
+            if (discharge!=null)
+            {
+                inpatientList.add(adm.getInpatient());
+            }
+        }
+
+        model.addAttribute("patientList",inpatientList);
+
     }
 
 
