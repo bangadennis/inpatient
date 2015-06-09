@@ -234,6 +234,12 @@ public class  InpatientManageController {
 			Ward ward=wardService.getWard(wardId);
 			Inpatient inpatient=inpatientService.getInpatientbyIdentifier(inpatientId);
 			Patient patient=inpatient.getPatient();
+			//check if patient is alive
+			if(patient.getDead())
+			{
+				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Patient is Dead");
+				return "redirect:listInpatient.form";
+			}
 
 			Admission admission=new Admission();
 			admission.setAdmissionDate(admissionDate);
@@ -421,11 +427,13 @@ public class  InpatientManageController {
 			discharge.setCauseOfDeath(causeofdeath);
 			discharge.setAdmission(admission);
 
-			if(outcome=="D")
+			if(causeofdeath!=null)
 			{
 				Patient patient=admission.getInpatient().getPatient();
 				patient.setDead(true);
 				patient.setDeathDate(new Date());
+				Concept concept=Context.getConceptService().getConceptByUuid("e5678f1f-0de8-11e5-b470-a4badbd9b830");
+				patient.setCauseOfDeath(concept);
 				patientService.savePatient(patient);
 			}
 
