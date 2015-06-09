@@ -6,17 +6,12 @@
     (function ($) {
         $(document).ready(function() {
             $('#findpatient_table').dataTable({
-                "sDom": 'T<"clear">frtip',
-                "bSort":true,
-                "bPaginate":true,
-                "oTableTools": {
-//                    "aButtons":  ['pdf']
-                }
+                "sDom": 'T<"clear">frtip'
             });
 
 
             $('#patientSearch').keyup( function() {
-                if( this.value.length >2 ){
+                if( this.value.length >1 ){
 
                     DWRPatientService.findPatients(this.value, false, function(patients){
                         $("#data_table").dataTable().fnClearTable();
