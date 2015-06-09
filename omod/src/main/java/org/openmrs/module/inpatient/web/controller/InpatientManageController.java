@@ -16,12 +16,12 @@ package org.openmrs.module.inpatient.web.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.*;
+import org.openmrs.Concept;
+import org.openmrs.Encounter;
+import org.openmrs.Patient;;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.PatientService;
-import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
-import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.module.inpatient.Admission;
 import org.openmrs.module.inpatient.Discharge;
 import org.openmrs.module.inpatient.Inpatient;
@@ -30,19 +30,20 @@ import org.openmrs.module.inpatient.api.AdmissionService;
 import org.openmrs.module.inpatient.api.DischargeService;
 import org.openmrs.module.inpatient.api.InpatientService;
 import org.openmrs.module.inpatient.api.WardService;
-import org.openmrs.validator.PatientIdentifierValidator;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 /**
  * The main controller.
  * @author banga
@@ -127,7 +128,7 @@ public class  InpatientManageController {
 			encounter.setPatient(patient);
 			encounter.setEncounterDatetime(new Date());
 			//Getting Inpatient Registration encounter type
-			encounter.setEncounterType(encounterService.getEncounterTypeByUuid("384a59c5-f744-4e1e-8bf2-08de6237b036"));
+			encounter.setEncounterType(encounterService.getEncounterTypeByUuid("ed30255d-4b6b-4d4a-a951-6e864cc17ecd"));
 
 			//save encounter
 			encounterService.saveEncounter(encounter);
@@ -145,10 +146,10 @@ public class  InpatientManageController {
 		catch (Exception ex)
 		{
 			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Error adding Inpatient");
-			return "redirect:listInpatient.form";
+			return "redirect:inpatient.form?id="+patientId;
 		}
 
-		return "redirect:listInpatient.form";
+		return "redirect:processRequest.form?id="+patientId;
 
 	}
 
@@ -262,21 +263,8 @@ public class  InpatientManageController {
 
 				if (addAdmission) {
 
-					VisitService
 					admissionService.saveAdmission(admission);
-					//VisitService
-
-//					VisitService visitService=Context.get
-//					Visit visit=new Visit();
-//					visit.setPatient(patient);
-//					visit.setLocation(Context.getLocationService().getDefaultLocation());
-//					visit.setStartDatetime(new Date());
-//					visit.setVisitType(visitService.getVisitTypeByUuid("73bbb069-9781-4afc-a9d1-54b6b2270e02"));
-//					//concept for inpatient care
-//					Concept concept=Context.getConceptService().getConceptByUuid("a93e71c2-ffa4-11e4-bdde-a4badbd9b830");
-//					visit.setIndication(concept);
-//
-//
+					//EncounterService
 //					EncounterService encounterService=Context.getEncounterService();
 //					Encounter encounter=new Encounter();
 //					encounter.setLocation(Context.getLocationService().getDefaultLocation());
@@ -284,10 +272,7 @@ public class  InpatientManageController {
 //					encounter.setEncounterDatetime(new Date());
 //					//Getting Inpatient Registration encounter type
 //					encounter.setEncounterType(encounterService.getEncounterTypeByUuid("384a59c5-f744-4e1e-8bf2-08de6237b036"));
-//					//saving visit
-//					visit.addEncounter(encounter);
-//					visitService.saveVisit(visit);
-
+//					encounterService.saveEncounter(encounter);
 
 					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Admission details Successfully");
 				} else {
@@ -297,7 +282,7 @@ public class  InpatientManageController {
 			else
 			{
 				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Selected Ward is full");
-				return "redirect:listInpatient.form";
+				return "redirect:listInpatients.form";
 
 			}
 
@@ -309,7 +294,8 @@ public class  InpatientManageController {
 
 		}
 
-		return "redirect:listadmission.form";
+
+		return "redirect:listInpatient.form";
 
 	}
 
@@ -423,6 +409,7 @@ public class  InpatientManageController {
 
 			Discharge discharge=new Discharge();
 			Admission admission=admissionService.getAdmission(dischargeId);
+			PatientService patientService=Context.getPatientService();
 
 			discharge.setDischargeId(dischargeId);
 			discharge.setDischargeDate(dischargeDate);
@@ -433,6 +420,14 @@ public class  InpatientManageController {
 			discharge.setRemarks(remarks);
 			discharge.setCauseOfDeath(causeofdeath);
 			discharge.setAdmission(admission);
+
+			if(outcome=="D")
+			{
+				Patient patient=admission.getInpatient().getPatient();
+				patient.setDead(true);
+				patient.setDeathDate(new Date());
+				patientService.savePatient(patient);
+			}
 
 			dischargeService.saveDischarge(discharge);
 
