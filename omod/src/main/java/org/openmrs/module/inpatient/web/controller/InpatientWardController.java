@@ -2,12 +2,8 @@ package org.openmrs.module.inpatient.web.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.api.VisitService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.inpatient.Admission;
-import org.openmrs.module.inpatient.Inpatient;
 import org.openmrs.module.inpatient.Ward;
-import org.openmrs.module.inpatient.api.AdmissionService;
 import org.openmrs.module.inpatient.api.WardService;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
@@ -23,7 +19,6 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by  banga on 5/27/15.
