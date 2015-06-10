@@ -159,43 +159,12 @@ public class  InpatientManageController {
 	public void listInpatient(ModelMap model) {
 		InpatientService inpatientService=Context.getService(InpatientService.class);
 		List<Inpatient>inpatientList=inpatientService.getAllInpatient();
-		List<Inpatient> inpatients=new ArrayList<Inpatient>();
-
-		for(Inpatient inpatient:inpatientList)
-		{
-			Set<Admission>admissions=inpatient.getAdmissions();
-			if(admissions==null)
-			{
-				inpatients.add(inpatient);
-			}
-			else
-			{
-				Boolean addAdmission=true;
-				for(Admission adm: admissions)
-				{
-					Discharge discharge=adm.getDischarge();
-
-					if(discharge==null){
-						addAdmission=false;
-						break;
-					}
-
-				}
-
-				if(addAdmission)
-				{
-					inpatients.add(inpatient);
-				}
-
-			}
-
-		}
 
 		WardService wardService=Context.getService(WardService.class);
 
 		model.addAttribute("wards", wardService.getAllWards());
 
-		model.addAttribute("inpatientList", inpatients);
+		model.addAttribute("inpatientList", inpatientList);
 
 	}
 
