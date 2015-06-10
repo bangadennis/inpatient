@@ -7,7 +7,13 @@
 
         $(document).ready(function() {
 
-            $('#inpatient_table').dataTable();
+            $('#inpatient_table').dataTable({
+                "sDom": '<"top"fl>rt<"bottom"p><"clear">'
+            });
+
+            $(".clickable-row").click(function() {
+                window.document.location = $(this).data("href");
+            });
 
             $('#admissionDate').datetimepicker();
 
@@ -32,36 +38,38 @@
         <th>Inpatient ID</th>
         <th>Phone Number</th>
         <th>Given Name</th>
+        <th>Middle Name</th>
         <th>Family Name</th>
-        <th>Delete</th>
-        <th>Admit</th>
+        <%--<th>Delete</th>--%>
+        <%--<th>Admit</th>--%>
     </tr>
     </thead>
     <tbody>
     <c:set var="count" value="0" scope="page" />
     <c:forEach var="inpatient" items="${inpatientList}" varStatus="status">
         <c:set var="count" value="${count+1}" scope="page" />
-        <tr>
 
-            <td><a href="<c:url value='/module/inpatient/inpatientDashboardForm.form?id=${inpatient.outPatientId}' />">
-            ${count}</a></td>
+        <tr class='clickable-row'
+            data-href="<c:url value='/module/inpatient/inpatientDashboardForm.form?id=${inpatient.outPatientId}' />">
+            <td>${count}</td>
             <td>${inpatient.inpatientId}</td>
             <td>${inpatient.phoneNumber}</td>
             <td>${inpatient.patient.givenName}</td>
+            <td>${inpatient.patient.middleName}</td>
             <td>${inpatient.patient.familyName}</td>
 
-            <td><a href="<c:url value='/module/inpatient/deleteInpatient.form?id=${inpatient.outPatientId}' />">
-                <button class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign">Delete
-            </span> </button>
-            </a> </td>
-            <td>
-                <button type="button" class="btn btn-success" data-toggle="modal"  data-id="${inpatient.outPatientId}" data-target="#admissionModal">
-                    <i class="fa fa-plus-square"></i> Admit</button>
-                <%--<a href="<c:url value='/module/inpatient/admission.form?id=${inpatient.inpatientId}' />">--%>
-                <%--<button class="btn btn-success"><span class="glyphicon glyphicon-edit">Admit</span></button>--%>
-            <%--</a> --%>
+            <%--<td><a href="<c:url value='/module/inpatient/deleteInpatient.form?id=${inpatient.outPatientId}' />">--%>
+                <%--<button class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign">Delete--%>
+            <%--</span> </button>--%>
+            <%--</a> </td>--%>
+            <%--<td>--%>
+                <%--<button type="button" class="btn btn-success" data-toggle="modal"  data-id="${inpatient.outPatientId}" data-target="#admissionModal">--%>
+                    <%--<i class="fa fa-plus-square"></i> Admit</button>--%>
+                <%--&lt;%&ndash;<a href="<c:url value='/module/inpatient/admission.form?id=${inpatient.inpatientId}' />">&ndash;%&gt;--%>
+                <%--&lt;%&ndash;<button class="btn btn-success"><span class="glyphicon glyphicon-edit">Admit</span></button>&ndash;%&gt;--%>
+            <%--&lt;%&ndash;</a> &ndash;%&gt;--%>
 
-            </td>
+            <%--</td>--%>
         </tr>
     </c:forEach>
     </tbody>
