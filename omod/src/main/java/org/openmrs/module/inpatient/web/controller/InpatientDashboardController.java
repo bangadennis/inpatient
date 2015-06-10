@@ -9,15 +9,13 @@ import java.util.List;
 import java.util.Set;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Concept;
-import org.openmrs.Obs;
-import org.openmrs.Patient;
-import org.openmrs.PatientIdentifier;
-import org.openmrs.PersonAddress;
-import org.openmrs.PersonName;
+import org.openmrs.*;
+import org.openmrs.api.EncounterService;
+import org.openmrs.api.LocationService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.inpatient.Admission;
@@ -28,12 +26,14 @@ import org.openmrs.module.inpatient.api.AdmissionService;
 import org.openmrs.module.inpatient.api.InpatientService;
 import org.openmrs.module.inpatient.api.WardService;
 import org.openmrs.module.web.extension.provider.Link;
+import org.openmrs.web.WebConstants;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
 
 @Controller
 public class InpatientDashboardController {
@@ -107,7 +107,6 @@ public class InpatientDashboardController {
 
 
         map.put("wards", wardList);
-
         //Admissions
         AdmissionService admissionService=Context.getService(AdmissionService.class);
         Set<Admission> admissionList=inpatient.getAdmissions();
@@ -129,9 +128,23 @@ public class InpatientDashboardController {
         map.put("admission", admission);
         map.put("admissionList", admissions);
 
+        //Location details
+        List<Location> locationList=Context.getLocationService().getAllLocations();
+        map.put("locationList", locationList);
+
+        //Encounter Types
+        List<EncounterType>encounterTypeList=Context.getEncounterService().getAllEncounterTypes();
+        map.put("encounterTypeList", encounterTypeList);
+
+//        Listing Encounters
+        EncounterService encounterService=Context.getEncounterService();
+        List<Encounter>encounterList=encounterService.getEncountersByPatient(inpatient.getPatient());
+        map.put("encounterList", encounterList);
+
 
     }
 
+    //process Search request
     @RequestMapping(value = "/module/inpatient/processRequest.form", method = RequestMethod.GET)
     public String processRequest(ModelMap model,
                                  @RequestParam(required = true, value = "id") Integer id) {
@@ -152,6 +165,50 @@ public class InpatientDashboardController {
         }
 
         return "redirect:inpatientDashboardForm.form?id="+id;
+    }
+
+
+//    Save Encounter
+    @RequestMapping(value = "/module/inpatient/saveEncounter.form", method = RequestMethod.POST)
+    public String saveEncounter(ModelMap model, WebRequest webRequest, HttpSession httpSession,
+                              @RequestParam(value = "patient_id", required=true)Integer patientId,
+                              @RequestParam(value = "encounter_date", required=true)Date encounterDate,
+                              @RequestParam(value = "encounter_type", required=true)Integer encounterId,
+                              @RequestParam(value = "location", required=true)Integer locationId,
+                              @RequestParam(value = "provider_role", required=true)String providerRole) {
+
+       try {
+
+           EncounterService encounterService=Context.getEncounterService();
+           InpatientService inpatientService=Context.getService(InpatientService.class);
+           Inpatient inpatient=inpatientService.getInpatient(patientId);
+
+           Encounter encounter=new Encounter();
+           encounter.setPatient(inpatient.getPatient());
+           encounter.setLocation(Context.getLocationService().getLocation(locationId));
+           encounter.setEncounterDatetime(encounterDate);
+           encounter.setEncounterType(encounterService.getEncounterType(encounterId));
+
+           encounterService.saveEncounter(encounter);
+           httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Encounter  Added");
+
+       }
+        catch (Exception ex)
+        {
+            httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Error  Adding Encounter");
+            return "redirect:inpatientDashboardForm.form?id="+patientId;
+
+        }
+
+        return "redirect:inpatientDashboardForm.form?id="+patientId;
+    }
+
+    @RequestMapping(value = "/module/inpatient/obs.form", method = RequestMethod.GET)
+    public void showObsForm(ModelMap model,
+                            @RequestParam(value = "id", required = true)Integer encounterId) {
+
+        model.addAttribute("encounterId",encounterId);
+
     }
 
 }
