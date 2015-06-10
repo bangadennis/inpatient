@@ -1,3 +1,4 @@
+
 /**
  * The contents of this file are subject to the OpenMRS Public License
  * Version 1.0 (the "License"); you may not use this file except in
@@ -15,11 +16,12 @@ package org.openmrs.module.inpatient.web.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Patient;
-import org.openmrs.PatientIdentifier;
+import org.openmrs.Concept;
+import org.openmrs.Encounter;
+import org.openmrs.Patient;;
+import org.openmrs.api.EncounterService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
-import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.module.inpatient.Admission;
 import org.openmrs.module.inpatient.Discharge;
 import org.openmrs.module.inpatient.Inpatient;
@@ -28,20 +30,20 @@ import org.openmrs.module.inpatient.api.AdmissionService;
 import org.openmrs.module.inpatient.api.DischargeService;
 import org.openmrs.module.inpatient.api.InpatientService;
 import org.openmrs.module.inpatient.api.WardService;
-import org.openmrs.validator.PatientIdentifierValidator;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 /**
  * The main controller.
  * @author banga
@@ -119,6 +121,18 @@ public class  InpatientManageController {
 			PatientService patientService=Context.getPatientService();
 			Patient patient=patientService.getPatient(patientId);
 			//Saving the details
+			EncounterService encounterService=Context.getEncounterService();
+			//adding encounter details
+			Encounter encounter=new Encounter();
+			encounter.setLocation(Context.getLocationService().getDefaultLocation());
+			encounter.setPatient(patient);
+			encounter.setEncounterDatetime(new Date());
+			//Getting Inpatient Registration encounter type
+			encounter.setEncounterType(encounterService.getEncounterTypeByUuid("ed30255d-4b6b-4d4a-a951-6e864cc17ecd"));
+
+			//save encounter
+			encounterService.saveEncounter(encounter);
+
 
 			inpatient.setOutPatientId(patientId);
 			inpatient.setInpatientId(inpatientId);
@@ -132,10 +146,10 @@ public class  InpatientManageController {
 		catch (Exception ex)
 		{
 			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Error adding Inpatient");
-			return "redirect:listInpatient.form";
+			return "redirect:inpatient.form?id="+patientId;
 		}
 
-		return "redirect:listInpatient.form";
+		return "redirect:processRequest.form?id="+patientId;
 
 	}
 
@@ -202,13 +216,13 @@ public class  InpatientManageController {
 	//Save Admission Form
 	@RequestMapping(value = "/module/inpatient/saveAdmission.form", method = RequestMethod.POST)
 	public String saveAdmission(ModelMap model,HttpSession httpSession,WebRequest webRequest,
-							  @RequestParam(value = "inpatient_id", required = true)String inpatientId,
+							  @RequestParam(value = "inpatient_id", required = true)Integer patientId,
 							  @RequestParam(value = "admission_date", required = true)String admissionDate,
 							  @RequestParam(value = "hiv_status", required = true)String hivStatus,
 							  @RequestParam(value = "nutrition_status", required = true)String nutritionStatus,
 							  @RequestParam(value = "guardian", required = true)String guardian,
 							  @RequestParam(value = "referral_from", required = true)String referralFrom,
-							  @RequestParam(value = "status", required = true)Integer status,
+							  @RequestParam(value = "status", required = true)Integer hivIntervention,
 								@RequestParam(value = "ward_id", required = true)Integer wardId){
 
 		AdmissionService admissionService=Context.getService(AdmissionService.class);
@@ -218,7 +232,14 @@ public class  InpatientManageController {
 		try{
 
 			Ward ward=wardService.getWard(wardId);
-			Inpatient inpatient=inpatientService.getInpatientbyIdentifier(inpatientId);
+			Inpatient inpatient=inpatientService.getInpatient(patientId);
+			Patient patient=inpatient.getPatient();
+			//check if patient is alive
+			if(patient.getDead())
+			{
+				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Patient is Dead");
+				return "redirect:listInpatient.form";
+			}
 
 			Admission admission=new Admission();
 			admission.setAdmissionDate(admissionDate);
@@ -226,7 +247,7 @@ public class  InpatientManageController {
 			admission.setNutritionStatus(nutritionStatus);
 			admission.setGuardian(guardian);
 			admission.setReferralFrom(referralFrom);
-			admission.setStatus(status);
+			admission.setStatus(hivIntervention);
 
 			if(ward.getAvailableWardCapacity()>0) {
 				admission.setWard(ward);
@@ -246,10 +267,18 @@ public class  InpatientManageController {
 					}
 				}
 
-
 				if (addAdmission) {
 
 					admissionService.saveAdmission(admission);
+					//EncounterService
+//					EncounterService encounterService=Context.getEncounterService();
+//					Encounter encounter=new Encounter();
+//					encounter.setLocation(Context.getLocationService().getDefaultLocation());
+//					encounter.setPatient(patient);
+//					encounter.setEncounterDatetime(new Date());
+//					//Getting Inpatient Registration encounter type
+//					encounter.setEncounterType(encounterService.getEncounterTypeByUuid("384a59c5-f744-4e1e-8bf2-08de6237b036"));
+//					encounterService.saveEncounter(encounter);
 
 					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Admission details Successfully");
 				} else {
@@ -259,7 +288,7 @@ public class  InpatientManageController {
 			else
 			{
 				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Selected Ward is full");
-				return "redirect:listInpatient.form";
+				return "redirect:processRequest.form?id="+patientId;
 
 			}
 
@@ -267,11 +296,12 @@ public class  InpatientManageController {
 		catch (Exception ex)
 		{
 			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Failed to save Admission details");
-			return "redirect:listInpatient.form";
+			return "redirect:processRequest.form?id="+patientId;
 
 		}
 
-		return "redirect:listadmission.form";
+
+		return "redirect:processRequest.form?id="+patientId;
 
 	}
 
@@ -381,10 +411,13 @@ public class  InpatientManageController {
 		DischargeService dischargeService=Context.getService(DischargeService.class);
 		AdmissionService admissionService=Context.getService(AdmissionService.class);
 
+		Admission admission=admissionService.getAdmission(dischargeId);
+		int patientId=admission.getInpatient().getOutPatientId();
+
 		try{
 
 			Discharge discharge=new Discharge();
-			Admission admission=admissionService.getAdmission(dischargeId);
+			PatientService patientService=Context.getPatientService();
 
 			discharge.setDischargeId(dischargeId);
 			discharge.setDischargeDate(dischargeDate);
@@ -396,6 +429,16 @@ public class  InpatientManageController {
 			discharge.setCauseOfDeath(causeofdeath);
 			discharge.setAdmission(admission);
 
+			if(causeofdeath!=null)
+			{
+				Patient patient=admission.getInpatient().getPatient();
+				patient.setDead(true);
+				patient.setDeathDate(new Date());
+				Concept concept=Context.getConceptService().getConceptByUuid("e5678f1f-0de8-11e5-b470-a4badbd9b830");
+				patient.setCauseOfDeath(concept);
+				patientService.savePatient(patient);
+			}
+
 			dischargeService.saveDischarge(discharge);
 
 			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Discharge was Successfully");
@@ -404,11 +447,11 @@ public class  InpatientManageController {
 		catch (Exception ex)
 		{
 			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Failed to Discharge");
-			return "redirect:listadmission.form";
+			return "redirect:processRequest.form?id="+patientId;
 
 		}
 
-		return "redirect:listadmission.form";
+		return "redirect:processRequest.form?id="+patientId;
 
 	}
 
