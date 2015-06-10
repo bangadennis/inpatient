@@ -50,11 +50,37 @@
 	<li
 			<c:if test='<%= request.getRequestURI().contains("/listwards") %>'>class="active"</c:if> >
 		<a href="${pageContext.request.contextPath}/module/inpatient/listwards.form">
-			<spring:message code="List Wards" />
+			<spring:message code="Ward" />
 			<%--<i class="fa fa-list fa-5x"></i>--%>
 		</a>
 	</li>
-	
+
+	<li
+			<c:if test='<%= request.getRequestURI().contains("/listadmission") %>'>class="active"</c:if> >
+		<a href="${pageContext.request.contextPath}/module/inpatient/listadmission.form">
+			<spring:message code="Admission" />
+			<%--<i class="fa fa-list fa-5x"></i>--%>
+		</a>
+	</li>
+
+
+	<li
+			<c:if test='<%= request.getRequestURI().contains("/listdischarge") %>'>class="active"</c:if> >
+		<a href="${pageContext.request.contextPath}/module/inpatient/listdischarge.form">
+			<spring:message code="Discharge" />
+			<%--<i class="fa fa-list fa-5x"></i>--%>
+		</a>
+	</li>
+
+	<li
+			<c:if test='<%= request.getRequestURI().contains("/listInpatient") %>'>class="active"</c:if> >
+		<a href="${pageContext.request.contextPath}/module/inpatient/listInpatient.form">
+			<spring:message code="Inpatient" />
+			<%--<i class="fa fa-list fa-5x"></i>--%>
+		</a>
+	</li>
+
+
 	<!-- Add further links here -->
 
 </ul>
