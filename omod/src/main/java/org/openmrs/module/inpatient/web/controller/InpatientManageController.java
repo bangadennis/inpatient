@@ -242,6 +242,11 @@ public class  InpatientManageController {
 				return "redirect:listInpatient.form";
 			}
 
+			//condition for admissionDate
+			if(admissionDate==null)
+			{
+				Date date=new Date();
+			}
 			Admission admission=new Admission();
 			admission.setAdmissionDate(admissionDate);
 			admission.setHivStatus(hivStatus);
@@ -407,7 +412,7 @@ public class  InpatientManageController {
 								@RequestParam(value = "outcome", required = true)String outcome,
 								@RequestParam(value = "referral_to", required = false)String referralTo,
 								@RequestParam(value = "remarks", required = true)String remarks,
-								@RequestParam(value = "causeofdeath", required = false)String causeofdeath){
+								@RequestParam(value = "causeofdeath", required = true)String causeofdeath){
 
 		DischargeService dischargeService=Context.getService(DischargeService.class);
 		AdmissionService admissionService=Context.getService(AdmissionService.class);
@@ -430,7 +435,7 @@ public class  InpatientManageController {
 			discharge.setCauseOfDeath(causeofdeath);
 			discharge.setAdmission(admission);
 
-			if(causeofdeath!=null)
+			if(outcome.equals("D"))
 			{
 				Patient patient=admission.getInpatient().getPatient();
 				patient.setDead(true);
