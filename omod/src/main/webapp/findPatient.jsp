@@ -34,6 +34,7 @@
 
 
             $('#data_table').dataTable({
+                "sDom": '<"top">rt<"bottom"flp><"clear">',
                 "fnRowCallback": function (nRow, aData, iDisplayIndex) {
                     // Bind click event
                     $(nRow).click(function() {
@@ -42,8 +43,7 @@
                     });
                     return nRow;
                 },
-                "searching":false,
-                "pagination":false
+                "searching":false
             });
 
 
@@ -57,7 +57,10 @@
 <div class="form-group">
     <form class="col-md-5 form-horizontal">
         <label>Patient Search</label>
-        <input type="text" id="patientSearch" class="form-control" placeholder="Enter patient Name or Patient Identifier">
+        <div class="input-group margin-bottom-sm">
+            <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+            <input type="text" id="patientSearch" class="form-control" placeholder="Patient Name ">
+        </div>
     </form>
 </div>
 
@@ -66,7 +69,6 @@
 <table class="table table-condensed table-striped table-hover" id="data_table">
             <thead>
             <tr>
-
                 <th style="width:10%">ID</th>
                 <th style="width:10%">Given Name</th>
                 <th style="width:10%">Middle Name</th>
@@ -80,15 +82,15 @@
             </thead>
             <tbody>
 
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
+            <%--<tr>--%>
+                <%--<td></td>--%>
+                <%--<td></td>--%>
+                <%--<td></td>--%>
+                <%--<td></td>--%>
+                <%--<td></td>--%>
+                <%--<td></td>--%>
+                <%--<td></td>--%>
+            <%--</tr>--%>
             </tbody>
 </table>
 
