@@ -7,7 +7,9 @@
 
         $(document).ready(function() {
 
-            $('#ward_table').dataTable();
+            $('#ward_table').dataTable({
+                "dom": "<fl<t>ip>"
+            });
 
             $('#editModal').on('show.bs.modal', function(event) {
                 var btn = $(event.relatedTarget);

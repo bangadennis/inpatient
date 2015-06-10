@@ -39,6 +39,7 @@
                     <input type="number" name="capacity" class="form-control" value="${status.value}" size="35" required/>
                     <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
                 </spring:bind>
+                <br>
                 <input type="submit" class="btn btn-md btn-success" value="<openmrs:message code="Save"/>" name="save">
             </form>
         </div>

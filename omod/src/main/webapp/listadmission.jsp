@@ -8,7 +8,9 @@
     (function ($) {
         $(document).ready(function() {
 
-            $('#admission_table').dataTable();
+            $('#admission_table').dataTable({
+                "sDom": '<"top"f>rt<"bottom"lp><"clear">'
+            });
 
             $('#outcome_opt').change(function(){
                 var selection = $(this).val();

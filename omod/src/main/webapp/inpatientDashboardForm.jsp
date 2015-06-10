@@ -8,7 +8,9 @@
 
         $(document).ready(function() {
 
-            $('#admission_table').dataTable();
+            $('#admission_table').dataTable({
+                "sDom": '<"top">rt<"bottom"flp><"clear">'
+            });
 
             $('#admissionDate').datetimepicker();
 
@@ -105,9 +107,17 @@
                     <div role="tabpanel" class="tab-pane" id="admission">
 
                         <c:if test="${admission ==null }">
-                            <button type="button" class="btn btn-success" data-toggle="modal"  data-id="${inpatient.outPatientId}" data-target="#admissionModal">
+                            <c:if test="${inpatient.patient.dead==true}">
+                            <button type="button" class="btn btn-success"  disabled="disabled" data-toggle="modal"  data-id="${inpatient.outPatientId}" data-target="#admissionModal">
                                 <i class="fa fa-plus-square"></i> Admit</button>
+                            </c:if>
+                            <c:if test="${inpatient.patient.dead==false}">
+                                <button type="button" class="btn btn-success" data-toggle="modal"  data-id="${inpatient.outPatientId}" data-target="#admissionModal">
+                                    <i class="fa fa-plus-square"></i> Admit</button>
+                            </c:if>
                         </c:if>
+
+
 
                         <c:if test="${admission !=null }">
 

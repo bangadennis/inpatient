@@ -234,6 +234,7 @@ public class  InpatientManageController {
 			Ward ward=wardService.getWard(wardId);
 			Inpatient inpatient=inpatientService.getInpatient(patientId);
 			Patient patient=inpatient.getPatient();
+
 			//check if patient is alive
 			if(patient.getDead())
 			{
