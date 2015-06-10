@@ -28,10 +28,12 @@
                 {
                     case "D":
                         $('#causeofdeath_opt').show();
+                        $('#referral_to_opt').hide();
                         break;
 
                     default:
                         $('#causeofdeath_opt').hide();
+                        $('#referral_to_opt').show();
                         break;
                 }
             });
@@ -210,7 +212,7 @@
                             <div class="form-group">
                                 <label>Admission Date</label>
                                 <div class='input-group date' id='admissionDate'>
-                                    <input type='text' class="form-control" name="admission_date" />
+                                    <input type='text' class="form-control" name="admission_date" required />
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
@@ -374,10 +376,10 @@
 
                             <div class="form-group" id="causeofdeath_opt" style="display:none;">
                                 <label>Cause of Death</label>
-                                <input type="Text" class="form-control" name="causeofdeath"   />
+                                <input type="Text" class="form-control" name="causeofdeath"  value="" />
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" id="referral_to_opt">
                                 <label>Referral To</label>
                                 <select class="form-control" name="referral_to">
                                     <option value="0">None</option>
