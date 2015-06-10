@@ -1,1 +1,2 @@
-#Inpatient Module OpenMRS
+#Inpatient Care-OpenMRS Module
+
