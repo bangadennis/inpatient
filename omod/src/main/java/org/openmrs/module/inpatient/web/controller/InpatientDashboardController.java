@@ -23,6 +23,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.inpatient.Admission;
 import org.openmrs.module.inpatient.Discharge;
 import org.openmrs.module.inpatient.Inpatient;
+import org.openmrs.module.inpatient.Ward;
 import org.openmrs.module.inpatient.api.AdmissionService;
 import org.openmrs.module.inpatient.api.InpatientService;
 import org.openmrs.module.inpatient.api.WardService;
@@ -63,7 +64,49 @@ public class InpatientDashboardController {
         log.debug("inpatient: '" + inpatient + "'");
         map.put("inpatient", inpatient);
         WardService wardService=Context.getService(WardService.class);
-        map.put("wards", wardService.getAllWards());
+
+        List<Ward>wards=wardService.getAllWards();
+        List<Ward>wardList=new ArrayList<Ward>();
+        String gender=inpatient.getPatient().getGender();
+        for(Ward ward:wards)
+        {
+            if(gender.equals("M"))
+            {
+                if(ward.getDescription().equals("Male"))
+                {
+                    wardList.add(ward);
+                }
+                if(ward.getDescription().equals("Special"))
+                {
+                    wardList.add(ward);
+                }
+                if(ward.getDescription().equals("Child"))
+                {
+                    wardList.add(ward);
+                }
+
+            }
+
+            if(gender.equals("F"))
+            {
+                if(ward.getDescription().equals("Female"))
+                {
+                    wardList.add(ward);
+                }
+                if(ward.getDescription().equals("Special"))
+                {
+                    wardList.add(ward);
+                }
+                if(ward.getDescription().equals("Child"))
+                {
+                    wardList.add(ward);
+                }
+
+            }
+        }
+
+
+        map.put("wards", wardList);
 
         //Admissions
         AdmissionService admissionService=Context.getService(AdmissionService.class);
