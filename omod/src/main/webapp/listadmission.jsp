@@ -193,7 +193,7 @@
 
                                 <div class="form-group">
                                     <label>Remarks</label>
-                                    <input type="Text" class="form-control" name="remarks"   />
+                                    <input type="Text" class="form-control" name="remarks" value="" />
                                 </div>
 
                                 <div class="form-group">
