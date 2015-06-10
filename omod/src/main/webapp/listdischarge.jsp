@@ -9,7 +9,9 @@
 
         $(document).ready(function() {
 
-            $('#discharge_table').dataTable();
+            $('#discharge_table').dataTable({
+                "dom": "<fl<t>ip>"
+            });
 
         });
 
