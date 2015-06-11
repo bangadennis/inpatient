@@ -29,9 +29,9 @@
                 <br>
                 <spring:bind path="ward.description">
                     <select name="description" class="form-control" >
-                        <option value="Child">Child</option>
-                        <option value="Male">Mature Male</option>
-                        <option value="Female">Mature Female</option>
+                        <option value="Minor">Minor</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
                         <option value="Special">Special</option>
                     </select>
                     <%--<input type="text" name="description" class="form-control" value="${status.value}" size="35" required/>--%>
