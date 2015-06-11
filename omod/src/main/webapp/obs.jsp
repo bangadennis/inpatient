@@ -424,17 +424,17 @@
     <div class="panel-body">
         <table class="table table-striped">
             <thead>
-            <th>Observation Datetime</th>
-            <th>Observation Name</th>
-            <th>Id</th>
+            <th>Observation Item</th>
+            <th>Observation Value</th>
+            <th>Datetime</th>
             </thead>
 
             <tbody>
             <c:forEach items="${obsList}" var="obsValue">
             <tr>
-                <td>${obsValue.obsDatetime}</td>
                 <td>${obsValue.concept.name}</td>
-                <td>${obsValue.concept}</td>
+                <td>${obsValue.valueNumeric}</td>
+                <td>${obsValue.obsDatetime}</td>
             </tr>
             </c:forEach>
             </tbody>
