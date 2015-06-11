@@ -8,8 +8,8 @@
 
         $(document).ready(function() {
 
-            $('#admission_table').dataTable({
-                "sDom": '<"top">rt<"bottom"flp><"clear">'
+            $('#admission_table1').dataTable({
+                "sDom": '<"top"f>rt<"bottom"lp><"clear">'
             });
 
             $('#admissionDate').datetimepicker();
@@ -102,15 +102,15 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active"><a href="#overview" aria-controls="home" role="tab" data-toggle="tab">Overview</a></li>
-                    <li role="presentation"><a href="#admission" aria-controls="admission" role="tab" data-toggle="tab">Admission</a></li>
+                    <li role="presentation"><a href="#admission" aria-controls="admission" role="tab" data-toggle="tab">Current Admission</a></li>
                     <li role="presentation"><a href="#discharge" aria-controls="discharge" role="tab" data-toggle="tab">Past Admissions</a></li>
-                    <li role="presentation"><a href="#orders" aria-controls="orders" role="tab" data-toggle="tab">Orders</a></li>
+                    <li role="presentation"><a href="#orders" aria-controls="orders" role="tab" data-toggle="tab">Demographics</a></li>
                 </ul>
 
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="overview">
-                        overview
+                        Patient Details Overview
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="admission">
@@ -129,14 +129,14 @@
 
                         <c:if test="${admission !=null }">
 
-                            <div role="tabpanel">
+                            <div role="container">
 
                                 <!-- Nav tabs -->
                                 <ul class="nav nav-pills">
-                                    <li r class="active"><a href="#home"  data-toggle="pill">Add Encounters</a></li>
-                                    <li><a href="#profile"  data-toggle="pill">List Encounters</a></li>
-                                    <li><button type="button" class="btn btn-info" data-toggle="modal"  data-id="${admission.admissionId}" data-target="#dischargeModal">
-                                        <i class="fa fa-check-square-o"></i>Discharge</button></li>
+                                    <li r class="active"><a data-toggle="pill" href="#home" >Add Encounters</a></li>
+                                    <li><a  data-toggle="pill" href="#profile">List Encounters</a></li>
+                                    <li><a  data-toggle="modal" href=""  data-id="${admission.admissionId}" data-target="#dischargeModal">
+                                        <i class="fa fa-check-square-o"></i>Discharge</a></li>
                                 </ul>
 
                                 <!-- Tab panes -->
@@ -203,7 +203,7 @@
                     <div role="tabpanel" class="tab-pane" id="discharge">
                         <div class="col-md-10 col-offset-md-1">
                             <h3>Admissions and Discharges</h3>
-                            <table class="table table-striped table-responsive table-hover" id="admission_table">
+                            <table class="table table-striped table-responsive table-hover" id="admission_table1">
                             <thead>
                             <tr>
                                 <th>#</th>
@@ -236,7 +236,30 @@
 
 
                     <div role="tabpanel" class="tab-pane" id="orders">
-                        Orders
+                        <div class="">
+                            <table class="table table-striped">
+                                <thead>
+                                <th>Address </th>
+                                <th>Address 2 </th>
+                                <th>City/Village </th>
+                                <th>County </th>
+                                <th>Country </th>
+                                <th>Postal Code </th>
+
+                                </thead>
+
+                                <tbody>
+                                <tr>
+                                    <td>${inpatient.patient.personAddress.address1}</td>
+                                    <td>${inpatient.patient.personAddress.address2}</td>
+                                    <td>${inpatient.patient.personAddress.cityVillage}</td>
+                                    <td>${inpatient.patient.personAddress.stateProvince}</td>
+                                    <td>${inpatient.patient.personAddress.country}</td>
+                                    <td>${inpatient.patient.personAddress.postalCode}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -362,15 +385,15 @@
                     <div class="text-center">
                         <h4>Admission/Discharge Details</h4>
                         <hr/>
-                        <p>Admission Date:${admission.admissionDate}</p>
-                        <p>Discharge Date:${admission.discharge.dischargeDate}</p>
-                        <p>Hiv Status: ${admission.hivStatus}</p>
-                        <p>Nutrition: Status${admission.nutritionStatus}</p>
-                        <p>Ward Name: ${admission.ward.wardName}</p>
-                        <p>Guardian: ${admission.guardian}</p>
-                        <p>Referral To:${admission.discharge.referralTo}</p>
-                        <p>Referral From:${admission.referralFrom}</p>
-                        <p>Discharge Remarks:${admission.discharge.remarks}</p>
+                        <p>Admission Date:&nbps;${admission.admissionDate}</p>
+                        <p>Discharge Date:&nbps;${admission.discharge.dischargeDate}</p>
+                        <p>Hiv Status: &nbps;${admission.hivStatus}</p>
+                        <p>Nutrition Status:&nbps;${admission.nutritionStatus}</p>
+                        <p>Ward Name:&nbps;${admission.ward.wardName}</p>
+                        <p>Guardian: &nbps;${admission.guardian}</p>
+                        <p>Referral To:&nbps;${admission.discharge.referralTo}</p>
+                        <p>Referral From:&nbps;${admission.referralFrom}</p>
+                        <p>Discharge Remarks:&nbps;${admission.discharge.remarks}</p>
 
                     </div>
 
@@ -509,14 +532,14 @@
                                         </select>
                             </div>
 
-                            <div class="form-group">
-                                <label> Provider Role</label>
-                                <select name="provider_role" class="form-control"  required>
-                                    <option value="Unkown">Unkown</option>
-                                    <option value="Nurse">Nurse</option>
-                                    <option value="Doctor">Doctor</option>
-                                </select>
-                            </div>
+                            <%--<div class="form-group">--%>
+                                <%--<label> Provider Role</label>--%>
+                                <%--<select name="provider_role" class="form-control"  required>--%>
+                                    <%--<option value="Unkown">Unkown</option>--%>
+                                    <%--<option value="Nurse">Nurse</option>--%>
+                                    <%--<option value="Doctor">Doctor</option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
 
                             <div class="form-group">
                                         <button type="submit" class="btn btn-success">Submit</button>
