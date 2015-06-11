@@ -8,11 +8,13 @@
 
         $(document).ready(function() {
 
-            $('#admission_table').dataTable({
-                "sDom": '<"top">rt<"bottom"flp><"clear">'
+            $('#admission_table1').dataTable({
+                "sDom": '<"top"f>rt<"bottom"lp><"clear">'
             });
 
             $('#admissionDate').datetimepicker();
+
+            $('#encountertime').datetimepicker();
 
 
             $('#admissionModal').on('show.bs.modal', function(event) {
@@ -28,10 +30,12 @@
                 {
                     case "D":
                         $('#causeofdeath_opt').show();
+                        $('#referral_to_opt').hide();
                         break;
 
                     default:
                         $('#causeofdeath_opt').hide();
+                        $('#referral_to_opt').show();
                         break;
                 }
             });
@@ -41,6 +45,12 @@
                 var btn = $(event.relatedTarget);
                 var id = btn.data('id');
                 $("#dischargeId").val(id);
+            });
+
+            $('#encounterModal').on('show.bs.modal', function(event) {
+                var btn = $(event.relatedTarget);
+                var id = btn.data('id');
+                $("#patientId").val(id);
             });
 
 
@@ -76,7 +86,7 @@
                  ${inpatient.patient.givenName}&nbsp;${inpatient.patient.middleName}
                     &nbsp;${inpatient.patient.familyName}
             </h3>
-            <h4 class="pull-right">Outpatient ID-${inpatient.patient.patientId}&nbsp;
+            <h4 class="pull-right">Outpatient ID-${patientIdentifier}&nbsp;
                 Inpatient ID-${inpatient.inpatientId}
             </h4>
 
@@ -92,17 +102,16 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active"><a href="#overview" aria-controls="home" role="tab" data-toggle="tab">Overview</a></li>
-                    <li role="presentation"><a href="#admission" aria-controls="admission" role="tab" data-toggle="tab">Admission</a></li>
+                    <li role="presentation"><a href="#admission" aria-controls="admission" role="tab" data-toggle="tab">Current Admission</a></li>
                     <li role="presentation"><a href="#discharge" aria-controls="discharge" role="tab" data-toggle="tab">Past Admissions</a></li>
-                    <li role="presentation"><a href="#orders" aria-controls="orders" role="tab" data-toggle="tab">Orders</a></li>
+                    <li role="presentation"><a href="#orders" aria-controls="orders" role="tab" data-toggle="tab">Demographics</a></li>
                 </ul>
 
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="overview">
-                        overview
+                        Patient Details Overview
                     </div>
-
 
                     <div role="tabpanel" class="tab-pane" id="admission">
 
@@ -118,25 +127,71 @@
                         </c:if>
 
 
-
                         <c:if test="${admission !=null }">
 
-                            <div role="tabpanel">
+                            <div role="container">
 
                                 <!-- Nav tabs -->
                                 <ul class="nav nav-pills">
-                                    <li r class="active"><a href="#home"  data-toggle="pill">Add Encounters</a></li>
-                                    <li><a href="#profile"  data-toggle="pill">List Encounters</a></li>
-                                    <li><button type="button" class="btn btn-info" data-toggle="modal"  data-id="${admission.admissionId}" data-target="#dischargeModal">
-                                        <i class="fa fa-check-square-o"></i>Discharge</button></li>
+                                    <li r class="active"><a data-toggle="pill" href="#home" >Add Encounters</a></li>
+                                    <li><a  data-toggle="pill" href="#profile">List Encounters</a></li>
+                                    <li><a  data-toggle="modal" href=""  data-id="${admission.admissionId}" data-target="#dischargeModal">
+                                        <i class="fa fa-check-square-o"></i>Discharge</a></li>
                                 </ul>
 
                                 <!-- Tab panes -->
                                 <div class="tab-content">
+                                    <%--Add Encounter--%>
                                     <div role="tabpanel" class="tab-pane active" id="home">
-                                        <button class="btn btn-success">Add Encounter</button>
+                                        <div>
+                                            <br>
+                                            <br>
+                                            <button class="btn btn-success btn-sm" data-toggle="modal"  data-id="${inpatient.outPatientId}"
+                                                    data-target="#encounterModal">
+                                                <i class="fa fa-plus-square"></i>Encounter</button>
+                                        </div>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane" id="profile">View Encounters</div>
+
+                                    <div role="tabpanel" class="tab-pane" id="profile">
+
+                                        <div class="col-md-10 col-offset-md-1">
+                                            <h3>Encounters</h3>
+                                            <table class="table table-striped table-responsive table-hover" id="admission_table">
+                                                <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <td>Encounter Date</td>
+                                                    <td>Encounter Type</td>
+                                                    <th>Location</th>
+                                                    <th>View</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <c:set var="count" value="0" scope="page" />
+                                                <c:forEach var="encounter" items="${encounterList}" varStatus="status">
+                                                    <tr>
+                                                        <c:set var="count" value="${count + 1}" scope="page"/>
+                                                        <td>${count}</td>
+                                                        <td>${encounter.encounterDatetime}</td>
+                                                        <td>${encounter.encounterType.name}</td>
+                                                        <td>${encounter.location.name}</td>
+                                                        <!-- Button trigger modal -->
+                                                        <td>
+                                                            <a href="<c:url value='/module/inpatient/obs.form?id=${encounter.encounterId}' />" >
+                                                                <i class="fa fa-plus-square"></i>Obs
+                                                            </a>
+                                                        </td>
+                                                        <%--<td> <button type="button" class="btn btn-info" data-toggle="modal" data-target="#viewDischargeModal_${count}">--%>
+                                                            <%--<i class="fa fa-plus-square"></i>View--%>
+                                                        <%--</button></td>--%>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+
                                 </div>
 
                             </div>
@@ -148,7 +203,7 @@
                     <div role="tabpanel" class="tab-pane" id="discharge">
                         <div class="col-md-10 col-offset-md-1">
                             <h3>Admissions and Discharges</h3>
-                            <table class="table table-striped table-responsive table-hover" id="admission_table">
+                            <table class="table table-striped table-responsive table-hover" id="admission_table1">
                             <thead>
                             <tr>
                                 <th>#</th>
@@ -178,8 +233,33 @@
                         </div>
 
                     </div>
+
+
                     <div role="tabpanel" class="tab-pane" id="orders">
-                        Orders
+                        <div class="">
+                            <table class="table table-striped">
+                                <thead>
+                                <th>Address </th>
+                                <th>Address 2 </th>
+                                <th>City/Village </th>
+                                <th>County </th>
+                                <th>Country </th>
+                                <th>Postal Code </th>
+
+                                </thead>
+
+                                <tbody>
+                                <tr>
+                                    <td>${inpatient.patient.personAddress.address1}</td>
+                                    <td>${inpatient.patient.personAddress.address2}</td>
+                                    <td>${inpatient.patient.personAddress.cityVillage}</td>
+                                    <td>${inpatient.patient.personAddress.stateProvince}</td>
+                                    <td>${inpatient.patient.personAddress.country}</td>
+                                    <td>${inpatient.patient.personAddress.postalCode}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -210,7 +290,7 @@
                             <div class="form-group">
                                 <label>Admission Date</label>
                                 <div class='input-group date' id='admissionDate'>
-                                    <input type='text' class="form-control" name="admission_date" />
+                                    <input type='text' class="form-control" name="admission_date" required />
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
@@ -305,15 +385,15 @@
                     <div class="text-center">
                         <h4>Admission/Discharge Details</h4>
                         <hr/>
-                        <p>Admission Date:${admission.admissionDate}</p>
-                        <p>Discharge Date:${admission.discharge.dischargeDate}</p>
-                        <p>Hiv Status: ${admission.hivStatus}</p>
-                        <p>Nutrition: Status${admission.nutritionStatus}</p>
-                        <p>Ward Name: ${admission.ward.wardName}</p>
-                        <p>Guardian: ${admission.guardian}</p>
-                        <p>Referral To:${admission.discharge.referralTo}</p>
-                        <p>Referral From:${admission.referralFrom}</p>
-                        <p>Discharge Remarks:${admission.discharge.remarks}</p>
+                        <p>Admission Date:&nbps;${admission.admissionDate}</p>
+                        <p>Discharge Date:&nbps;${admission.discharge.dischargeDate}</p>
+                        <p>Hiv Status: &nbps;${admission.hivStatus}</p>
+                        <p>Nutrition Status:&nbps;${admission.nutritionStatus}</p>
+                        <p>Ward Name:&nbps;${admission.ward.wardName}</p>
+                        <p>Guardian: &nbps;${admission.guardian}</p>
+                        <p>Referral To:&nbps;${admission.discharge.referralTo}</p>
+                        <p>Referral From:&nbps;${admission.referralFrom}</p>
+                        <p>Discharge Remarks:&nbps;${admission.discharge.remarks}</p>
 
                     </div>
 
@@ -327,6 +407,7 @@
     </div>
 </c:forEach>
 
+</div>
 
 <div class="modal fade" id="dischargeModal" tabindex="-1" role="dialog" aria-labelledby="dischargeModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -374,10 +455,10 @@
 
                             <div class="form-group" id="causeofdeath_opt" style="display:none;">
                                 <label>Cause of Death</label>
-                                <input type="Text" class="form-control" name="causeofdeath"   />
+                                <input type="Text" class="form-control" name="causeofdeath"  value="" />
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" id="referral_to_opt">
                                 <label>Referral To</label>
                                 <select class="form-control" name="referral_to">
                                     <option value="0">None</option>
@@ -406,4 +487,71 @@
             <%--</div>--%>
         </div>
     </div>
+</div>
+        <%--Encounter Modal--%>
+<div class="modal fade" id="encounterModal" tabindex="-1" role="dialog" aria-labelledby="encounterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="encounterModalLabel">Add Encounter </h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-offset-2 col-md-8">
+                        <form class="form-horizontal" method="post"  action="<c:url value='/module/inpatient/saveEncounter.form' />">
+
+                            <input id="patientId" type="hidden" class="form-control" name="patient_id"  required />
+
+                            <div class="form-group">
+                                <label>Encounter Date</label>
+                                <div class='input-group date' id='encountertime'>
+                                    <input type='text' class="form-control" name="encounter_date"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Encounter Type</label>
+                                <select name="encounter_type" class="form-control"  required>
+                                    <c:forEach var="type" items="${encounterTypeList}">
+                                        <option value="${type.encounterTypeId}">${type.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                        <label> Location</label>
+                                        <select name="location" class="form-control"  required>
+                                            <c:forEach var="location" items="${locationList}">
+                                                <option value="${location.locationId}">${location.name}</option>
+                                            </c:forEach>
+                                        </select>
+                            </div>
+
+                            <%--<div class="form-group">--%>
+                                <%--<label> Provider Role</label>--%>
+                                <%--<select name="provider_role" class="form-control"  required>--%>
+                                    <%--<option value="Unkown">Unkown</option>--%>
+                                    <%--<option value="Nurse">Nurse</option>--%>
+                                    <%--<option value="Doctor">Doctor</option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
+
+                            <div class="form-group">
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
 </div>

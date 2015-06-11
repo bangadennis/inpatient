@@ -18,18 +18,24 @@
                 <br/>
 
 
-                <label valign="top"><openmrs:message code="Speciality"/></label>
+                <label valign="top"><openmrs:message code="Speciality/Description"/></label>
                 <br>
                 <spring:bind path="ward.speciality">
                     <input type="text" name="speciality" class="form-control" value="${status.value}" size="35" required/>
                     <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
                 </spring:bind>
                 <br/>
-                <label valign="top"><openmrs:message code="Description"/></label>
+                <label valign="top"><openmrs:message code="Category"/></label>
                 <br>
                 <spring:bind path="ward.description">
-                    <input type="text" name="description" class="form-control" value="${status.value}" size="35" required/>
-                    <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
+                    <select name="description" class="form-control" >
+                        <option value="Minor">Minor</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Special">Special</option>
+                    </select>
+                    <%--<input type="text" name="description" class="form-control" value="${status.value}" size="35" required/>--%>
+                    <%--<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>--%>
                 </spring:bind>
                 <br/>
 

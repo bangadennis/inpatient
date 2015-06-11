@@ -30,7 +30,7 @@
         <th>#</th>
         <th>Ward Name</th>
         <th>Speciality</th>
-        <th>Description</th>
+        <th>Category</th>
         <th>Ward Capacity</th>
         <th>Available Capacity</th>
         <%--<th>Delete</th>--%>
@@ -92,12 +92,19 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label>Speciality</label>
+                                    <label>Speciality/Description</label>
                                     <input type="text" name="speciality" class="form-control" value="${ward.speciality}"  required/>
                                 </div>
                                 <div class="form-group">
-                                    <label>Description</label>
-                                    <input type="text" name="description" class="form-control" value="${ward.description}" required/>
+                                    <label>Category</label>
+                                    <%--<input type="text" name="description" class="form-control" value="${ward.description}" required/>--%>
+                                    <select name="description"  class="form-control">
+                                        <option value="${ward.description}">${ward.description}</option>
+                                        <option value="Minor">Minor</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Special">Special</option>
+                                    </select>
                                 </div>
 
                                 <div class="form-group">

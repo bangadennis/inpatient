@@ -104,12 +104,15 @@
             <div class="modal-body">
                 <div class="text-center">
                     <h4>Patient Details</h4>
+                    <hr>
                     <p>Inpatient ID:${admission.inpatient.inpatientId}</p>
                     <p>Given Name:${admission.inpatient.patient.givenName}</p>
                     <p>Middle Name:${admission.inpatient.patient.middleName}</p>
                     <p>Family Name:${admission.inpatient.patient.familyName}</p>
                     <p>Phone Number:${admission.inpatient.phoneNumber}</p>
+                    <hr>
                     <h4>Admission Details</h4>
+                    <hr>
                     <p>Admission Date:${admission.admissionDate}</p>
                     <p>Hiv Status: ${admission.hivStatus}</p>
                     <p>Nutrition: Status${admission.nutritionStatus}</p>
@@ -193,7 +196,7 @@
 
                                 <div class="form-group">
                                     <label>Remarks</label>
-                                    <input type="Text" class="form-control" name="remarks"   />
+                                    <input type="Text" class="form-control" name="remarks" value="" />
                                 </div>
 
                                 <div class="form-group">
