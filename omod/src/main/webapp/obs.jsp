@@ -415,5 +415,34 @@
 
 </div>
 </div>
+<div>
+
+</div>
+<c:if test="${obsList!=null}">
+<div class="panel panel-default">
+    <div class="panel-heading"> <h4>Observations</h4></div>
+    <div class="panel-body">
+        <table class="table table-striped">
+            <thead>
+            <th>Observation Datetime</th>
+            <th>Observation Name</th>
+            <th>Id</th>
+            </thead>
+
+            <tbody>
+            <c:forEach items="${obsList}" var="obsValue">
+            <tr>
+                <td>${obsValue.obsDatetime}</td>
+                <td>${obsValue.concept.name}</td>
+                <td>${obsValue.concept}</td>
+            </tr>
+            </c:forEach>
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+</c:if>
 
 <%@ include file="/WEB-INF/template/footer.jsp" %>
