@@ -3,10 +3,7 @@ package org.openmrs.module.inpatient.web.controller;
 /**
  * Created by banga on 6/9/15.
  */
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
@@ -14,10 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.*;
-import org.openmrs.api.EncounterService;
-import org.openmrs.api.LocationService;
-import org.openmrs.api.ObsService;
-import org.openmrs.api.PatientService;
+import org.openmrs.api.*;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.inpatient.Admission;
 import org.openmrs.module.inpatient.Discharge;
@@ -27,6 +21,8 @@ import org.openmrs.module.inpatient.api.AdmissionService;
 import org.openmrs.module.inpatient.api.InpatientService;
 import org.openmrs.module.inpatient.api.WardService;
 import org.openmrs.module.web.extension.provider.Link;
+import org.openmrs.util.MetadataComparator;
+import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.web.WebConstants;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Controller;
@@ -83,7 +79,7 @@ public class InpatientDashboardController {
                 {
                     wardList.add(ward);
                 }
-                if(ward.getDescription().equals("Child"))
+                if(ward.getDescription().equals("Minor"))
                 {
                     wardList.add(ward);
                 }
@@ -100,7 +96,7 @@ public class InpatientDashboardController {
                 {
                     wardList.add(ward);
                 }
-                if(ward.getDescription().equals("Child"))
+                if(ward.getDescription().equals("Minor"))
                 {
                     wardList.add(ward);
                 }
@@ -178,8 +174,7 @@ public class InpatientDashboardController {
                               @RequestParam(value = "patient_id", required=true)Integer patientId,
                               @RequestParam(value = "encounter_date", required=true)Date encounterDate,
                               @RequestParam(value = "encounter_type", required=true)Integer encounterId,
-                              @RequestParam(value = "location", required=true)Integer locationId,
-                              @RequestParam(value = "provider_role", required=true)String providerRole) {
+                              @RequestParam(value = "location", required=true)Integer locationId) {
 
        try {
 
@@ -219,6 +214,7 @@ public class InpatientDashboardController {
             Encounter encounter=encounterService.getEncounter(encounterId);
             Set<Obs>obsList=encounter.getAllObs();
             model.addAttribute("obsList", obsList);
+
         }
         catch (Exception ex)
         {
@@ -257,11 +253,11 @@ public class InpatientDashboardController {
         catch (Exception ex)
         {
             httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Error adding Observation");
-            return "redirect:inpatientDashboardForm.form?id="+patientId;
+            return "redirect:obs.form?id="+encounterId;
 
         }
 
-        return "redirect:inpatientDashboardForm.form?id="+patientId;
+        return "redirect:obs.form?id="+encounterId;
     }
 
 
