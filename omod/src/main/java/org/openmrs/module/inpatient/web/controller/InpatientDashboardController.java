@@ -30,6 +30,8 @@ import org.openmrs.web.WebConstants;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -207,9 +209,26 @@ public class InpatientDashboardController {
     public void showObsForm(ModelMap model,
                             @RequestParam(value = "id", required = true)Integer encounterId) {
 
+        Obs obs=new Obs();
         model.addAttribute("encounterId",encounterId);
+        model.addAttribute("obs",obs);
 
     }
+
+    //saveObs
+    @RequestMapping(value = "/module/inpatient/saveObs.form", method=RequestMethod.POST)
+    public String saveObsForm(WebRequest request, HttpSession httpSession, ModelMap model,
+                               @RequestParam(required = true, value = "id") int encounterId,
+                               @ModelAttribute("obs") Obs obs, BindingResult errors)
+    {
+
+        Obs newObs=obs;
+
+        return "redirect:manage.form";
+
+    }
+
+
 
 }
 
