@@ -4,7 +4,9 @@
 <%@ include file="template/localHeader.jsp"%>
 
 <div class="panel panel-default">
-    <div class="panel-heading">Services</div>
+    <div class="panel-heading">
+        <i class="fa fa-spinner fa-spin"></i>&nbsp;Dashboard
+    </div>
     <div class="panel-body">
         <div class="row">
             <div class="col-md-2">
