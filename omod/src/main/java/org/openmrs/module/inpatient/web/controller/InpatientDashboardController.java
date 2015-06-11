@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.*;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.LocationService;
+import org.openmrs.api.ObsService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.inpatient.Admission;
@@ -142,6 +143,7 @@ public class InpatientDashboardController {
         EncounterService encounterService=Context.getEncounterService();
         List<Encounter>encounterList=encounterService.getEncountersByPatient(inpatient.getPatient());
         map.put("encounterList", encounterList);
+        map.put("patientIdentifier", inpatient.getPatient().getPatientIdentifier().toString());
 
 
     }
@@ -212,6 +214,16 @@ public class InpatientDashboardController {
         Obs obs=new Obs();
         model.addAttribute("encounterId",encounterId);
         model.addAttribute("obs",obs);
+        try{
+            EncounterService encounterService=Context.getEncounterService();
+            Encounter encounter=encounterService.getEncounter(encounterId);
+            Set<Obs>obsList=encounter.getAllObs();
+            model.addAttribute("obsList", obsList);
+        }
+        catch (Exception ex)
+        {
+
+        }
 
     }
 
@@ -221,11 +233,35 @@ public class InpatientDashboardController {
                                @RequestParam(required = true, value = "id") int encounterId,
                                @ModelAttribute("obs") Obs obs, BindingResult errors)
     {
+        Encounter encounter =Context.getEncounterService().getEncounter(encounterId);
+        int patientId=encounter.getPatientId();
+        try {
 
-        Obs newObs=obs;
+            int personId=encounter.getPatient().getPersonId();
+            EncounterService encounterService=Context.getEncounterService();
+            ObsService obsService=Context.getObsService();
 
-        return "redirect:manage.form";
+            obs.setDateCreated(new Date());
+            obs.setLocation(encounter.getLocation());
+            obs.setCreator(Context.getAuthenticatedUser());
+            obs.setPerson(Context.getPersonService().getPerson(personId));
+            obs.setEncounter(encounter);
+            String reason=new String("first Save");
+            obsService.saveObs(obs, reason);
+//            encounter.addObs(obs);
+//            encounterService.saveEncounter(encounter);
 
+            httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Observation");
+
+        }
+        catch (Exception ex)
+        {
+            httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Error adding Observation");
+            return "redirect:inpatientDashboardForm.form?id="+patientId;
+
+        }
+
+        return "redirect:inpatientDashboardForm.form?id="+patientId;
     }
 
 

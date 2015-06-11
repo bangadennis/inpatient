@@ -86,7 +86,7 @@
                  ${inpatient.patient.givenName}&nbsp;${inpatient.patient.middleName}
                     &nbsp;${inpatient.patient.familyName}
             </h3>
-            <h4 class="pull-right">Outpatient ID-${inpatient.patient.patientId}&nbsp;
+            <h4 class="pull-right">Outpatient ID-${patientIdentifier}&nbsp;
                 Inpatient ID-${inpatient.inpatientId}
             </h4>
 
