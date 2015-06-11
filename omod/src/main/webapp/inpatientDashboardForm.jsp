@@ -143,8 +143,13 @@
                                 <div class="tab-content">
                                     <%--Add Encounter--%>
                                     <div role="tabpanel" class="tab-pane active" id="home">
-                                        <button class="btn btn-success" data-toggle="modal"  data-id="${inpatient.outPatientId}"
-                                                data-target="#encounterModal">Add Encounter</button>
+                                        <div>
+                                            <br>
+                                            <br>
+                                            <button class="btn btn-success btn-sm" data-toggle="modal"  data-id="${inpatient.outPatientId}"
+                                                    data-target="#encounterModal">
+                                                <i class="fa fa-plus-square"></i>Encounter</button>
+                                        </div>
                                     </div>
 
                                     <div role="tabpanel" class="tab-pane" id="profile">
