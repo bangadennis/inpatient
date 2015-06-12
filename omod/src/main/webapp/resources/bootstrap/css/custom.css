@@ -1,0 +1,9 @@
+.nav-pills > li.active > a, .nav-pills > li.active > a:focus {
+    color: black;
+    background-color: #bce8f1;
+}
+
+.nav-pills > li.active > a:hover {
+    background-color: #bce8f1;
+    color:black;
+}
