@@ -185,7 +185,7 @@ public class InpatientDashboardController {
            Encounter encounter=new Encounter();
            encounter.setPatient(inpatient.getPatient());
            encounter.setLocation(Context.getLocationService().getLocation(locationId));
-           encounter.setEncounterDatetime(encounterDate);
+           encounter.setEncounterDatetime(new Date());
            encounter.setEncounterType(encounterService.getEncounterType(encounterId));
 
            encounterService.saveEncounter(encounter);
