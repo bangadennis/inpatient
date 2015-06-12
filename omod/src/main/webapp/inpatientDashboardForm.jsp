@@ -1,6 +1,7 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="template/localHeader.jsp"%>
+<openmrs:htmlInclude file="/moduleResources/inpatient/bootstrap/css/custom.css" />
 
 <script type="text/javascript">
 
@@ -73,7 +74,7 @@
                 </c:if>
         <div class="panel-heading">
             <c:if test="${inpatient.patient.dead}">
-                   This Patient is Dead,Death Date-&nbsp;${inpatient.patient.deathDate}
+                   Patient is Dead-(Death Date-&nbsp;${inpatient.patient.deathDate})
             </c:if>
             <h3 class="panel-title">
                     <c:set var="gender" scope="session" value="${inpatient.patient.gender}"/>
@@ -110,7 +111,15 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="overview">
-                        Patient Details Overview
+
+                        <h4>Weight</h4>
+                        <br>
+                        <h4>Height</h4>
+                        <br>
+                        <h4>BMI</h4>
+                        <br>
+                        <h4>Allergies</h4>
+
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="admission">
@@ -133,7 +142,7 @@
 
                                 <!-- Nav tabs -->
                                 <ul class="nav nav-pills">
-                                    <li r class="active"><a data-toggle="pill" href="#home" >Add Encounters</a></li>
+                                    <li r class="active"><a  data-toggle="pill" href="#home" >Add Encounters</a></li>
                                     <li><a  data-toggle="pill" href="#profile">List Encounters</a></li>
                                     <li><a  data-toggle="modal" href=""  data-id="${admission.admissionId}" data-target="#dischargeModal">
                                         <i class="fa fa-check-square-o"></i>Discharge</a></li>
@@ -240,7 +249,7 @@
                             <table class="table table-striped">
                                 <thead>
                                 <th>Address </th>
-                                <th>Address 2 </th>
+                                <th>Telephone </th>
                                 <th>City/Village </th>
                                 <th>County </th>
                                 <th>Country </th>
@@ -251,7 +260,7 @@
                                 <tbody>
                                 <tr>
                                     <td>${inpatient.patient.personAddress.address1}</td>
-                                    <td>${inpatient.patient.personAddress.address2}</td>
+                                    <td>${inpatient.phoneNumber}</td>
                                     <td>${inpatient.patient.personAddress.cityVillage}</td>
                                     <td>${inpatient.patient.personAddress.stateProvince}</td>
                                     <td>${inpatient.patient.personAddress.country}</td>
@@ -385,15 +394,15 @@
                     <div class="text-center">
                         <h4>Admission/Discharge Details</h4>
                         <hr/>
-                        <p>Admission Date:&nbps;${admission.admissionDate}</p>
-                        <p>Discharge Date:&nbps;${admission.discharge.dischargeDate}</p>
-                        <p>Hiv Status: &nbps;${admission.hivStatus}</p>
-                        <p>Nutrition Status:&nbps;${admission.nutritionStatus}</p>
-                        <p>Ward Name:&nbps;${admission.ward.wardName}</p>
-                        <p>Guardian: &nbps;${admission.guardian}</p>
-                        <p>Referral To:&nbps;${admission.discharge.referralTo}</p>
-                        <p>Referral From:&nbps;${admission.referralFrom}</p>
-                        <p>Discharge Remarks:&nbps;${admission.discharge.remarks}</p>
+                        <p>Admission Date: &nbsp; ${admission.admissionDate}</p>
+                        <p>Discharge Date:&nbsp;${admission.discharge.dischargeDate}</p>
+                        <p>Hiv Status: &nbsp;${admission.hivStatus}</p>
+                        <p>Nutrition Status:&nbsp;${admission.nutritionStatus}</p>
+                        <p>Ward Name:&nbsp;${admission.ward.wardName}</p>
+                        <p>Guardian: &nbsp;${admission.guardian}</p>
+                        <p>Referral To:&nbsp;${admission.discharge.referralTo}</p>
+                        <p>Referral From:&nbsp;${admission.referralFrom}</p>
+                        <p>Discharge Remarks:&nbsp;${admission.discharge.remarks}</p>
 
                     </div>
 
