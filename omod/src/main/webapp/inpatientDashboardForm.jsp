@@ -105,7 +105,7 @@
                     <li role="presentation" class="active"><a href="#overview" aria-controls="home" role="tab" data-toggle="tab">Overview</a></li>
                     <li role="presentation"><a href="#admission" aria-controls="admission" role="tab" data-toggle="tab">Current Admission</a></li>
                     <li role="presentation"><a href="#discharge" aria-controls="discharge" role="tab" data-toggle="tab">Past Admissions</a></li>
-                    <li role="presentation"><a href="#orders" aria-controls="orders" role="tab" data-toggle="tab">Demographics</a></li>
+                    <li role="presentation"><a href="#demographics" aria-controls="orders" role="tab" data-toggle="tab">Demographics</a></li>
                 </ul>
 
                 <!-- Tab panes -->
@@ -244,7 +244,7 @@
                     </div>
 
 
-                    <div role="tabpanel" class="tab-pane" id="orders">
+                    <div role="tabpanel" class="tab-pane" id="demographics">
                         <div class="">
                             <table class="table table-striped">
                                 <thead>
