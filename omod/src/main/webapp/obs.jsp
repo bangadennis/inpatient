@@ -424,14 +424,18 @@
     <div class="panel-body">
         <table class="table table-striped">
             <thead>
-            <th>Observation Item</th>
+            <th>#</th>
+            <th>Observation</th>
             <th>Observation Value</th>
             <th>Datetime</th>
             </thead>
 
             <tbody>
+            <c:set value="0" var="count" scope="page"/>
             <c:forEach items="${obsList}" var="obsValue">
+                <c:set var="count" value="${count + 1}" scope="page"/>
             <tr>
+                <td>${count}</td>
                 <td>${obsValue.concept.name}</td>
                 <td>${obsValue.valueNumeric}</td>
                 <td>${obsValue.obsDatetime}</td>
