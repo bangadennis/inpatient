@@ -16,7 +16,9 @@ public class Discharge extends BaseOpenmrsObject implements Serializable {
 
     private Integer dischargeId;
 
-    private String dischargeDate;
+    private Integer admissionId;
+
+    private Date dischargeDate;
 
     private String diagnosis;
 
@@ -32,6 +34,16 @@ public class Discharge extends BaseOpenmrsObject implements Serializable {
 
     private Admission admission;
 
+    //change and creation meta-data
+    private String  createdBy;
+
+    private Date dateCreated;
+
+    private String changedBy;
+
+    private Date dateChanged;
+
+
 
 
     public Integer getDischargeId() {
@@ -42,11 +54,19 @@ public class Discharge extends BaseOpenmrsObject implements Serializable {
         this.dischargeId = dischargeId;
     }
 
-    public String getDischargeDate() {
+    public Integer getAdmissionId() {
+        return admissionId;
+    }
+
+    public void setAdmissionId(Integer admissionId) {
+        this.admissionId = admissionId;
+    }
+
+    public Date getDischargeDate() {
         return dischargeDate;
     }
 
-    public void setDischargeDate(String dischargeDate) {
+    public void setDischargeDate(Date dischargeDate) {
         this.dischargeDate = dischargeDate;
     }
 
@@ -105,6 +125,38 @@ public class Discharge extends BaseOpenmrsObject implements Serializable {
 
     public void setAdmission(Admission admission) {
         this.admission = admission;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getChangedBy() {
+        return changedBy;
+    }
+
+    public void setChangedBy(String changedBy) {
+        this.changedBy = changedBy;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Date getDateChanged() {
+        return dateChanged;
+    }
+
+    public void setDateChanged(Date dateChanged) {
+        this.dateChanged = dateChanged;
     }
 
     @Override

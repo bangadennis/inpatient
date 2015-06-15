@@ -3,6 +3,7 @@ package org.openmrs.module.inpatient;
 import org.openmrs.BaseOpenmrsObject;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -18,11 +19,20 @@ public class Ward  extends BaseOpenmrsObject implements Serializable {
 
     private String speciality;
 
-    private String description;
+    private String category;
 
     private Integer capacity;
 
     private Set<Admission>admissions;
+
+    //change and creation meta-data
+    private String  createdBy;
+
+    private Date dateCreated;
+
+    private String changedBy;
+
+    private Date dateChanged;
 
 
 
@@ -52,14 +62,6 @@ public class Ward  extends BaseOpenmrsObject implements Serializable {
         this.capacity = capacity;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getSpeciality() {
         return speciality;
     }
@@ -83,6 +85,49 @@ public class Ward  extends BaseOpenmrsObject implements Serializable {
     public void setAdmissions(Set<Admission> admissions) {
         this.admissions = admissions;
     }
+
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public String getChangedBy() {
+        return changedBy;
+    }
+
+    public void setChangedBy(String changedBy) {
+        this.changedBy = changedBy;
+    }
+
+    public Date getDateChanged() {
+        return dateChanged;
+    }
+
+    public void setDateChanged(Date dateChanged) {
+        this.dateChanged = dateChanged;
+    }
+
+    //method to get Available Ward Capacity
 
     public int getAvailableWardCapacity(){
 

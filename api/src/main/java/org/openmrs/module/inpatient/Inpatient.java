@@ -19,6 +19,7 @@ import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,11 +36,20 @@ public class Inpatient extends BaseOpenmrsObject implements Serializable{
 
 	private String inpatientId;
 
-	private Integer phoneNumber;
+	private String phoneNumber;
 
 	private Patient patient;
 
 	private Set<Admission> admissions;
+
+	//change and creation meta-data
+	private String  createdBy;
+
+	private Date dateCreated;
+
+	private String changedBy;
+
+	private Date dateChanged;
 
 	//Setters and Getters
 
@@ -51,11 +61,11 @@ public class Inpatient extends BaseOpenmrsObject implements Serializable{
 		this.inpatientId = inpatientId;
 	}
 
-	public Integer getPhoneNumber() {
+	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(Integer phoneNumber) {
+	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -83,6 +93,38 @@ public class Inpatient extends BaseOpenmrsObject implements Serializable{
 
 	public void setAdmissions(Set<Admission> admissions) {
 		this.admissions = admissions;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getChangedBy() {
+		return changedBy;
+	}
+
+	public void setChangedBy(String changedBy) {
+		this.changedBy = changedBy;
+	}
+
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public Date getDateChanged() {
+		return dateChanged;
+	}
+
+	public void setDateChanged(Date dateChanged) {
+		this.dateChanged = dateChanged;
 	}
 
 	@Override
