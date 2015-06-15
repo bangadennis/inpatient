@@ -110,7 +110,7 @@ public class  InpatientManageController {
 	public String saveInpatient(ModelMap model,WebRequest request, HttpSession httpSession,
 							  @RequestParam(required = true, value = "outpatient_id") Integer patientId,
 							  @RequestParam(required = true, value = "inpatient_id") String inpatientId,
-							  @RequestParam(required = true, value = "phone_number") Integer phoneNumber)
+							  @RequestParam(required = true, value = "phone_number") String phoneNumber)
 	{
 		InpatientService inpatientService=Context.getService(InpatientService.class);
 
@@ -186,9 +186,9 @@ public class  InpatientManageController {
 	@RequestMapping(value = "/module/inpatient/saveAdmission.form", method = RequestMethod.POST)
 	public String saveAdmission(ModelMap model,HttpSession httpSession,WebRequest webRequest,
 							  @RequestParam(value = "inpatient_id", required = true)Integer patientId,
-							  @RequestParam(value = "admission_date", required = true)String admissionDate,
-							  @RequestParam(value = "hiv_status", required = true)String hivStatus,
-							  @RequestParam(value = "nutrition_status", required = true)String nutritionStatus,
+							  @RequestParam(value = "admission_date", required = true)Date admissionDate,
+							  @RequestParam(value = "hiv_status", required = true)Integer hivStatus,
+							  @RequestParam(value = "nutrition_status", required = true)Integer nutritionStatus,
 							  @RequestParam(value = "guardian", required = true)String guardian,
 							  @RequestParam(value = "referral_from", required = true)String referralFrom,
 							  @RequestParam(value = "status", required = true)Integer hivIntervention,
@@ -222,7 +222,7 @@ public class  InpatientManageController {
 			admission.setNutritionStatus(nutritionStatus);
 			admission.setGuardian(guardian);
 			admission.setReferralFrom(referralFrom);
-			admission.setStatus(hivIntervention);
+			admission.setHivIntervention(hivIntervention);
 
 			if(ward.getAvailableWardCapacity()>0) {
 				admission.setWard(ward);
@@ -245,15 +245,6 @@ public class  InpatientManageController {
 				if (addAdmission) {
 
 					admissionService.saveAdmission(admission);
-					//EncounterService
-//					EncounterService encounterService=Context.getEncounterService();
-//					Encounter encounter=new Encounter();
-//					encounter.setLocation(Context.getLocationService().getDefaultLocation());
-//					encounter.setPatient(patient);
-//					encounter.setEncounterDatetime(new Date());
-//					//Getting Inpatient Registration encounter type
-//					encounter.setEncounterType(encounterService.getEncounterTypeByUuid("384a59c5-f744-4e1e-8bf2-08de6237b036"));
-//					encounterService.saveEncounter(encounter);
 
 					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Admission details Successfully");
 				} else {
@@ -374,8 +365,8 @@ public class  InpatientManageController {
 	//Save Discharge Form
 	@RequestMapping(value = "/module/inpatient/saveDischarge.form", method = RequestMethod.POST)
 	public String saveDischarge(ModelMap model,HttpSession httpSession,WebRequest webRequest,
-								@RequestParam(value = "discharge_id", required = true)Integer dischargeId,
-								@RequestParam(value = "discharge_date", required = true)String dischargeDate,
+								@RequestParam(value = "discharge_id", required = true)Integer admissionId,
+								@RequestParam(value = "discharge_date", required = true)Date dischargeDate,
 								@RequestParam(value = "treatment", required = true)String treatment,
 								@RequestParam(value = "diagnosis", required = true)String diagnosis,
 								@RequestParam(value = "outcome", required = true)String outcome,
@@ -386,7 +377,7 @@ public class  InpatientManageController {
 		DischargeService dischargeService=Context.getService(DischargeService.class);
 		AdmissionService admissionService=Context.getService(AdmissionService.class);
 
-		Admission admission=admissionService.getAdmission(dischargeId);
+		Admission admission=admissionService.getAdmission(admissionId);
 		int patientId=admission.getInpatient().getOutPatientId();
 
 		try{
@@ -394,7 +385,7 @@ public class  InpatientManageController {
 			Discharge discharge=new Discharge();
 			PatientService patientService=Context.getPatientService();
 
-			discharge.setDischargeId(dischargeId);
+			discharge.setAdmissionId(admissionId);
 			discharge.setDischargeDate(dischargeDate);
 			discharge.setTreatment(treatment);
 			discharge.setDiagnosis(diagnosis);
