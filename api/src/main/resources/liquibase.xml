@@ -9,7 +9,7 @@
         for a list of supported elements and attributes
     -->
 
-    <changeSet author="banga" id="20150527-3">
+    <changeSet author="banga" id="20150527-3-1">
     <comment>Create the inpatient_ward table</comment>
     <createTable tableName="inpatient_ward">
         <column autoIncrement="true" name="ward_id" type="int">
@@ -17,13 +17,19 @@
         </column>
         <column name="ward_name" type="varchar(50)" />
         <column name="speciality" type="varchar(50)" />
-        <column name="description" type="varchar(255)" />
+        <column name="category" type="varchar(255)" />
         <column name="capacity" type="int" />
+
+        <column name="created_by" type="varchar(50)"/>
+        <column name="date_created" type="DATETIME" />
+        <column name="changed_by" type="varchar(50)"/>
+        <column name="date_changed" type="DATETIME"  />
+
         <column name="uuid" type="char(38)" />
     </createTable>
   </changeSet>
 
-    <changeSet author="banga" id="20150528-4">
+    <changeSet author="banga" id="20150528-4-1">
         <comment>Create the inpatient_inpatients table</comment>
         <createTable tableName="inpatient_inpatient">
             <column  name="outpatient_id" type="int">
@@ -34,13 +40,19 @@
                 <constraints primaryKey="true" nullable="false" />
             </column>
             <column name="phone_number" type="varchar(50)" />
+
+            <column name="created_by" type="varchar(50)"/>
+            <column name="date_created" type="DATETIME" />
+            <column name="changed_by" type="varchar(50)"/>
+            <column name="date_changed" type="DATETIME"  />
+
             <column name="uuid" type="char(38)" />
         </createTable>
     </changeSet>
 
 
 
-    <changeSet author="banga" id="20150522-8">
+    <changeSet author="banga" id="20150522-8-1">
         <comment>Create the admission table</comment>
         <createTable tableName="inpatient_admission">
 
@@ -49,40 +61,55 @@
             </column>
 
             <column name="inpatient_id" type="int"  ></column>
-            <column name="admission_date" type="varchar(50)" />
-            <column name="hiv_status" type="varchar(50)" />
-            <column name="nutrition_status" type="varchar(50)"/>
+            <column name="admission_date" type="DATETIME" />
+            <column name="hiv_status" type="int" />
+            <column name="hiv_intervention" type="int"/>
+            <column name="nutrition_status" type="int"/>
             <column name="guardian" type="varchar(100)" />
             <column name="ward_id" type="int"/>
             <column name="referral_from" type="varchar(100)"/>
-            <column name="status" type="int"/>
+
+            <column name="created_by" type="varchar(50)"/>
+            <column name="date_created" type="DATETIME" />
+            <column name="changed_by" type="varchar(50)"/>
+            <column name="date_changed" type="DATETIME"  />
+
             <column name="uuid" type="char(38)"/>
         </createTable>
     </changeSet>
 
 
 
-    <changeSet author="banga" id="20150529-9">
+    <changeSet author="banga" id="20150529-9-1">
         <comment>Create the discharge table</comment>
         <createTable tableName="inpatient_discharge">
+
             <column name="discharge_id" autoIncrement="true" type="int">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="discharge_date" type="varchar(50)" />
+            <column name="admission_id" type="int">
+                <constraints nullable="false" unique="true" />
+            </column>
+
+            <column name="discharge_date" type="DATETIME" />
             <column name="diagnosis" type="varchar(50)" />
             <column name="outcome" type="varchar(50)"/>
             <column name="treatment" type="varchar(50)" />
             <column name="causeofdeath" type="varchar(50)"/>
             <column name="referral_to" type="varchar(50)"/>
             <column name="remarks" type="varchar(50)"/>
+
+            <column name="created_by" type="varchar(50)"/>
+            <column name="date_created" type="DATETIME" />
+            <column name="changed_by" type="varchar(50)"/>
+            <column name="date_changed" type="DATETIME"  />
             <column name="uuid" type="char(38)"/>
         </createTable>
     </changeSet>
 
-
-
-    <changeSet author="banga" id="20150526-6">
+<!--Foreign Key Mappings-->
+    <changeSet author="banga" id="20150526-6-1">
         <comment>addForeignKeyConstraint-inpatient_inpatient</comment>
         <addForeignKeyConstraint baseColumnNames="outpatient_id"
                                  baseTableName="inpatient_inpatient"
@@ -96,7 +123,7 @@
 
 
 
-    <changeSet author="banga" id="20150599-10">
+    <changeSet author="banga" id="20150599-10-1">
         <comment>addForeignKeyConstraint-inpatient_admission</comment>
         <addForeignKeyConstraint baseColumnNames="inpatient_id"
                                  baseTableName="inpatient_admission"
@@ -109,9 +136,9 @@
     </changeSet>
 
 
-    <changeSet author="banga" id="20150529-40">
+    <changeSet author="banga" id="20150529-40-1">
         <comment>addForeignKeyConstraint_admission-discharge</comment>
-        <addForeignKeyConstraint baseColumnNames="discharge_id"
+        <addForeignKeyConstraint baseColumnNames="admission_id"
                                  baseTableName="inpatient_discharge"
                                  constraintName="fk_admission_discharge"
                                  onDelete="CASCADE"
@@ -121,7 +148,7 @@
 
     </changeSet>
 
-    <changeSet author="banga" id="20150699-10">
+    <changeSet author="banga" id="20150699-10-1">
         <comment>addForeignKeyConstraint-ward-admission</comment>
         <addForeignKeyConstraint baseColumnNames="ward_id"
                                  baseTableName="inpatient_admission"
