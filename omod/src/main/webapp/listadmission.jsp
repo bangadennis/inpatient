@@ -31,7 +31,7 @@
             $('#dischargeModal').on('show.bs.modal', function(event) {
                 var btn = $(event.relatedTarget);
                 var id = btn.data('id');
-                $("#dischargeId").val(id);
+                $("#admissionId").val(id);
             });
 
 
@@ -149,7 +149,7 @@
                         <div class="form-group col-md-offset-2 col-md-8">
                             <form class="form-horizontal" method="post"  action="<c:url value='/module/inpatient/saveDischarge.form' />">
 
-                                <input id="dischargeId" type="hidden" class="form-control" name="discharge_id"  required />
+                                <input id="admissionId" type="hidden" class="form-control" name="discharge_id"  required />
 
                                 <div class="form-group">
                                     <label>Discharge Date</label>
