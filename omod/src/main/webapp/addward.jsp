@@ -27,8 +27,8 @@
                 <br/>
                 <label valign="top"><openmrs:message code="Category"/></label>
                 <br>
-                <spring:bind path="ward.description">
-                    <select name="description" class="form-control" >
+                <spring:bind path="ward.category">
+                    <select name="category" class="form-control" >
                         <option value="Minor">Minor</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
