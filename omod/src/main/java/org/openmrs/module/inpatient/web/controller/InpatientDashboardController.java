@@ -71,15 +71,17 @@ public class InpatientDashboardController {
         {
             if(gender.equals("M"))
             {
-                if(ward.getDescription().equals("Male"))
+                if(ward.getCategory().equals("Male"))
                 {
                     wardList.add(ward);
                 }
-                if(ward.getDescription().equals("Special"))
+
+                if(ward.getCategory().equals("Special"))
                 {
                     wardList.add(ward);
                 }
-                if(ward.getDescription().equals("Minor"))
+
+                if(ward.getCategory().equals("Minor"))
                 {
                     wardList.add(ward);
                 }
@@ -88,15 +90,15 @@ public class InpatientDashboardController {
 
             if(gender.equals("F"))
             {
-                if(ward.getDescription().equals("Female"))
+                if(ward.getCategory().equals("Female"))
                 {
                     wardList.add(ward);
                 }
-                if(ward.getDescription().equals("Special"))
+                if(ward.getCategory().equals("Special"))
                 {
                     wardList.add(ward);
                 }
-                if(ward.getDescription().equals("Minor"))
+                if(ward.getCategory().equals("Minor"))
                 {
                     wardList.add(ward);
                 }
@@ -111,15 +113,19 @@ public class InpatientDashboardController {
         Set<Admission> admissionList=inpatient.getAdmissions();
         List<Admission> admissions=new ArrayList<Admission>();
         Admission admission=null;
-        for(Admission adm:admissionList)
+        if(admissionList!=null)
         {
-            Discharge discharge=adm.getDischarge();
-            if(discharge!=null){
-                admissions.add(adm);
-            }
-            if(discharge==null)
+            for(Admission adm:admissionList)
             {
-                admission=adm;
+                Discharge discharge=adm.getDischarge();
+                if(discharge!=null){
+                    admissions.add(adm);
+                }
+                if(discharge==null)
+                {
+                    admission=adm;
+                }
+
             }
 
         }
