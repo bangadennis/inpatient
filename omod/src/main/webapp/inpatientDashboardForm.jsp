@@ -512,6 +512,7 @@
                         <form class="form-horizontal" method="post"  action="<c:url value='/module/inpatient/saveEncounter.form' />">
 
                             <input id="patientId" type="hidden" class="form-control" name="patient_id"  required />
+                            <input type="hidden"  name="admission_id"  value="${admission.admissionId}" />
 
                             <div class="form-group">
                                 <label>Encounter Date</label>
