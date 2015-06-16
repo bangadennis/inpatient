@@ -108,6 +108,18 @@
         </createTable>
     </changeSet>
 
+
+    <changeSet author="banga" id="20150529-9-134-8">
+        <comment>Create the inpatient_encounters table</comment>
+        <createTable tableName="inpatient_encounter">
+
+            <column name="encounter_id" autoIncrement="true" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="admission_id" type="int" />
+        </createTable>
+    </changeSet>
+
 <!--Foreign Key Mappings-->
     <changeSet author="banga" id="20150526-6-1">
         <comment>addForeignKeyConstraint-inpatient_inpatient</comment>
@@ -157,6 +169,18 @@
                                  onUpdate="CASCADE"
                                  referencedColumnNames="ward_id"
                                  referencedTableName="inpatient_ward" />
+
+    </changeSet>
+
+    <changeSet author="banga" id="20150526-6-1-3">
+        <comment>addForeignKeyConstraint-admission_encounter</comment>
+        <addForeignKeyConstraint baseColumnNames="admission_id"
+                                 baseTableName="inpatient_encounter"
+                                 constraintName="fk_admission_encounter"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
+                                 referencedColumnNames="admission_id"
+                                 referencedTableName="inpatient_admission" />
 
     </changeSet>
 
