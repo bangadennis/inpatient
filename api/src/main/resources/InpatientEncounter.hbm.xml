@@ -6,10 +6,10 @@
 <hibernate-mapping package="org.openmrs.module.inpatient">
     <joined-subclass name="InpatientEncounter" table="inpatient_encounter" extends="org.openmrs.Encounter">
 
-        <key column="encounter_id" not-null="true" on-delete="cascade" />
+        <key column="inpatient_encounter_id" not-null="true" on-delete="cascade" />
 
         <property name="inpatientEncounterId" type="int" not-null="true"
-                  column="encounter_id" update="false" insert="false" />
+                  column="inpatient_encounter_id" update="false" insert="false" />
 
         <many-to-one name="admission" class="Admission" fetch="select">
             <column name="admission_id" not-null="true" />

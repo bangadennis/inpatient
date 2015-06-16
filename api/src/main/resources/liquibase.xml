@@ -109,11 +109,11 @@
     </changeSet>
 
 
-    <changeSet author="banga" id="20150529-9-134-8">
+    <changeSet author="banga" id="20150529-9-134-84">
         <comment>Create the inpatient_encounters table</comment>
         <createTable tableName="inpatient_encounter">
 
-            <column name="encounter_id" autoIncrement="true" type="int">
+            <column name="inpatient_encounter_id" autoIncrement="true" type="int">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="admission_id" type="int" />
@@ -172,7 +172,7 @@
 
     </changeSet>
 
-    <changeSet author="banga" id="20150526-6-1-3">
+    <changeSet author="banga" id="20150526-6-1-3e">
         <comment>addForeignKeyConstraint-admission_encounter</comment>
         <addForeignKeyConstraint baseColumnNames="admission_id"
                                  baseTableName="inpatient_encounter"
