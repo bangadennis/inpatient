@@ -1,6 +1,7 @@
 package org.openmrs.module.inpatient;
 
 import org.openmrs.BaseOpenmrsObject;
+import org.openmrs.Encounter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -49,7 +50,9 @@ public class Admission extends BaseOpenmrsObject implements Serializable {
 
     private Ward ward;
 
-//    Getters and setters
+    private Set<InpatientEncounter>encounters;
+
+    //    Getters and setters
     public Date getAdmissionDate() {
         return admissionDate;
     }
@@ -163,6 +166,15 @@ public class Admission extends BaseOpenmrsObject implements Serializable {
     public void setWard(Ward ward) {
         this.ward = ward;
     }
+
+    public Set<InpatientEncounter> getEncounters() {
+        return encounters;
+    }
+
+    public void setEncounters(Set<InpatientEncounter> encounters) {
+        this.encounters = encounters;
+    }
+
 
     @Override
     public Integer getId() {
