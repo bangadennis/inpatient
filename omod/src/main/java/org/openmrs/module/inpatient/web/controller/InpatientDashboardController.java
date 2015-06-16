@@ -13,11 +13,9 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.*;
 import org.openmrs.api.*;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.inpatient.Admission;
-import org.openmrs.module.inpatient.Discharge;
-import org.openmrs.module.inpatient.Inpatient;
-import org.openmrs.module.inpatient.Ward;
+import org.openmrs.module.inpatient.*;
 import org.openmrs.module.inpatient.api.AdmissionService;
+import org.openmrs.module.inpatient.api.InpatientEncounterService;
 import org.openmrs.module.inpatient.api.InpatientService;
 import org.openmrs.module.inpatient.api.WardService;
 import org.openmrs.module.web.extension.provider.Link;
@@ -132,6 +130,7 @@ public class InpatientDashboardController {
 
         map.put("admission", admission);
         map.put("admissionList", admissions);
+        Set<InpatientEncounter>admissionSet=admission.getEncounters();
 
         //Location details
         List<Location> locationList=Context.getLocationService().getAllLocations();
@@ -177,6 +176,7 @@ public class InpatientDashboardController {
 //    Save Encounter
     @RequestMapping(value = "/module/inpatient/saveEncounter.form", method = RequestMethod.POST)
     public String saveEncounter(ModelMap model, WebRequest webRequest, HttpSession httpSession,
+                                @RequestParam(value = "admission_id", required=true)Integer admissionId,
                               @RequestParam(value = "patient_id", required=true)Integer patientId,
                               @RequestParam(value = "encounter_date", required=true)Date encounterDate,
                               @RequestParam(value = "encounter_type", required=true)Integer encounterId,
@@ -186,15 +186,37 @@ public class InpatientDashboardController {
 
            EncounterService encounterService=Context.getEncounterService();
            InpatientService inpatientService=Context.getService(InpatientService.class);
+           AdmissionService admissionService=Context.getService(AdmissionService.class);
+           InpatientEncounterService inpatientEncounterService=Context.getService(InpatientEncounterService.class);
            Inpatient inpatient=inpatientService.getInpatient(patientId);
 
-           Encounter encounter=new Encounter();
-           encounter.setPatient(inpatient.getPatient());
-           encounter.setLocation(Context.getLocationService().getLocation(locationId));
-           encounter.setEncounterDatetime(new Date());
-           encounter.setEncounterType(encounterService.getEncounterType(encounterId));
+           Admission admission=admissionService.getAdmission(admissionId);
+           InpatientEncounter inpatientEncounter=new InpatientEncounter();
 
-           encounterService.saveEncounter(encounter);
+           inpatientEncounter.setPatient(inpatient.getPatient());
+           inpatientEncounter.setLocation(Context.getLocationService().getLocation(locationId));
+           inpatientEncounter.setEncounterType(encounterService.getEncounterType(encounterId));
+           inpatientEncounter.setEncounterDatetime(encounterDate);
+           inpatientEncounter.setAdmission(admission);
+           inpatientEncounterService.saveInpatientEncounter(inpatientEncounter);
+
+           Set<InpatientEncounter>inpatientEncounters=admission.getEncounters();
+
+
+//           Encounter encounter=new Encounter();
+//           encounter.setPatient(inpatient.getPatient());
+//           encounter.setLocation(Context.getLocationService().getLocation(locationId));
+//           encounter.setEncounterDatetime(encounterDate);
+//           encounter.setEncounterType(encounterService.getEncounterType(encounterId));
+//           String encounterUUID=encounter.getUuid();
+//           encounterService.saveEncounter(encounter);
+
+//           Set<Encounter>encounterSet=new HashSet<Encounter>();
+//           encounterSet.add(encounterService.getEncounterByUuid(encounterUUID));
+//           admission.setEncounters(encounterSet);
+//           admissionService.saveAdmission(admission);
+
+
            httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Encounter  Added");
 
        }

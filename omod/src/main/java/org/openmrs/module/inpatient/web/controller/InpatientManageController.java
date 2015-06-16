@@ -223,6 +223,8 @@ public class  InpatientManageController {
 			admission.setGuardian(guardian);
 			admission.setReferralFrom(referralFrom);
 			admission.setHivIntervention(hivIntervention);
+			admission.setChangedBy(Context.getAuthenticatedUser().toString());
+			admission.setDateCreated(new Date());
 
 			if(ward.getAvailableWardCapacity()>0) {
 				admission.setWard(ward);
@@ -394,6 +396,8 @@ public class  InpatientManageController {
 			discharge.setRemarks(remarks);
 			discharge.setCauseOfDeath(causeofdeath);
 			discharge.setAdmission(admission);
+			discharge.setCreatedBy(Context.getAuthenticatedUser().toString() );
+			discharge.setDateCreated(new Date());
 
 			if(outcome.equals("D"))
 			{
