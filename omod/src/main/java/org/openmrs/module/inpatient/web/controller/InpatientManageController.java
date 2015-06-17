@@ -18,19 +18,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
+import org.openmrs.Obs;
 import org.openmrs.Patient;;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.inpatient.Admission;
-import org.openmrs.module.inpatient.Discharge;
-import org.openmrs.module.inpatient.Inpatient;
-import org.openmrs.module.inpatient.Ward;
+import org.openmrs.module.inpatient.*;
 import org.openmrs.module.inpatient.api.AdmissionService;
 import org.openmrs.module.inpatient.api.DischargeService;
 import org.openmrs.module.inpatient.api.InpatientService;
 import org.openmrs.module.inpatient.api.WardService;
 import org.openmrs.web.WebConstants;
+import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,10 +39,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 /**
  * The main controller.
  * @author banga
@@ -121,17 +118,17 @@ public class  InpatientManageController {
 			PatientService patientService=Context.getPatientService();
 			Patient patient=patientService.getPatient(patientId);
 			//Saving the details
-			EncounterService encounterService=Context.getEncounterService();
-			//adding encounter details
-			Encounter encounter=new Encounter();
-			encounter.setLocation(Context.getLocationService().getDefaultLocation());
-			encounter.setPatient(patient);
-			encounter.setEncounterDatetime(new Date());
-			//Getting Inpatient Registration encounter type
-			encounter.setEncounterType(encounterService.getEncounterTypeByUuid("ed30255d-4b6b-4d4a-a951-6e864cc17ecd"));
-
-			//save encounter
-			encounterService.saveEncounter(encounter);
+//			EncounterService encounterService=Context.getEncounterService();
+//			//adding encounter details
+//			Encounter encounter=new Encounter();
+//			encounter.setLocation(Context.getLocationService().getDefaultLocation());
+//			encounter.setPatient(patient);
+//			encounter.setEncounterDatetime(new Date());
+//			//Getting Inpatient Registration encounter type
+//			encounter.setEncounterType(encounterService.getEncounterTypeByUuid("ed30255d-4b6b-4d4a-a951-6e864cc17ecd"));
+//
+//			//save encounter
+//			encounterService.saveEncounter(encounter);
 
 
 			inpatient.setOutPatientId(patientId);
@@ -327,6 +324,43 @@ public class  InpatientManageController {
 		model.addAttribute("admission", admission);
 
 	}
+
+	//View Admission-Encounters
+	@RequestMapping(value = "/module/inpatient/listEncounter.form", method = RequestMethod.GET)
+	public void viewAdmissionEncounters(ModelMap model,
+							  @RequestParam(value ="id", required = true)Integer admissionId) {
+
+		AdmissionService admissionService=Context.getService(AdmissionService.class);
+		Admission admission=null;
+		Set<InpatientEncounter> encounterList=null;
+		Map <Integer, Set<Obs>>obsMap=new HashMap<Integer, Set<Obs>>();
+		Set<Obs>obsSet=null;
+
+
+		try {
+			admission=admissionService.getAdmission(admissionId);
+		}
+		catch (ObjectRetrievalFailureException exception)
+		{
+			log.warn("Couldn't retrieve admission"+exception);
+		}
+
+		if(admission!=null)
+		{
+			encounterList=admission.getEncounters();
+
+			for(InpatientEncounter encounter:encounterList)
+			{
+				obsSet=encounter.getAllObs();
+				obsMap.put(encounter.getEncounterId(), obsSet);
+			}
+		}
+
+		model.addAttribute("encounterList", encounterList);
+		model.addAttribute("obsMap", obsMap);
+		model.addAttribute("admission", admission);
+	}
+
 
 	//method for deleting  inpatient
 	@RequestMapping(value = "/module/inpatient/deleteInpatient.form", method=RequestMethod.GET)
