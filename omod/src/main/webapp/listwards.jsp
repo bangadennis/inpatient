@@ -43,7 +43,7 @@
         <c:set var="count" value="${count + 1}" scope="page"/>
         <tr>
             <td>${count}</td>
-            <td><a href="<c:url value='/module/inpatient/wardPatient.form?id=${thisWard.wardId}' />">
+            <td><a href="<c:url value='/module/inpatient/wardPatientList.form?id=${thisWard.wardId}' />">
             ${thisWard.wardName} </a></td>
             <td>${thisWard.speciality}</td>
             <td>${thisWard.category}</td>
