@@ -37,6 +37,10 @@
 
             $('#dischargetime').datetimepicker();
 
+            $(".clickable-row").click(function() {
+                window.document.location = $(this).data("href");
+            });
+
 
         });
 
@@ -61,7 +65,8 @@
     <tbody>
     <c:set var="count" value="0" scope="page" />
     <c:forEach var="admission" items="${admissionList}" varStatus="status">
-        <tr>
+        <tr class='clickable-row'
+            data-href="<c:url value='/module/inpatient/listEncounter.form?id=${admission.admissionId}' />">
             <c:set var="count" value="${count + 1}" scope="page"/>
             <td>${count}</td>
             <td>${admission.inpatient.inpatientId}</td>

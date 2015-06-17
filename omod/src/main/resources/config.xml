@@ -33,6 +33,7 @@
 		Inpatient.hbm.xml
 		Discharge.hbm.xml
 		Admission.hbm.xml
+		InpatientEncounter.hbm.xml
 
 	</mappingFiles>
 

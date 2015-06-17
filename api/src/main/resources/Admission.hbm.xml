@@ -39,6 +39,12 @@
         <one-to-one name="discharge" class="Discharge" cascade="save-update"></one-to-one>
 
 
+        <set name="encounters"  table="inpatient_encounter" inverse="true" lazy="true" fetch="select" cascade="all">
+            <key>
+                <column name="admission_id" not-null="true" />
+            </key>
+            <one-to-many class="InpatientEncounter" />
+        </set>
 
     </class>
 

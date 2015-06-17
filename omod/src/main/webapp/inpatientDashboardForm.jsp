@@ -13,6 +13,10 @@
                 "sDom": '<"top"f>rt<"bottom"lp><"clear">'
             });
 
+            $('#encounter_table').dataTable({
+                "sDom": '<"top"f>rt<"bottom"lp><"clear">'
+            });
+
             $('#admissionDate').datetimepicker();
 
             $('#encountertime').datetimepicker();
@@ -165,7 +169,7 @@
 
                                         <div class="col-md-10 col-offset-md-1">
                                             <h3>Encounters</h3>
-                                            <table class="table table-striped table-responsive table-hover" id="admission_table">
+                                            <table class="table table-striped table-responsive table-hover" id="encounter_table">
                                                 <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -512,6 +516,7 @@
                         <form class="form-horizontal" method="post"  action="<c:url value='/module/inpatient/saveEncounter.form' />">
 
                             <input id="patientId" type="hidden" class="form-control" name="patient_id"  required />
+                            <input type="hidden"  name="admission_id"  value="${admission.admissionId}" />
 
                             <div class="form-group">
                                 <label>Encounter Date</label>
