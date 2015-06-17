@@ -43,7 +43,12 @@ public class InpatientDashboardController {
     @RequestMapping(value="/module/inpatient/inpatientDashboardForm.form", method = RequestMethod.GET)
     protected void renderDashboard(@RequestParam(required = true, value = "id") Integer patientId, ModelMap map)
             throws Exception {
+        //Services
         InpatientService inpatientService=Context.getService(InpatientService.class);
+        EncounterService encounterService=Context.getEncounterService();
+        AdmissionService admissionService=Context.getService(AdmissionService.class);
+
+
         Inpatient inpatient=null;
 
         try {
@@ -106,12 +111,12 @@ public class InpatientDashboardController {
 
 
         map.put("wards", wardList);
+
         //Admissions
-        AdmissionService admissionService=Context.getService(AdmissionService.class);
         Set<Admission> admissionList=inpatient.getAdmissions();
-        List<Admission> admissions=new ArrayList<Admission>();
+        List<Admission> admissions=null;
         Admission admission=null;
-        if(admissionList!=null)
+        if(admissionList.size()!=0)
         {
             for(Admission adm:admissionList)
             {
@@ -119,6 +124,7 @@ public class InpatientDashboardController {
                 if(discharge!=null){
                     admissions.add(adm);
                 }
+
                 if(discharge==null)
                 {
                     admission=adm;
@@ -127,25 +133,40 @@ public class InpatientDashboardController {
             }
 
         }
+        Set<InpatientEncounter>admissionSet=null;
+        List<Location> locationList=null;
+        List<EncounterType>encounterTypeList=null;
+        Set<InpatientEncounter>encounterList=null;
+        String patientIdentifier=null;
 
+        if(admission!=null)
+        {
+            admissionSet=admission.getEncounters();
+            encounterList=admission.getEncounters();
+        }
+
+        try {
+            locationList=Context.getLocationService().getAllLocations();
+            encounterTypeList=Context.getEncounterService().getAllEncounterTypes();
+            patientIdentifier=inpatient.getPatient().getPatientIdentifier().toString();
+
+        }
+        catch (ObjectRetrievalFailureException ex) {
+            log.warn("Error retrieving objects");
+        }
+
+        //admission and admission list
         map.put("admission", admission);
         map.put("admissionList", admissions);
-        Set<InpatientEncounter>admissionSet=admission.getEncounters();
 
         //Location details
-        List<Location> locationList=Context.getLocationService().getAllLocations();
         map.put("locationList", locationList);
-
         //Encounter Types
-        List<EncounterType>encounterTypeList=Context.getEncounterService().getAllEncounterTypes();
         map.put("encounterTypeList", encounterTypeList);
-
-//        Listing Encounters
-        EncounterService encounterService=Context.getEncounterService();
-        List<Encounter>encounterList=encounterService.getEncountersByPatient(inpatient.getPatient());
+        //Listing Encounters
         map.put("encounterList", encounterList);
-        map.put("patientIdentifier", inpatient.getPatient().getPatientIdentifier().toString());
-
+        //openmrs patient identifier
+        map.put("patientIdentifier", patientIdentifier);
 
     }
 
@@ -196,25 +217,11 @@ public class InpatientDashboardController {
            inpatientEncounter.setPatient(inpatient.getPatient());
            inpatientEncounter.setLocation(Context.getLocationService().getLocation(locationId));
            inpatientEncounter.setEncounterType(encounterService.getEncounterType(encounterId));
-           inpatientEncounter.setEncounterDatetime(encounterDate);
+           inpatientEncounter.setEncounterDatetime(new Date());
            inpatientEncounter.setAdmission(admission);
+
+           //saving Inpatient Encounter
            inpatientEncounterService.saveInpatientEncounter(inpatientEncounter);
-
-           Set<InpatientEncounter>inpatientEncounters=admission.getEncounters();
-
-
-//           Encounter encounter=new Encounter();
-//           encounter.setPatient(inpatient.getPatient());
-//           encounter.setLocation(Context.getLocationService().getLocation(locationId));
-//           encounter.setEncounterDatetime(encounterDate);
-//           encounter.setEncounterType(encounterService.getEncounterType(encounterId));
-//           String encounterUUID=encounter.getUuid();
-//           encounterService.saveEncounter(encounter);
-
-//           Set<Encounter>encounterSet=new HashSet<Encounter>();
-//           encounterSet.add(encounterService.getEncounterByUuid(encounterUUID));
-//           admission.setEncounters(encounterSet);
-//           admissionService.saveAdmission(admission);
 
 
            httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Encounter  Added");
@@ -230,23 +237,24 @@ public class InpatientDashboardController {
         return "redirect:inpatientDashboardForm.form?id="+patientId;
     }
 
+
     @RequestMapping(value = "/module/inpatient/obs.form", method = RequestMethod.GET)
     public void showObsForm(ModelMap model,
                             @RequestParam(value = "id", required = true)Integer encounterId) {
+
+        InpatientEncounterService encounterService=Context.getService(InpatientEncounterService.class);
 
         Obs obs=new Obs();
         model.addAttribute("encounterId",encounterId);
         model.addAttribute("obs",obs);
         try{
-            EncounterService encounterService=Context.getEncounterService();
-            Encounter encounter=encounterService.getEncounter(encounterId);
+            InpatientEncounter encounter=encounterService.getInpatientEncounter(encounterId);
             Set<Obs>obsList=encounter.getAllObs();
             model.addAttribute("obsList", obsList);
-
         }
         catch (Exception ex)
         {
-
+            log.warn("Unable to retrieve encounter");
         }
 
     }
@@ -257,23 +265,22 @@ public class InpatientDashboardController {
                                @RequestParam(required = true, value = "id") int encounterId,
                                @ModelAttribute("obs") Obs obs, BindingResult errors)
     {
-        Encounter encounter =Context.getEncounterService().getEncounter(encounterId);
+        InpatientEncounterService inpatientEncounterService=Context.getService(InpatientEncounterService.class);
+        ObsService obsService = Context.getObsService();
+
+        InpatientEncounter encounter=inpatientEncounterService.getInpatientEncounter(encounterId);
         int patientId=encounter.getPatientId();
         try {
 
             int personId=encounter.getPatient().getPersonId();
-            EncounterService encounterService=Context.getEncounterService();
-            ObsService obsService=Context.getObsService();
 
             obs.setDateCreated(new Date());
             obs.setLocation(encounter.getLocation());
-            obs.setCreator(Context.getAuthenticatedUser());
+            obs.setCreator(Context.getAuthenticatedUser().getCreator());
             obs.setPerson(Context.getPersonService().getPerson(personId));
             obs.setEncounter(encounter);
             String reason=new String("first Save");
             obsService.saveObs(obs, reason);
-//            encounter.addObs(obs);
-//            encounterService.saveEncounter(encounter);
 
             httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Observation");
 
