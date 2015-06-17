@@ -16,7 +16,12 @@
 
 		<property name="inpatientId"  type="java.lang.String" column="inpatient_id"  unique="true" />
 
-		<property name="phoneNumber" type="java.lang.Integer" column="phone_number"/>
+		<property name="phoneNumber" type="java.lang.String" column="phone_number"/>
+
+		<property name="createdBy" type="java.lang.String" column="created_by" />
+		<property name="dateCreated" type="java.util.Date" column="date_created" />
+		<property name="changedBy" type="java.lang.String" column="changed_by" />
+		<property name="dateChanged" type="java.util.Date" column="date_changed" />
 
 		<property name="uuid" type="java.lang.String" column="uuid"
 			length="38" unique="true" />

@@ -13,6 +13,10 @@
                 "sDom": '<"top"f>rt<"bottom"lp><"clear">'
             });
 
+            $('#encounter_table').dataTable({
+                "sDom": '<"top"f>rt<"bottom"lp><"clear">'
+            });
+
             $('#admissionDate').datetimepicker();
 
             $('#encountertime').datetimepicker();
@@ -45,7 +49,7 @@
             $('#dischargeModal').on('show.bs.modal', function(event) {
                 var btn = $(event.relatedTarget);
                 var id = btn.data('id');
-                $("#dischargeId").val(id);
+                $("#admissionId").val(id);
             });
 
             $('#encounterModal').on('show.bs.modal', function(event) {
@@ -105,7 +109,7 @@
                     <li role="presentation" class="active"><a href="#overview" aria-controls="home" role="tab" data-toggle="tab">Overview</a></li>
                     <li role="presentation"><a href="#admission" aria-controls="admission" role="tab" data-toggle="tab">Current Admission</a></li>
                     <li role="presentation"><a href="#discharge" aria-controls="discharge" role="tab" data-toggle="tab">Past Admissions</a></li>
-                    <li role="presentation"><a href="#orders" aria-controls="orders" role="tab" data-toggle="tab">Demographics</a></li>
+                    <li role="presentation"><a href="#demographics" aria-controls="orders" role="tab" data-toggle="tab">Demographics</a></li>
                 </ul>
 
                 <!-- Tab panes -->
@@ -165,7 +169,7 @@
 
                                         <div class="col-md-10 col-offset-md-1">
                                             <h3>Encounters</h3>
-                                            <table class="table table-striped table-responsive table-hover" id="admission_table">
+                                            <table class="table table-striped table-responsive table-hover" id="encounter_table">
                                                 <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -244,7 +248,7 @@
                     </div>
 
 
-                    <div role="tabpanel" class="tab-pane" id="orders">
+                    <div role="tabpanel" class="tab-pane" id="demographics">
                         <div class="">
                             <table class="table table-striped">
                                 <thead>
@@ -431,7 +435,7 @@
                     <div class="form-group col-md-offset-2 col-md-8">
                         <form class="form-horizontal" method="post"  action="<c:url value='/module/inpatient/saveDischarge.form' />">
 
-                            <input id="dischargeId" type="hidden" class="form-control" name="discharge_id"  required />
+                            <input id="admissionId" type="hidden" class="form-control" name="discharge_id"  required />
 
                             <div class="form-group">
                                 <label>Discharge Date</label>
@@ -512,6 +516,7 @@
                         <form class="form-horizontal" method="post"  action="<c:url value='/module/inpatient/saveEncounter.form' />">
 
                             <input id="patientId" type="hidden" class="form-control" name="patient_id"  required />
+                            <input type="hidden"  name="admission_id"  value="${admission.admissionId}" />
 
                             <div class="form-group">
                                 <label>Encounter Date</label>

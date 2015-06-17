@@ -149,7 +149,7 @@ public class InpatientWardController {
 
                 wardEdit.setWardName(ward.getWardName());
                 wardEdit.setSpeciality(ward.getSpeciality());
-                wardEdit.setDescription(ward.getDescription());
+                wardEdit.setCategory(ward.getCategory());
                 wardEdit.setCapacity(ward.getCapacity());
                 wardEdit.setUuid(ward.getUuid());
 
@@ -176,7 +176,7 @@ public class InpatientWardController {
                                @RequestParam(required = true, value = "id") Integer wardId,
                                     @RequestParam(required = true, value = "wardName") String wardName,
                                     @RequestParam(required = true, value = "speciality") String speciality,
-                                    @RequestParam(required = true, value = "description") String description,
+                                    @RequestParam(required = true, value = "category") String category,
                                     @RequestParam(required = true, value = "capacity") Integer capacity)
     {
 
@@ -188,7 +188,7 @@ public class InpatientWardController {
 
                 wardEdit.setWardName(wardName);
                 wardEdit.setSpeciality(speciality);
-                wardEdit.setDescription(description);
+                wardEdit.setCategory(category);
                 wardEdit.setCapacity(capacity);
                 wardService.saveWard(wardEdit);
 
@@ -205,9 +205,11 @@ public class InpatientWardController {
         return "redirect:listwards.form";
     }
 
-    @RequestMapping(value = "/module/inpatient/wardPatient.form", method = RequestMethod.GET)
-    public void wardPatient(ModelMap model,@RequestParam(value ="id", required = true)Integer wardId ) {
+    @RequestMapping(value = "/module/inpatient/wardPatientList.form", method = RequestMethod.GET)
+    public void wardPatientList(ModelMap model,@RequestParam(value ="id", required = true)Integer wardId ) {
+
         WardService wardService = Context.getService(WardService.class);
+
         Ward ward=wardService.getWard(wardId);
         Set<Admission> admissionSet=ward.getAdmissions();
         Discharge discharge=null;
@@ -224,6 +226,7 @@ public class InpatientWardController {
         }
 
         model.addAttribute("patientList",inpatientList);
+        model.addAttribute("ward", ward);
 
     }
 

@@ -14,11 +14,17 @@
 
             <property name="wardName" type="java.lang.String" column="ward_name" length="50" unique="true" />
 
-            <property name="speciality" type="java.lang.String" column="speciality" length="50" />
+            <property name="speciality" type="java.lang.String" column="speciality" length="250" />
 
-            <property name="description" type="java.lang.String" column="description" length="255" />
+            <property name="category" type="java.lang.String" column="category" length="50" />
 
             <property name="capacity" type="int" column="capacity"  />
+
+
+            <property name="createdBy" type="java.lang.String" column="created_by" />
+            <property name="dateCreated" type="java.util.Date" column="date_created" />
+            <property name="changedBy" type="java.lang.String" column="changed_by" />
+            <property name="dateChanged" type="java.util.Date" column="date_changed" />
 
             <property name="uuid" type="java.lang.String" column="uuid"
                 length="38" unique="true" />

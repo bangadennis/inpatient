@@ -1,6 +1,7 @@
 package org.openmrs.module.inpatient;
 
 import org.openmrs.BaseOpenmrsObject;
+import org.openmrs.Encounter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -18,17 +19,28 @@ public class Admission extends BaseOpenmrsObject implements Serializable {
 
     private Integer admissionId;
 
-    private String admissionDate;
+    private Date admissionDate;
 
-    private String hivStatus;
+    private Integer hivStatus;
 
-    private String nutritionStatus;
+    private Integer hivIntervention;
+
+    private Integer nutritionStatus;
 
     private String guardian;
 
     private String referralFrom;
 
-    private Integer status;
+
+    //added fields
+    private String  createdBy;
+
+    private Date dateCreated;
+
+    private String changedBy;
+
+    private Date dateChanged;
+
 
     //Mapping
 
@@ -38,9 +50,72 @@ public class Admission extends BaseOpenmrsObject implements Serializable {
 
     private Ward ward;
 
+    private Set<InpatientEncounter>encounters;
 
+    //    Getters and setters
+    public Date getAdmissionDate() {
+        return admissionDate;
+    }
 
+    public void setAdmissionDate(Date admissionDate) {
+        this.admissionDate = admissionDate;
+    }
 
+    public Integer getHivStatus() {
+        return hivStatus;
+    }
+
+    public void setHivStatus(Integer hivStatus) {
+        this.hivStatus = hivStatus;
+    }
+
+    public Integer getHivIntervention() {
+        return hivIntervention;
+    }
+
+    public void setHivIntervention(Integer hivIntervention) {
+        this.hivIntervention = hivIntervention;
+    }
+
+    public Integer getNutritionStatus() {
+        return nutritionStatus;
+    }
+
+    public void setNutritionStatus(Integer nutritionStatus) {
+        this.nutritionStatus = nutritionStatus;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public String getChangedBy() {
+        return changedBy;
+    }
+
+    public void setChangedBy(String changedBy) {
+        this.changedBy = changedBy;
+    }
+
+    public Date getDateChanged() {
+        return dateChanged;
+    }
+
+    public void setDateChanged(Date dateChanged) {
+        this.dateChanged = dateChanged;
+    }
 
     public Integer getAdmissionId() {
         return admissionId;
@@ -50,29 +125,6 @@ public class Admission extends BaseOpenmrsObject implements Serializable {
         this.admissionId = admissionId;
     }
 
-    public String getAdmissionDate() {
-        return admissionDate;
-    }
-
-    public void setAdmissionDate(String admissionDate) {
-        this.admissionDate = admissionDate;
-    }
-
-    public String getHivStatus() {
-        return hivStatus;
-    }
-
-    public void setHivStatus(String hivStatus) {
-        this.hivStatus = hivStatus;
-    }
-
-    public String getNutritionStatus() {
-        return nutritionStatus;
-    }
-
-    public void setNutritionStatus(String nutritionStatus) {
-        this.nutritionStatus = nutritionStatus;
-    }
 
     public String getGuardian() {
         return guardian;
@@ -80,14 +132,6 @@ public class Admission extends BaseOpenmrsObject implements Serializable {
 
     public void setGuardian(String guardian) {
         this.guardian = guardian;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 
     public String getReferralFrom() {
@@ -122,6 +166,15 @@ public class Admission extends BaseOpenmrsObject implements Serializable {
     public void setWard(Ward ward) {
         this.ward = ward;
     }
+
+    public Set<InpatientEncounter> getEncounters() {
+        return encounters;
+    }
+
+    public void setEncounters(Set<InpatientEncounter> encounters) {
+        this.encounters = encounters;
+    }
+
 
     @Override
     public Integer getId() {

@@ -48,11 +48,11 @@
                 <span>Discharge</span>
                 </a>
             </div>
-
+            <br/>
             <div class="col-md-2">
                 <a style="text-decoration: none" href="<c:url value='/module/inpatient/listInpatient.form'/>">
                     <i class="fa fa-users fa-5x"></i><br>
-                    <span>Inpatient</span>
+                    <span>Inpatients List</span>
                 </a>
             </div>
 

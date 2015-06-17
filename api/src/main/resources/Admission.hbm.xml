@@ -20,13 +20,17 @@
             <column name="ward_id" not-null="true" />
         </many-to-one>
 
-        <property name="admissionDate" type="java.lang.String" column="admission_date"/>
-        <property name="hivStatus" type="java.lang.String" column="hiv_status" />
-        <property name="nutritionStatus" type="java.lang.String" column="nutrition_status" />
+        <property name="admissionDate" type="java.util.Date" column="admission_date"/>
+        <property name="hivStatus" type="java.lang.Integer" column="hiv_status" />
+        <property name="hivIntervention" type="java.lang.Integer" column="hiv_intervention" />
+        <property name="nutritionStatus" type="java.lang.Integer" column="nutrition_status" />
         <property name="referralFrom" type="java.lang.String" column="referral_from" />
         <property name="guardian" type="java.lang.String" column="guardian" />
-        <!--<property name="wardId" type="java.lang.Integer" column="ward_id" />-->
-        <property name="status" type="java.lang.Integer" column="status" />
+
+        <property name="createdBy" type="java.lang.String" column="created_by" />
+        <property name="dateCreated" type="java.util.Date" column="date_created" />
+        <property name="changedBy" type="java.lang.String" column="changed_by" />
+        <property name="dateChanged" type="java.util.Date" column="date_changed" />
 
         <property name="uuid" type="java.lang.String" column="uuid"
                   length="38" unique="true" />
@@ -35,6 +39,12 @@
         <one-to-one name="discharge" class="Discharge" cascade="save-update"></one-to-one>
 
 
+        <set name="encounters"  table="inpatient_encounter" inverse="true" lazy="true" fetch="select" cascade="all">
+            <key>
+                <column name="admission_id" not-null="true" />
+            </key>
+            <one-to-many class="InpatientEncounter" />
+        </set>
 
     </class>
 

@@ -18,19 +18,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
+import org.openmrs.Obs;
 import org.openmrs.Patient;;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.inpatient.Admission;
-import org.openmrs.module.inpatient.Discharge;
-import org.openmrs.module.inpatient.Inpatient;
-import org.openmrs.module.inpatient.Ward;
+import org.openmrs.module.inpatient.*;
 import org.openmrs.module.inpatient.api.AdmissionService;
 import org.openmrs.module.inpatient.api.DischargeService;
 import org.openmrs.module.inpatient.api.InpatientService;
 import org.openmrs.module.inpatient.api.WardService;
 import org.openmrs.web.WebConstants;
+import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,10 +39,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 /**
  * The main controller.
  * @author banga
@@ -110,7 +107,7 @@ public class  InpatientManageController {
 	public String saveInpatient(ModelMap model,WebRequest request, HttpSession httpSession,
 							  @RequestParam(required = true, value = "outpatient_id") Integer patientId,
 							  @RequestParam(required = true, value = "inpatient_id") String inpatientId,
-							  @RequestParam(required = true, value = "phone_number") Integer phoneNumber)
+							  @RequestParam(required = true, value = "phone_number") String phoneNumber)
 	{
 		InpatientService inpatientService=Context.getService(InpatientService.class);
 
@@ -121,17 +118,17 @@ public class  InpatientManageController {
 			PatientService patientService=Context.getPatientService();
 			Patient patient=patientService.getPatient(patientId);
 			//Saving the details
-			EncounterService encounterService=Context.getEncounterService();
-			//adding encounter details
-			Encounter encounter=new Encounter();
-			encounter.setLocation(Context.getLocationService().getDefaultLocation());
-			encounter.setPatient(patient);
-			encounter.setEncounterDatetime(new Date());
-			//Getting Inpatient Registration encounter type
-			encounter.setEncounterType(encounterService.getEncounterTypeByUuid("ed30255d-4b6b-4d4a-a951-6e864cc17ecd"));
-
-			//save encounter
-			encounterService.saveEncounter(encounter);
+//			EncounterService encounterService=Context.getEncounterService();
+//			//adding encounter details
+//			Encounter encounter=new Encounter();
+//			encounter.setLocation(Context.getLocationService().getDefaultLocation());
+//			encounter.setPatient(patient);
+//			encounter.setEncounterDatetime(new Date());
+//			//Getting Inpatient Registration encounter type
+//			encounter.setEncounterType(encounterService.getEncounterTypeByUuid("ed30255d-4b6b-4d4a-a951-6e864cc17ecd"));
+//
+//			//save encounter
+//			encounterService.saveEncounter(encounter);
 
 
 			inpatient.setOutPatientId(patientId);
@@ -186,9 +183,9 @@ public class  InpatientManageController {
 	@RequestMapping(value = "/module/inpatient/saveAdmission.form", method = RequestMethod.POST)
 	public String saveAdmission(ModelMap model,HttpSession httpSession,WebRequest webRequest,
 							  @RequestParam(value = "inpatient_id", required = true)Integer patientId,
-							  @RequestParam(value = "admission_date", required = true)String admissionDate,
-							  @RequestParam(value = "hiv_status", required = true)String hivStatus,
-							  @RequestParam(value = "nutrition_status", required = true)String nutritionStatus,
+							  @RequestParam(value = "admission_date", required = true)Date admissionDate,
+							  @RequestParam(value = "hiv_status", required = true)Integer hivStatus,
+							  @RequestParam(value = "nutrition_status", required = true)Integer nutritionStatus,
 							  @RequestParam(value = "guardian", required = true)String guardian,
 							  @RequestParam(value = "referral_from", required = true)String referralFrom,
 							  @RequestParam(value = "status", required = true)Integer hivIntervention,
@@ -222,7 +219,9 @@ public class  InpatientManageController {
 			admission.setNutritionStatus(nutritionStatus);
 			admission.setGuardian(guardian);
 			admission.setReferralFrom(referralFrom);
-			admission.setStatus(hivIntervention);
+			admission.setHivIntervention(hivIntervention);
+			admission.setChangedBy(Context.getAuthenticatedUser().toString());
+			admission.setDateCreated(new Date());
 
 			if(ward.getAvailableWardCapacity()>0) {
 				admission.setWard(ward);
@@ -245,15 +244,6 @@ public class  InpatientManageController {
 				if (addAdmission) {
 
 					admissionService.saveAdmission(admission);
-					//EncounterService
-//					EncounterService encounterService=Context.getEncounterService();
-//					Encounter encounter=new Encounter();
-//					encounter.setLocation(Context.getLocationService().getDefaultLocation());
-//					encounter.setPatient(patient);
-//					encounter.setEncounterDatetime(new Date());
-//					//Getting Inpatient Registration encounter type
-//					encounter.setEncounterType(encounterService.getEncounterTypeByUuid("384a59c5-f744-4e1e-8bf2-08de6237b036"));
-//					encounterService.saveEncounter(encounter);
 
 					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Added Admission details Successfully");
 				} else {
@@ -335,6 +325,43 @@ public class  InpatientManageController {
 
 	}
 
+	//View Admission-Encounters
+	@RequestMapping(value = "/module/inpatient/listEncounter.form", method = RequestMethod.GET)
+	public void viewAdmissionEncounters(ModelMap model,
+							  @RequestParam(value ="id", required = true)Integer admissionId) {
+
+		AdmissionService admissionService=Context.getService(AdmissionService.class);
+		Admission admission=null;
+		Set<InpatientEncounter> encounterList=null;
+		Map <Integer, Set<Obs>>obsMap=new HashMap<Integer, Set<Obs>>();
+		Set<Obs>obsSet=null;
+
+
+		try {
+			admission=admissionService.getAdmission(admissionId);
+		}
+		catch (ObjectRetrievalFailureException exception)
+		{
+			log.warn("Couldn't retrieve admission"+exception);
+		}
+
+		if(admission!=null)
+		{
+			encounterList=admission.getEncounters();
+
+			for(InpatientEncounter encounter:encounterList)
+			{
+				obsSet=encounter.getAllObs();
+				obsMap.put(encounter.getEncounterId(), obsSet);
+			}
+		}
+
+		model.addAttribute("encounterList", encounterList);
+		model.addAttribute("obsMap", obsMap);
+		model.addAttribute("admission", admission);
+	}
+
+
 	//method for deleting  inpatient
 	@RequestMapping(value = "/module/inpatient/deleteInpatient.form", method=RequestMethod.GET)
 	public String  deleteInpatient(ModelMap model, WebRequest webRequest, HttpSession httpSession,
@@ -374,8 +401,8 @@ public class  InpatientManageController {
 	//Save Discharge Form
 	@RequestMapping(value = "/module/inpatient/saveDischarge.form", method = RequestMethod.POST)
 	public String saveDischarge(ModelMap model,HttpSession httpSession,WebRequest webRequest,
-								@RequestParam(value = "discharge_id", required = true)Integer dischargeId,
-								@RequestParam(value = "discharge_date", required = true)String dischargeDate,
+								@RequestParam(value = "discharge_id", required = true)Integer admissionId,
+								@RequestParam(value = "discharge_date", required = true)Date dischargeDate,
 								@RequestParam(value = "treatment", required = true)String treatment,
 								@RequestParam(value = "diagnosis", required = true)String diagnosis,
 								@RequestParam(value = "outcome", required = true)String outcome,
@@ -386,7 +413,7 @@ public class  InpatientManageController {
 		DischargeService dischargeService=Context.getService(DischargeService.class);
 		AdmissionService admissionService=Context.getService(AdmissionService.class);
 
-		Admission admission=admissionService.getAdmission(dischargeId);
+		Admission admission=admissionService.getAdmission(admissionId);
 		int patientId=admission.getInpatient().getOutPatientId();
 
 		try{
@@ -394,7 +421,7 @@ public class  InpatientManageController {
 			Discharge discharge=new Discharge();
 			PatientService patientService=Context.getPatientService();
 
-			discharge.setDischargeId(dischargeId);
+			discharge.setAdmissionId(admissionId);
 			discharge.setDischargeDate(dischargeDate);
 			discharge.setTreatment(treatment);
 			discharge.setDiagnosis(diagnosis);
@@ -403,6 +430,8 @@ public class  InpatientManageController {
 			discharge.setRemarks(remarks);
 			discharge.setCauseOfDeath(causeofdeath);
 			discharge.setAdmission(admission);
+			discharge.setCreatedBy(Context.getAuthenticatedUser().toString() );
+			discharge.setDateCreated(new Date());
 
 			if(outcome.equals("D"))
 			{

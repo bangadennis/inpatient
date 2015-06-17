@@ -31,11 +31,15 @@
             $('#dischargeModal').on('show.bs.modal', function(event) {
                 var btn = $(event.relatedTarget);
                 var id = btn.data('id');
-                $("#dischargeId").val(id);
+                $("#admissionId").val(id);
             });
 
 
             $('#dischargetime').datetimepicker();
+
+            $(".clickable-row").click(function() {
+                window.document.location = $(this).data("href");
+            });
 
 
         });
@@ -61,7 +65,8 @@
     <tbody>
     <c:set var="count" value="0" scope="page" />
     <c:forEach var="admission" items="${admissionList}" varStatus="status">
-        <tr>
+        <tr class='clickable-row'
+            data-href="<c:url value='/module/inpatient/listEncounter.form?id=${admission.admissionId}' />">
             <c:set var="count" value="${count + 1}" scope="page"/>
             <td>${count}</td>
             <td>${admission.inpatient.inpatientId}</td>
@@ -149,7 +154,7 @@
                         <div class="form-group col-md-offset-2 col-md-8">
                             <form class="form-horizontal" method="post"  action="<c:url value='/module/inpatient/saveDischarge.form' />">
 
-                                <input id="dischargeId" type="hidden" class="form-control" name="discharge_id"  required />
+                                <input id="admissionId" type="hidden" class="form-control" name="discharge_id"  required />
 
                                 <div class="form-group">
                                     <label>Discharge Date</label>

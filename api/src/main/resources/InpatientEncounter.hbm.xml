@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.openmrs.module.inpatient">
+    <joined-subclass name="InpatientEncounter" table="inpatient_encounter" extends="org.openmrs.Encounter">
+
+        <key column="inpatient_encounter_id" not-null="true" on-delete="cascade" />
+
+        <property name="inpatientEncounterId" type="int" not-null="true"
+                  column="inpatient_encounter_id" update="false" insert="false" />
+
+        <many-to-one name="admission" class="Admission" fetch="select">
+            <column name="admission_id" not-null="true" />
+        </many-to-one>
+
+
+    </joined-subclass>
+
+</hibernate-mapping>

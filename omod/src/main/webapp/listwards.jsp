@@ -43,10 +43,10 @@
         <c:set var="count" value="${count + 1}" scope="page"/>
         <tr>
             <td>${count}</td>
-            <td><a href="<c:url value='/module/inpatient/wardPatient.form?id=${thisWard.wardId}' />">
+            <td><a href="<c:url value='/module/inpatient/wardPatientList.form?id=${thisWard.wardId}' />">
             ${thisWard.wardName} </a></td>
             <td>${thisWard.speciality}</td>
-            <td>${thisWard.description}</td>
+            <td>${thisWard.category}</td>
             <td>${thisWard.capacity}</td>
             <c:set var="key" value="${thisWard.wardId}" scope="page"/>
             <td> <c:out value="${availableCapacity[key]}"/> </td>
@@ -98,8 +98,8 @@
                                 <div class="form-group">
                                     <label>Category</label>
                                     <%--<input type="text" name="description" class="form-control" value="${ward.description}" required/>--%>
-                                    <select name="description"  class="form-control">
-                                        <option value="${ward.description}">${ward.description}</option>
+                                    <select name="category"  class="form-control">
+                                        <option value="${ward.category}">${ward.category}</option>
                                         <option value="Minor">Minor</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>

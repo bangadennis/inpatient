@@ -7,13 +7,18 @@
 
     <class name="Discharge"
            table="${project.parent.artifactId}_discharge">
-        <id name="dischargeId" type="java.lang.Integer" column="discharge_id">
+
+        <id name="admissionId" type="java.lang.Integer" column="admission_id">
             <generator class="foreign">
                 <param name="property">admission</param>
             </generator>
         </id>
 
-        <property name="dischargeDate" type="java.lang.String" column="discharge_date"
+        <one-to-one name="admission" class="Admission" constrained="true" ></one-to-one>
+
+        <property name="dischargeId"  type="int" column="discharge_id" insert="false"/>
+
+        <property name="dischargeDate" type="java.util.Date" column="discharge_date"
                   unique="true" />
 
         <property name="diagnosis" type="java.lang.String" column="diagnosis"/>
@@ -28,11 +33,13 @@
 
         <property name="remarks" type="java.lang.String" column="remarks"/>
 
+        <property name="createdBy" type="java.lang.String" column="created_by" />
+        <property name="dateCreated" type="java.util.Date" column="date_created" />
+        <property name="changedBy" type="java.lang.String" column="changed_by" />
+        <property name="dateChanged" type="java.util.Date" column="date_changed" />
+
         <property name="uuid" type="java.lang.String" column="uuid"
                   length="38" unique="true" />
-
-
-        <one-to-one name="admission" class="Admission" constrained="true" ></one-to-one>
 
     </class>
 
