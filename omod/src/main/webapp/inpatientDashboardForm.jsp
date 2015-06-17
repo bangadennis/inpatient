@@ -13,6 +13,10 @@
                 "sDom": '<"top"f>rt<"bottom"lp><"clear">'
             });
 
+            $('#encounter_table').dataTable({
+                "sDom": '<"top"f>rt<"bottom"lp><"clear">'
+            });
+
             $('#admissionDate').datetimepicker();
 
             $('#encountertime').datetimepicker();
@@ -165,7 +169,7 @@
 
                                         <div class="col-md-10 col-offset-md-1">
                                             <h3>Encounters</h3>
-                                            <table class="table table-striped table-responsive table-hover" id="admission_table">
+                                            <table class="table table-striped table-responsive table-hover" id="encounter_table">
                                                 <thead>
                                                 <tr>
                                                     <th>#</th>
