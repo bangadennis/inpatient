@@ -15,6 +15,11 @@
 
         });
 
+        $(".clickable-row").click(function() {
+            window.document.location = $(this).data("href");
+        });
+
+
     }(jQuery));
 
 </script>
@@ -39,7 +44,10 @@
     <c:forEach var="admission" items="${admissionList}" varStatus="status">
         <tr>
             <c:set var="count" value="${count + 1}" scope="page"/>
-            <td>${count}</td>
+            <td class='clickable-row bg-info'
+            data-href="<c:url value='/module/inpatient/listEncounter.form?id=${admission.admissionId}' />">
+            ${count}
+            </td>
             <td>${admission.inpatient.inpatientId}</td>
             <td>${admission.admissionDate}</td>
             <td>${admission.discharge.dischargeDate}</td>

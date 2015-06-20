@@ -50,9 +50,9 @@
                                 <table class="table table-striped table-hover">
                                     <thead>
                                     <th>#</th>
-                                    <th>Name</th>
-                                    <th>Date</th>
-                                    <th>Value</th>
+                                    <th>Observation Name</th>
+                                    <th>Datetime</th>
+                                    <th>Value/Answer</th>
                                     </thead>
                                     <c:set value="0" var="count_var" scope="page"/>
                                     <c:set var="obsList" value="${obsMap[encounter.encounterId]}" scope="page" />

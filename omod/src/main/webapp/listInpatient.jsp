@@ -49,9 +49,11 @@
     <c:forEach var="inpatient" items="${inpatientList}" varStatus="status">
         <c:set var="count" value="${count+1}" scope="page" />
 
-        <tr class='clickable-row'
-            data-href="<c:url value='/module/inpatient/inpatientDashboardForm.form?id=${inpatient.outPatientId}' />">
-            <td>${count}</td>
+        <tr>
+            <td class='clickable-row bg-info'
+            data-href="<c:url value='/module/inpatient/listEncounter.form?id=${admission.admissionId}' />">
+            ${count}
+            </td>
             <td>${inpatient.inpatientId}</td>
             <td>${inpatient.phoneNumber}</td>
             <td>${inpatient.patient.givenName}</td>
